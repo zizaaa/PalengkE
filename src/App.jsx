@@ -29,11 +29,7 @@ function App() {
       "email":email,
       "number":number,
       "address":address,
-      "cart":{
-        "product":"apple",
-        "price":123,
-        "quantity":5
-      }
+
     }
     try{
       await axios.post(`${URL}/users`,option)
