@@ -17,14 +17,14 @@ function App() {
 
   const fetchData = async () => {
     try {
-      const {data} = await axios.get(`https://palengke-api-vl03.onrender.com/users`);
+      const {data} = await axios.get(`${URL}/users`);
       setData(data);
     } catch (error) {
       console.error(error);
     }
   };
   const submit= async(e)=>{
-    e.preventDefault()
+    e.preventDefault();
     try{
       const option = {
         name:name,
@@ -32,7 +32,7 @@ function App() {
         "number":number,
         "address":address,
       }
-      await axios.post(`https://palengke-api-vl03.onrender.com/users`,option)
+      await axios.post(`${URL}/users`,option)
     }catch(error){
       alert(error)
     }
