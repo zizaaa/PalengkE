@@ -17,37 +17,25 @@ function App() {
 
   const fetchData = async () => {
     try {
-      const {data} = await axios.get(`${URL}/users`);
+      const {data} = await axios.get(`https://palengke-api-vl03.onrender.com/users`);
       setData(data);
     } catch (error) {
       console.error(error);
     }
   };
-  const submit= async()=>{
-    const option = {
-      name:name,
-      "email":email,
-      "number":number,
-      "address":address,
-
-    }
+  const submit= async(e)=>{
+    e.preventDefault()
     try{
-      await axios.post(`${URL}/users`,option)
+      const option = {
+        name:name,
+        "email":email,
+        "number":number,
+        "address":address,
+      }
+      await axios.post(`https://palengke-api-vl03.onrender.com/users`,option)
     }catch(error){
       alert(error)
     }
-      // await fetch('http://localhost:3000/users',{
-      //   method:'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body:JSON.stringify(
-      //     {
-      //       name:name,
-      //       "email":email,
-      //       "number":number,
-      //       "address":address
-      //     }
-      //   )
-      // })
   }
   return (
     <section>
