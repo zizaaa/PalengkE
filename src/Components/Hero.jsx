@@ -13,7 +13,7 @@ const Hero = () => {
                     </h1>
                       <Link to='' className='hero-button'>
                           Shop Now    
-                          <span><AiOutlineSwapRight/></span>
+                          <span className='hero-arrow'><AiOutlineSwapRight className='arrow-icon'/></span>
                       </Link>
                 </div>
             </div>

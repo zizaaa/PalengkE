@@ -1,17 +1,41 @@
 import { Outlet,Link } from "react-router-dom"
 import { HiShoppingCart } from "react-icons/hi"
 import { AiOutlineUser } from "react-icons/ai"
-import { BiChevronDown } from "react-icons/bi"
+import { BiChevronDown} from "react-icons/bi"
 import { HiMenuAlt3 } from "react-icons/hi"
-
+import { BsFacebook, BsInstagram,BsTwitter } from "react-icons/bs"
+import { FaFacebookMessenger} from "react-icons/fa"
+import { useState,useEffect } from "react"
 
 const Layout = () => {
-  return (
+    const [isDropDown, setIsDropDown] = useState(false)
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    // dropdown function
+    const dropDown=()=>{
+        isDropDown ? setIsDropDown(false):setIsDropDown(true)
+    }
+
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+        window.addEventListener('resize', handleResize);
+        if(windowWidth >= 993){
+            setIsDropDown(false)
+        }
+      // Cleanup function to remove the event listener
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }); // Remove the empty dependency array
+
+
+    return (
     <>
         <nav className="navBar my-2">
             <div className="container">
-                <div className="row">
-                    <div className="col-12 flex-container">
+                <div className="row custom-row-style">
+                    <div className={`col-12 ${isDropDown ? "nav-on-flex-container":"flex-container"}`}>
                         <div className="link-container d-none d-lg-flex">
                           <Link to='' className="link home">
                               Home 
@@ -83,14 +107,14 @@ const Layout = () => {
                         </div>
 
                         <div className="menu-container d-flex d-lg-none">
-                            <button type="button">
+                            <button type="button" onClick={dropDown}>
                                 <HiMenuAlt3/>
                             </button>
                         </div>
                   </div>
 
                   {/* dropdown */}
-                  <div className="col-12 dropDown-menu-container">
+                  <div className={`col-12 dropDown-menu-container ${isDropDown ? "d-block":"d-none"}`}>
                       <div className="dropDown-menu">
                           <Link to='' className="link home">
                               Home 
@@ -178,8 +202,59 @@ const Layout = () => {
             <Outlet />
         </section>
 
-        <footer>
-            <h1>Footer</h1>
+        <footer className="mt-5 py-5">
+            <div className="container">
+                
+                <div className="footer-input-container mb-5">
+                    <form>
+                        <input type="email" placeholder="Enter your Email" required/>
+                        <button type="submit" className="px-3" name="submitEmail">
+                            Get in touch
+                        </button>
+                    </form>
+                </div>
+
+                <div className="row">
+                    <div className="col-md">
+                        <div className="footer-left-container">
+                            <img src="./src/assets/logo2.png" className="img-fluid"/>
+                            <p>Bringing Nature's Bounty just by a click!</p>
+                        </div>
+                    </div>
+                    <div className="col-md py-3 py-md-0">
+                        <div className="footer-center-container">
+                            <h4>Socials</h4>
+                                <div className="social">
+                                    <a href="#">
+                                        <BsFacebook/>
+                                    </a>
+                                    <a href="#">
+                                        <BsInstagram/>
+                                    </a>
+                                    <a href="#">
+                                        <FaFacebookMessenger/> 
+                                    </a>
+                                    <a href="#">
+                                        <BsTwitter/>
+                                    </a>
+                                </div>
+                        </div>
+                    </div>
+                    <div className="col-md">
+                        <div className="footer-right-container">
+                            <h4>Navigation</h4>
+                            <div className="footerLinks">
+                                <Link to='#' className="footer-link">Deliver Tommorow</Link>
+                                <Link to='#' className="footer-link">All Categories</Link>
+                                <Link to='#' className="footer-link">Sale</Link>
+                                <Link to='#' className="footer-link">Refund Policy</Link>
+                                <Link to='#' className="footer-link">Terms of Service</Link>
+                                <Link to='#' className="footer-link">Shipping Policy</Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </footer>
     </>
   )
