@@ -279,7 +279,7 @@
 
 /* bestSellCategories-container*/
         .allcategory-section .AllCategory-container .row-custom{
-            height: 60vh;
+            /* height: 60vh; */
             overflow: hidden;
             display: flex;
             gap: 10px;
@@ -349,6 +349,11 @@
             padding: 8px 0;
             color: white;
             font-weight: 500;
+            transition: all .3s;
+        }
+        .allcategory-section .AllCategory-container .custom-card .product-info button:hover{
+            background-color: rgb(44, 67, 36);
+            border: 2px solid rgb(44, 67, 36);
         }
 
 /* category */
