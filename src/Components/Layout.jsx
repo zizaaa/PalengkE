@@ -5,6 +5,8 @@ import { BiChevronDown} from "react-icons/bi"
 import { HiMenuAlt3 } from "react-icons/hi"
 import { BsFacebook, BsInstagram,BsTwitter } from "react-icons/bs"
 import { FaFacebookMessenger} from "react-icons/fa"
+import logo from '../assets/logo.png'
+import logo_2 from '../assets/logo2.png'
 import { useState,useEffect } from "react"
 
 const Layout = () => {
@@ -93,7 +95,7 @@ const Layout = () => {
                         </div>
 
                         <Link to='/' className="logo-container">
-                          <img src='../src/assets/logo.png' className="img-fluid"/>
+                          <img src={logo} className="img-fluid"/>
                         </Link>
 
                         <div className="user-container d-none d-lg-flex">
@@ -217,7 +219,7 @@ const Layout = () => {
                 <div className="row">
                     <div className="col-md">
                         <div className="footer-left-container">
-                            <img src="../src/assets/logo2.png" className="img-fluid"/>
+                            <img src={logo_2} className="img-fluid"/>
                             <p>Bringing Nature's Bounty just by a click!</p>
                         </div>
                     </div>
