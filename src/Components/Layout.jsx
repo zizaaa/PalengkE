@@ -93,7 +93,7 @@ const Layout = () => {
                         </div>
 
                         <Link to='/' className="logo-container">
-                          <img src='src/assets/logo.png' className="img-fluid"/>
+                          <img src='../src/assets/logo.png' className="img-fluid"/>
                         </Link>
 
                         <div className="user-container d-none d-lg-flex">
@@ -217,7 +217,7 @@ const Layout = () => {
                 <div className="row">
                     <div className="col-md">
                         <div className="footer-left-container">
-                            <img src="./src/assets/logo2.png" className="img-fluid"/>
+                            <img src="../src/assets/logo2.png" className="img-fluid"/>
                             <p>Bringing Nature's Bounty just by a click!</p>
                         </div>
                     </div>

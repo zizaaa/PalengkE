@@ -297,11 +297,11 @@ nav .custom-row-style{
     border: none;
     border-radius: 50%;
     padding: 10px 12px;
-    opacity: .4;
+    opacity: .6;
     transition: all .3s;
 }
 .allcategory-section .AllCategory-container .row-custom .left-button:hover{
-    opacity: .8;
+    opacity: 1;
 }
 .allcategory-section .AllCategory-container .row-custom .right-button{
     position: absolute;
@@ -313,11 +313,11 @@ nav .custom-row-style{
     border: none;
     border-radius: 50%;
     padding: 10px 12px;
-    opacity: .4;
+    opacity: .6;
     transition: all .3s;
 }
 .allcategory-section .AllCategory-container .row-custom .right-button:hover{
-    opacity: .8;
+    opacity: 1;
 }
 .allcategory-section .AllCategory-container .custom-card{
     min-width: 16rem;
