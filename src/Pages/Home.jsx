@@ -6,10 +6,8 @@ const Home = () => {
   return (
     <section>
         <Hero/>
-        <BestSellingProduct/>
-        <div className="container bestSellCategories-container">
-          <Outlet/>
-        </div>
+          <BestSellingProduct/>
+            <Outlet/>
     </section>
   )
 }

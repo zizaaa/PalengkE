@@ -1,5 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=Permanent+Marker&family=Roboto+Mono:ital,wght@0,300;0,400;0,500;1,300;1,500&family=Roboto:wght@400;500;700&display=swap');
+
 #body{
     background-color: rgb(67,94,57);
+    font-family: 'Permanent Marker', cursive;
+    font-family: 'PT Serif', serif;
+    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto Mono', monospace;
 }
     :root{
         --text-color:rgb(67,94,57);
@@ -608,7 +614,118 @@
             text-decoration: none;
             color: white;
             padding: 5px 15px;
-            background-color: var(--lighGreen);
+            background-color: var(--orange);
+            margin-bottom: 10px;
+        }
+/* best sellingsection */ 
+        .allproducts-best-sell .flex-container{
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            gap: 10px;
+            padding: 15px 0;
+            position: relative;
+            width: 100%;
+        }
+        .product-containers{
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .left-button{
+            position: absolute;
+            left: 0;
+            z-index: 2;
+            border: none;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 50%;
+            opacity: .5;
+            color: white;
+            background-color: var(--text-color);
+            transition: all .5s;
+        }
+        .right-button{
+            position: absolute;
+            right: 0;
+            z-index: 2;
+            border: none;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 50%;
+            opacity: .5;
+            color: white;
+            background-color: var(--text-color);
+            transition: all .5s;
+        }
+            .left-button:hover{
+                opacity: 1;
+            }
+            .right-button:hover{
+                opacity: 1;
+            }
+        .custom-box{
+            min-width: 17rem;
+            max-width: 17rem;
+            max-height: 22rem;
+            min-height: 22rem;
+            background-color: var(--orange);
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
+        }
+        .custom-box .img-container{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .custom-box .img-container img{
+            max-height: 12rem;
+            min-height: 12rem;
+            width: 100%;
+        }
+        .custom-box .product-info-container{
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            color: white;
+        }
+        .custom-box .product-info-container p{
+            font-size: 1.3rem;
+        }
+        .custom-box .product-info-container button{
+            font-size: 1.3rem;
+            border: none;
+            background-color: white;
+            color: var(--orange);
+            padding: 8px 0;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
+        }
+/* pagination */
+        .pagination{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+        }
+        .pagination .pagination-circle{
+            padding: 5px;
+            border: 1px solid var(--orange);
+            border-radius: 50%;
+        }
+        .pagination .pagination-circle{
+            padding: 5px;
+            border: 1px solid var(--orange);
+            border-radius: 50%;
+        }
+        .pagination .activePage{
+            padding: 5px;
+            border: 1px solid var(--orange);
+            border-radius: 50%;
+            background-color: var(--orange);
         }
 
 

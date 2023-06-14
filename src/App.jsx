@@ -3,6 +3,13 @@ import { useState,useEffect } from "react"
 import { Route, Routes } from "react-router-dom"
 import Layout from "./Components/Layout"
 import Home from "./Pages/Home"
+import AllProducts from "./Components/BestSellingCategories/AllProducts"
+import LiveStockAndPoultry from "./Components/BestSellingCategories/LiveStockAndPoultry"
+import FishAndSeaShells from "./Components/BestSellingCategories/FishAndSeaShells"
+import UpAndLowLandVege from "./Components/BestSellingCategories/UpAndLowLandVege"
+import Fruits from "./Components/BestSellingCategories/Fruits"
+import HerbsAndSpices from "./Components/BestSellingCategories/HerbsAndSpices"
+import Rice from "./Components/BestSellingCategories/Rice"
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL
 
@@ -17,7 +24,6 @@ function App() {
     try {
       const {data} = await axios.get(`${URL}/products`);
       setData(data);
-      console.log(data)
     } catch (error) {
       console.error(error);
     }
@@ -28,6 +34,13 @@ function App() {
       <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Home />}>
+                <Route index element={<AllProducts data={data}/>}/>
+                  <Route path="LiveStockAndPoultry" element=  {<LiveStockAndPoultry data={data}/>}/>
+                    <Route path="FishAndSeaShells" element={<FishAndSeaShells data={data}/>}/>
+                      <Route path="UpAndLowLandVege" element={<UpAndLowLandVege data={data}/>}/>
+                    <Route path="Fruits" element={<Fruits data={data}/>}/>
+                  <Route path="HerbsAndSpices" element={<HerbsAndSpices data={data}/>}/>
+                <Route path="Rice" element={<Rice data={data}/>}/>
             </Route>
           </Route>
       </Routes>

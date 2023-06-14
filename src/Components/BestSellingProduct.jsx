@@ -17,8 +17,8 @@ const BestSellingProduct = () => {
                     <Link to='FishandSeaShells'>Fish and SeaShells</Link>
                     <Link to='UpAndLowLandVege'>Up And Low Land Vegetables</Link>
                     <Link to='Fruits'>Fruits</Link>
-                    <Link to='HerbsAndSpices'>Herbs and Spices</Link>
                     <Link to='Rice'>Rice</Link>
+                    <Link to='HerbsAndSpices'>Herbs and Spices</Link>
                 </div>
             </div>
         </div>

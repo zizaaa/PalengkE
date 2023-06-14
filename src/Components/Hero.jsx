@@ -30,7 +30,7 @@ const Hero = () => {
                 <img src={heroImg_3} className='img-fluid'/>
                 <Link to='' className='slide-3-btn'>Shop now</Link>
             </div>
-                <div className="pagination">
+                {/* <div className="pagination">
                   <span
                     className={`indicator ${activeIndex === 0 ? 'active' : ''}`}
                     onClick={() => setActiveIndex(0)}
@@ -43,7 +43,7 @@ const Hero = () => {
                     className={`indicator ${activeIndex === 2 ? 'active' : ''}`}
                     onClick={() => setActiveIndex(2)}
                   />
-                </div>
+                </div> */}
 
             <button className="prev-button" onClick={prevSlide}>
               <FaChevronLeft/>
