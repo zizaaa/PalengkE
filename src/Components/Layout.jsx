@@ -10,42 +10,40 @@ import logo_2 from '../assets/logo2.png'
 import { useState,useEffect } from "react"
 
 const Layout = () => {
-    const [isDropDown, setIsDropDown] = useState(false)
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const [isDropDown, setIsDropDown] = useState(false);
+    const [isFixed, setIsFixed]= useState(false)
+    
     // dropdown function
     const dropDown=()=>{
         isDropDown ? setIsDropDown(false):setIsDropDown(true)
     }
-
     useEffect(() => {
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
-        window.addEventListener('resize', handleResize);
-        if(windowWidth >= 993){
-            setIsDropDown(false)
-        }
-      // Cleanup function to remove the event listener
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }); // Remove the empty dependency array
+        
+        window.addEventListener('resize', ()=>{
+            if (window.innerWidth >= 993) {
+                setIsDropDown(false);
+            }
+        });
+        window.addEventListener('scroll', ()=>{
+            if(window.scrollY >= 113){
+                setIsFixed(true)
+            }else{
+                setIsFixed(false)
+            }
+        });
+
+      }, []); // Remove the empty dependency array if necessary
 
 
     return (
     <>
-        <nav className="navBar my-2">
+        <nav id={isFixed ? 'navBar':'nav'}>
             <div className="container">
                 <div className="row custom-row-style">
                     <div className={`col-12 ${isDropDown ? "nav-on-flex-container":"flex-container"}`}>
                         <div className="link-container d-none d-lg-flex">
-                          <Link to='' className="link home">
-                              Home 
-                              <span className="hoverLine"></span>
-                          </Link>
-                          
                           <Link to='' className="link about">
-                              About 
+                              About Us
                               <span className="hoverLine"></span>
                           </Link>
 
@@ -89,7 +87,7 @@ const Layout = () => {
                               </ul>
 
                           <Link to='' className="link contact">
-                              Contact
+                              Contact Us
                               <span className="hoverLine"></span>
                           </Link>
                         </div>
@@ -99,12 +97,9 @@ const Layout = () => {
                         </Link>
 
                         <div className="user-container d-none d-lg-flex">
-                          {/* total price in cart */}
-                          <p className="total-price">
-                              &#8369;  {/* peso sign */}
-                              <span>00.00</span>
-                          </p>
-                          <button className="cart" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><HiShoppingCart/></button>
+                            <button className="cart" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                <HiShoppingCart/>
+                            </button>
                           <Link to='' className="user"><AiOutlineUser/></Link>
                         </div>
 

@@ -3,7 +3,7 @@ import { AiOutlineSwapRight } from 'react-icons/ai'
 
 const Category = () => {
   return (
-    <section className="category-section my-3">
+    <section className="category-section my-5">
         <div className="container category-container">
             <div className="row align-items-center">
                 <div className="col-md">

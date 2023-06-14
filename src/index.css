@@ -5,25 +5,71 @@
         --text-color:rgb(67,94,57);
         --border-color:rgb(67,94,57);
         --lighGreen:rgb(81, 110, 71);
+        --whiteBackground:rgb(232, 236, 239);
+        --orange:rgb(204,128,32);
     }
 
+    /* Track */
+::-webkit-scrollbar {
+    width: 8px; /* Set the width of the track */
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--orange); /* or any other color you prefer */
+    border-radius: 5px;
+  }
+  
+  /* Track */
+  ::-moz-scrollbar {
+    width: 8px; /* Set the width of the track */
+  }
+  
+  /* Handle */
+  ::-moz-scrollbar-thumb {
+    background-color: #888; /* or any other color you prefer */
+    border-radius: 5px;
+  }
 
-    navBar{
-        padding: 10px 0;
-    }
-    nav{
-        overflow: hidden;
-    }
+        #nav{
+            overflow: hidden;
+            background-color: white;
+            margin: 10px 0;
+            padding: 10px 0;
+        }
+        #navBar{
+            left: 0;
+            right: 0;
+            position: fixed;
+            padding: 10px 0;
+            background-color: white;
+            animation: navbar ease-in-out forwards;
+            transition: all .5s;
+        }
+            @keyframes navbar{
+                0%{
+                    margin:0;
+                    transform: translateY(-115px);
+                    transform: scale(0);
+                }
+                50%{
+                    transform: scale(1);
+                    transform: translateY(-80px);
+                    z-index: 3;
+                }
+                100%{
+                    transform: translateY(0);
+                    transform: scale(1);
+                    z-index: 3;
+                }
+            }
+
     /* when nav menu is close */
         nav .flex-container{
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background-color: white;
             padding: 15px;
-            border-radius: 10px;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
             z-index: 2;
         }
     /* when nav menu is open */
@@ -31,11 +77,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background-color: white;
             padding: 15px;
-            /* border-radius: 10px; */
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
             z-index: 2;
         }
         nav .logo-container{
@@ -106,12 +148,17 @@
             align-items: center;
         }
         nav .user-container .user{
-            color: var(--text-color);
+            color: white;
+            background-color: var(--text-color);
             display: flex;
             align-items: center;
             border: 1px solid var(--text-color);
-            padding: 10px;
+            padding: 3px;
             border-radius: 50%;
+            font-size: 2rem;
+        }
+        nav .user-container .cart{
+            font-size: 2rem;
         }
 
         nav .menu-container button{
@@ -122,7 +169,339 @@
             color: var(--text-color);
             font-size: 2rem;
         }
-
+/* hero section styles */
+        .carousel{
+            background-color: rgb(255,255,255);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .carousel .slide-1 .slide-1-btn{
+            position: absolute;
+            left: 8%;
+            bottom: 20%;
+            text-decoration: none;
+            background-color: var(--orange);
+            width: 20%;
+            padding: 1% 0;
+            text-align: center;
+            color: white;
+            border-radius: 10px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+        .carousel .slide-1 .slide-1-img{
+            width: 100%;
+        }
+                @media(max-width:846px){
+                    .carousel .slide-1 .slide-1-btn{
+                        position: absolute;
+                        left: 8%;
+                        bottom: 18%;
+                        text-decoration: none;
+                        background-color: var(--orange);
+                        width: 20%;
+                        padding: 1% 0;
+                        text-align: center;
+                        color: white;
+                        border-radius: 10px;
+                        text-transform: uppercase;
+                        font-weight: 500;
+                    }
+                }
+                @media(max-width:584px){
+                    .carousel .slide-1 .slide-1-btn{
+                        position: absolute;
+                        left: 6%;
+                        bottom: 16%;
+                        text-decoration: none;
+                        background-color: var(--orange);
+                        width: 25%;
+                        padding: 1% 0;
+                        text-align: center;
+                        color: white;
+                        border-radius: 10px;
+                        text-transform: uppercase;
+                        font-weight: 500;
+                    }
+                }
+                @media(max-width:453px){
+                    .carousel .slide-1 .slide-1-btn{
+                        position: absolute;
+                        left: 6%;
+                        bottom: 14%;
+                        text-decoration: none;
+                        background-color: var(--orange);
+                        width: 25%;
+                        font-size: 14px;
+                        padding: 1% 0;
+                        text-align: center;
+                        color: white;
+                        border-radius: 10px;
+                        text-transform: uppercase;
+                        font-weight: 500;
+                    }
+                }
+                @media(max-width:387px){
+                    .carousel .slide-1 .slide-1-btn{
+                        position: absolute;
+                        left: 6%;
+                        bottom: 12%;
+                        text-decoration: none;
+                        background-color: var(--orange);
+                        width: 27%;
+                        font-size: 13px;
+                        padding: 1% 0;
+                        text-align: center;
+                        color: white;
+                        border-radius: 10px;
+                        text-transform: uppercase;
+                        font-weight: 500;
+                    }
+                }
+                @media(max-width:280px){
+                    .carousel .slide-1 .slide-1-btn{
+                        position: absolute;
+                        left: 6%;
+                        bottom: 12%;
+                        text-decoration: none;
+                        background-color: var(--orange);
+                        width: 30%;
+                        font-size: 13px;
+                        padding: 1% 0;
+                        text-align: center;
+                        color: white;
+                        border-radius: 10px;
+                        text-transform: uppercase;
+                        font-weight: 500;
+                    }
+                }
+        .carousel .slide-2{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .carousel .slide-2-btn{
+            position: absolute;
+            left: 45%;
+            bottom: 15%;
+            border-radius: 10px;
+            text-decoration: none;
+            background-color: var(--text-color);
+            color: white;
+            font-weight: 500;
+            padding: 1%;
+            width: 10%;
+            text-align: center;
+        }
+                @media(max-width:918px){
+                    .carousel .slide-2-btn{
+                        position: absolute;
+                        left: 43%;
+                        bottom: 12%;
+                        text-decoration: none;
+                        background-color: var(--text-color);
+                        color: white;
+                        font-weight: 500;
+                        padding: 1%;
+                        width: 14%;
+                        text-align: center;
+                    }
+                }
+                @media(max-width:622px){
+                    .carousel .slide-2-btn{
+                        position: absolute;
+                        left: 40%;
+                        bottom: 9%;
+                        text-decoration: none;
+                        background-color: var(--text-color);
+                        color: white;
+                        font-weight: 500;
+                        padding: 1%;
+                        width: 17%;
+                        text-align: center;
+                    }
+                }
+                @media(max-width:534px){
+                    .carousel .slide-2-btn{
+                        position: absolute;
+                        left:40%;
+                        bottom: 6%;
+                        text-decoration: none;
+                        background-color: var(--text-color);
+                        color: white;
+                        font-weight: 500;
+                        padding: 1%;
+                        width: 20%;
+                        text-align: center;
+                    }
+                }
+                @media(max-width:422px){
+                    .carousel .slide-2-btn{
+                        position: absolute;
+                        left:37%;
+                        bottom: 4%;
+                        text-decoration: none;
+                        background-color: var(--text-color);
+                        color: white;
+                        font-weight: 500;
+                        padding: 1%;
+                        width: 25%;
+                        text-align: center;
+                    }
+                }
+                @media(max-width:342px){
+                    .carousel .slide-2-btn{
+                        position: absolute;
+                        left:35%;
+                        bottom: 4%;
+                        font-size: 13px;
+                        text-decoration: none;
+                        background-color: var(--text-color);
+                        color: white;
+                        font-weight: 500;
+                        padding: 1%;
+                        width: 29%;
+                        text-align: center;
+                    }
+                }
+        .carousel .slide-3{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .carousel .slide-3-btn{
+            position: absolute;
+            left: 45%;
+            bottom: 40%;
+            border-radius: 10px;
+            text-decoration: none;
+            background-color: var(--text-color);
+            color: white;
+            font-weight: 500;
+            padding: 1%;
+            width: 10%;
+            text-align: center;
+        }
+                @media(max-width:926px){
+                    .carousel .slide-3-btn{
+                        position: absolute;
+                        left: 45%;
+                        bottom: 40%;
+                        border-radius: 10px;
+                        text-decoration: none;
+                        background-color: var(--text-color);
+                        color: white;
+                        font-weight: 500;
+                        padding: 1%;
+                        width: 13%;
+                        text-align: center;
+                    }
+                }
+                @media(max-width:712px){
+                    .carousel .slide-3-btn{
+                        position: absolute;
+                        left: 43%;
+                        bottom: 40%;
+                        border-radius: 10px;
+                        text-decoration: none;
+                        background-color: var(--text-color);
+                        color: white;
+                        font-weight: 500;
+                        padding: 1%;
+                        width: 15%;
+                        text-align: center;
+                    }
+                }
+                @media(max-width:662px){
+                    .carousel .slide-3-btn{
+                        position: absolute;
+                        left: 42%;
+                        bottom: 38%;
+                        border-radius: 10px;
+                        text-decoration: none;
+                        background-color: var(--text-color);
+                        color: white;
+                        font-weight: 500;
+                        padding: 1%;
+                        width: 19%;
+                        text-align: center;
+                    }
+                }
+                @media(max-width:515px){
+                    .carousel .slide-3-btn{
+                        position: absolute;
+                        left: 41%;
+                        bottom: 36%;
+                        border-radius: 10px;
+                        text-decoration: none;
+                        background-color: var(--text-color);
+                        color: white;
+                        font-weight: 500;
+                        padding: 1%;
+                        width: 21%;
+                        font-size: 14px;
+                        text-align: center;
+                    }
+                }
+                @media(max-width:400px){
+                    .carousel .slide-3-btn{
+                        position: absolute;
+                        left: 39%;
+                        bottom: 33%;
+                        border-radius: 10px;
+                        text-decoration: none;
+                        background-color: var(--text-color);
+                        color: white;
+                        font-weight: 500;
+                        padding: 1%;
+                        width: 24%;
+                        font-size: 12px;
+                        text-align: center;
+                    }
+                }
+        .carousel .prev-button {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            left: 1%;
+            border: none;
+            color: var(--orange);
+            font-size: 20px;
+            padding: 10px;
+            border-radius: 50%;
+            opacity: .5;
+            transition: all .3s;
+        }
+        .carousel .next-button {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            right: 1%;
+            border: none;
+            color: var(--orange);
+            font-size: 20px;
+            padding: 10px;
+            border-radius: 50%;
+            opacity: .5;
+            transition: all .3s;
+        }
+        .carousel .prev-button:hover {
+            opacity: 1;
+        }
+        .carousel .next-button:hover  {
+            opacity: 1;
+        }
+        
+        .carousel .slide {
+            display: none;
+        }
+        .carousel .slide.active {
+            display: block;
+        }
 /* dropdown menu */
         nav .custom-row-style{
             overflow: hidden;
@@ -199,52 +578,7 @@
         }
 
 /* hero section */
-        .hero{
-            background-image: url('./assets/heroImgs/Hero1.jpeg');
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-attachment: fixed;
-            height: 80vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .hero .hero-flex-container .hero-content .content-container{
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: flex-start;
-            background-color: white;
-            color: var(--text-color);
-            padding: 20px;
-        }
-        .hero .hero-flex-container .hero-content .content-container .hero-button{
-            text-decoration: none;
-            color: var(--text-color);
-            border: 2px solid var(--border-color);
-            padding: 5px 10px;
-            width: 130px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 20px;
-            font-weight: 500;
-            transition: all .5s ;
-        }
-        .hero .hero-flex-container .hero-content .content-container .hero-button:hover{
-            color: white;
-            background-color: var(--text-color);
-            border: 2px solid var(--border-color);
-        }
 
-        .hero .hero-flex-container .hero-content .content-container .hero-button .hero-arrow .arrow-icon{
-            transition: all .5s;
-        }
-        .hero .hero-flex-container .hero-content .content-container .hero-button:hover .hero-arrow .arrow-icon{
-            color: white;
-            transform: translateX(10px);
-        }
 
 /* Best selling products */
         .bestselling-head-container{
@@ -277,204 +611,7 @@
             background-color: var(--lighGreen);
         }
 
-/* bestSellCategories-container*/
-        .allcategory-section .AllCategory-container .row-custom{
-            /* height: 60vh; */
-            overflow: hidden;
-            display: flex;
-            gap: 10px;
-            padding: 20px 0;
-            /* background-color: lightcoral; */
-            position: relative;
-        }
-        .allcategory-section .AllCategory-container .row-custom .left-button{
-            position: absolute;
-            display: flex;
-            align-items: center;
-            left: 0px;
-            top: 45%;
-            bottom: 45%;
-            border: none;
-            border-radius: 50%;
-            padding: 10px 12px;
-            opacity: .6;
-            transition: all .3s;
-        }
-        .allcategory-section .AllCategory-container .row-custom .left-button:hover{
-            opacity: 1;
-        }
-        .allcategory-section .AllCategory-container .row-custom .right-button{
-            position: absolute;
-            display: flex;
-            align-items: center;
-            right: 0;
-            top: 45%;
-            bottom: 45%;
-            border: none;
-            border-radius: 50%;
-            padding: 10px 12px;
-            opacity: .6;
-            transition: all .3s;
-        }
-        .allcategory-section .AllCategory-container .row-custom .right-button:hover{
-            opacity: 1;
-        }
-        .allcategory-section .AllCategory-container .custom-card{
-            min-width: 16rem;
-            max-width: 16rem;
-            max-height: 22rem;
-            min-height: 22rem;
-            background-color: var(--lighGreen);
-        }
 
-        .allcategory-section .AllCategory-container .custom-card .img-container{
-            width: 100%;
-        }
-        .allcategory-section .AllCategory-container .custom-card .img-container img{
-            max-height: 13rem;
-            min-height: 13rem;
-            min-width: 100%;
-            max-width: 100%;
-        }
-
-        .allcategory-section .AllCategory-container .custom-card .product-info{
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            color: white;
-        }
-        .allcategory-section .AllCategory-container .custom-card .product-info button{
-            border: 2px solid white;
-            background-color: transparent;
-            padding: 8px 0;
-            color: white;
-            font-weight: 500;
-            transition: all .3s;
-        }
-        .allcategory-section .AllCategory-container .custom-card .product-info button:hover{
-            background-color: rgb(44, 67, 36);
-            border: 2px solid rgb(44, 67, 36);
-        }
-
-/* category */
-        .category-section .category-container .LiveStock-category{
-            background-image: url('https://www.provisioneronline.com/ext/resources/Issues/2018/December/1218NP_economicoutlook_img1.jpg?1544825511');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-            height: 41rem;
-            padding: 0 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        @media(max-width:766px) {
-            .category-section .category-container .LiveStock-category{
-                background-image: url('https://www.provisioneronline.com/ext/resources/Issues/2018/December/1218NP_economicoutlook_img1.jpg?1544825511');
-                background-repeat: no-repeat;
-                background-position: center;
-                background-size: cover;
-                height: 20rem;
-                margin-bottom: 20px;
-                padding: 0 10px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-        }
-        .category-section .category-container .LiveStock-category .content{
-            padding: 20px;
-            width: 100%;
-            font-size: 1rem;
-            background: rgba( 255, 255, 255, 0.4 );
-            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-            backdrop-filter: blur( 10.5px );
-            -webkit-backdrop-filter: blur( 10.5px );
-            border-radius: 10px;
-            border: 1px solid rgba( 255, 255, 255, 0.18 );
-        }
-        .category-section .category-container .LiveStock-category .content .content-btn{
-            border: 2px solid var(--text-color);
-            color: black;
-            text-decoration: none;
-            padding: 8px 20px;
-            width: 10rem;
-            font-weight: 500;
-            transition: all .3s;
-        }
-        .category-section .category-container .LiveStock-category .content .content-btn:hover{
-            background-color: var(--text-color);
-            color: white;
-        }
-
-        .category-section .category-container .FishAndSeaShells-category{
-            background-image: url('https://cdn.britannica.com/28/220228-050-01DFA7B1/seafood-market-Istanbul-Turkey.jpg');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-            padding: 0 10px;
-            height: 20rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .category-section .category-container .FishAndSeaShells-category .content{
-            padding: 20px;
-            font-size: 1rem;
-            background: rgba( 255, 255, 255, 0.4 );
-            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-            backdrop-filter: blur( 10.5px );
-            -webkit-backdrop-filter: blur( 10.5px );
-            border-radius: 10px;
-            border: 1px solid rgba( 255, 255, 255, 0.18 );
-        }
-        .category-section .category-container .FishAndSeaShells-category .content .content-btn{
-            border: 2px solid var(--text-color);
-            color: black;
-            text-decoration: none;
-            padding: 8px 20px;
-            width: 10rem;
-            font-weight: 500;
-            transition: all .3s;
-        }
-        .category-section .category-container .FishAndSeaShells-category .content .content-btn:hover{
-            background-color: var(--text-color);
-            color: white;
-        }
-        .category-section .category-container .UpAndLowLandVege-category{
-            background-image: url('https://d2gg9evh47fn9z.cloudfront.net/800px_COLOURBOX16293921.jpg');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-            padding: 0 10px;
-            height: 20rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .category-section .category-container .UpAndLowLandVege-category .content{
-            padding: 20px;
-            font-size: 1rem;
-            background: rgba( 255, 255, 255, 0.4 );
-            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-            backdrop-filter: blur( 10.5px );
-            -webkit-backdrop-filter: blur( 10.5px );
-            border-radius: 10px;
-            border: 1px solid rgba( 255, 255, 255, 0.18 );
-        }
-        .category-section .category-container .UpAndLowLandVege-category .content .content-btn{
-            border: 2px solid var(--text-color);
-            color: black;
-            text-decoration: none;
-            padding: 8px 20px;
-            width: 10rem;
-            font-weight: 500;
-            transition: all .3s;
-        }
-        .category-section .category-container .UpAndLowLandVege-category .content .content-btn:hover{
-            background-color: var(--text-color);
-            color: white;
-        }
 /* footer section */
         footer{
             background-color: rgb(32,29,29);

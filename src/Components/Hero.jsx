@@ -1,23 +1,56 @@
 import { Link } from 'react-router-dom'
-import { AiOutlineSwapRight } from 'react-icons/ai'
+import { FaChevronLeft,FaChevronRight } from 'react-icons/fa'
+import { useState } from 'react'
+import heroImg_1 from '../assets/heroImgs/hero1.png'
+import heroImg_2 from '../assets/heroImgs/hero2.png'
+import heroImg_3 from '../assets/heroImgs/hero3.png'
 
 const Hero = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const nextSlide = () => {
+    setActiveIndex((prevIndex) => (prevIndex === 2 ? 0 : prevIndex + 1));
+  };
+
+  const prevSlide = () => {
+    setActiveIndex((prevIndex) => (prevIndex === 0 ? 2 : prevIndex - 1));
+  };
   return (
     <section className='hero'>
-      <div className='container hero-flex-container'>
-          <div className='row hero-content'>
-            <div className='col-md-8'>
-                <div className='content-container'>
-                    <h1 className='hero-text'>
-                        Daan sa Sariwang    Panlasa, Tahanan ng mga Piling Produktong Pilipino!
-                    </h1>
-                      <Link to='' className='hero-button'>
-                          Shop Now    
-                          <span className='hero-arrow'><AiOutlineSwapRight className='arrow-icon'/></span>
-                      </Link>
-                </div>
+        <div className="carousel">
+            <div className={`slide slide-1 ${activeIndex === 0 ? 'active' : ''}`}>
+                <img src={heroImg_1} className='img-fluid slide-1-img'/>
+                <Link to='' className='slide-1-btn'>Shop now</Link>
             </div>
-          </div>
+                <div className={`slide slide-2 ${activeIndex === 1 ? 'active' : ''}`}>
+                <img src={heroImg_2} className='img-fluid'/>
+                <Link to='' className='slide-2-btn'>Shop now</Link>
+                </div>
+            <div className={`slide slide-3 ${activeIndex === 2 ? 'active' : ''}`}>
+                <img src={heroImg_3} className='img-fluid'/>
+                <Link to='' className='slide-3-btn'>Shop now</Link>
+            </div>
+                <div className="pagination">
+                  <span
+                    className={`indicator ${activeIndex === 0 ? 'active' : ''}`}
+                    onClick={() => setActiveIndex(0)}
+                  />
+                  <span
+                    className={`indicator ${activeIndex === 1 ? 'active' : ''}`}
+                    onClick={() => setActiveIndex(1)}
+                  />
+                  <span
+                    className={`indicator ${activeIndex === 2 ? 'active' : ''}`}
+                    onClick={() => setActiveIndex(2)}
+                  />
+                </div>
+
+            <button className="prev-button" onClick={prevSlide}>
+              <FaChevronLeft/>
+            </button>
+            <button className="next-button" onClick={nextSlide}>
+            <FaChevronRight/>
+            </button>
       </div>
     </section>
   )
