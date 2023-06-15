@@ -31,16 +31,41 @@ function App() {
       console.error(error);
     }
   };
-  
+
+  const [itemsPerPages, setItemsPerPages] = useState(4)
+  //product best sell resizer
+  window.addEventListener('resize', ()=>{
+    if (window.innerWidth <= 763) {
+        setItemsPerPages(1);
+    }else{
+      setItemsPerPages(4)
+    }
+  });
+
   return (
     <main>
       <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Home />}>
-                <Route index element={<AllProducts data={data}/>}/>
-                  <Route path="LiveStockAndPoultry" element=  {<LiveStockAndPoultry data={data}/>}/>
-                    <Route path="FishAndSeaShells" element={<FishAndSeaShells data={data}/>}/>
-                      <Route path="UpAndLowLandVege" element={<UpAndLowLandVege data={data}/>}/>
+                <Route index element={
+                    <AllProducts data={data} 
+                        itemsPerPages={itemsPerPages}
+                          />}/>
+                  <Route path="LiveStockAndPoultry" element=  {
+                      <LiveStockAndPoultry 
+                          data={data}
+                            itemsPerPages={itemsPerPages}
+                          />}/>
+                    <Route path="FishAndSeaShells" element={
+                      <FishAndSeaShells 
+                          data={data}
+                            itemsPerPages={itemsPerPages}
+                          />}/>
+                      <Route path="UpAndLowLandVege" element={
+                        <UpAndLowLandVege 
+                            data={data}
+                              itemsPerPages={itemsPerPages}
+                            />}/>
                     <Route path="Fruits" element={<Fruits data={data}/>}/>
                   <Route path="HerbsAndSpices" element={<HerbsAndSpices data={data}/>}/>
                 <Route path="Rice" element={<Rice data={data}/>}/>

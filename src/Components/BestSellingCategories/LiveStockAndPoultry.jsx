@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { FaChevronLeft,FaChevronRight } from 'react-icons/fa'
 
 const LiveStockAndPoultry = (props) => {
-  const [itemsPerPages, setItemsPerPages] = useState(4)
-  const itemsPerPage = itemsPerPages;
+  const itemsPerPage = props.itemsPerPages;
 
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(props.data.filter((item)=> item.bestSeller && item.category === 'LiveStock and Poultry').length / itemsPerPage);
@@ -29,15 +28,6 @@ const LiveStockAndPoultry = (props) => {
     return pageNumbers;
   };
 
-  useEffect(() => {
-    window.addEventListener('resize', ()=>{
-      if (window.innerWidth <= 763) {
-          setItemsPerPages(1);
-      }else{
-        setItemsPerPages(4)
-      }
-    });
-  });
   return (
   <section className='allproducts-best-sell'>
     <div className='container product-containers'>
@@ -76,5 +66,6 @@ const LiveStockAndPoultry = (props) => {
 }
 LiveStockAndPoultry.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  itemsPerPages: PropTypes.number,
 };
 export default LiveStockAndPoultry

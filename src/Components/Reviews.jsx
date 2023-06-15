@@ -1,16 +1,15 @@
 import axios from "axios"
+import PropTypes from 'prop-types';
 import { useState,useEffect } from "react";
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
-import { BsStarFill } from 'react-icons/bs'
+// import { BsStarFill } from 'react-icons/bs'
 import { FaChevronLeft,FaChevronRight } from 'react-icons/fa'
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL
 
-const Reviews = () => {
+const Reviews = (props) => {
     const [reviews, setReviews] = useState([])
-
-    const [itemsPerPages, setItemsPerPages] = useState(2)
-    const itemsPerPage = itemsPerPages;
+    const itemsPerPage = props.itemsPerPages;
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = Math.ceil(reviews.length / itemsPerPage);
   
@@ -47,15 +46,6 @@ const Reviews = () => {
         }
         getOverAllReviews();
     }, [])
-    useEffect(() => {
-        window.addEventListener('resize', ()=>{
-            if (window.innerWidth <= 1002) {
-                setItemsPerPages(1);
-            }else{
-                setItemsPerPages(2)
-            }
-        });
-    })
 
   return (
     <section className="reviews-section mt-5">
@@ -121,5 +111,7 @@ const Reviews = () => {
     </section>
   )
 }
-
+Reviews.propTypes = {
+    itemsPerPages: PropTypes.number,
+  };
 export default Reviews
