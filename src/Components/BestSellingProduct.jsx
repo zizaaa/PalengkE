@@ -8,7 +8,7 @@ const BestSellingProduct = () => {
         <div className="container">
             <div className="bestselling-head-container">
                 <h1>Best Selling Products</h1>
-                <Link to='' className="viewAll-btn">View All Products <span><AiOutlineSwapRight className="arrow-icon"/></span></Link>
+                <Link to='/shop' className="viewAll-btn">View All Products <span><AiOutlineSwapRight className="arrow-icon"/></span></Link>
             </div>
             <div className="bestSellingProducts-container mt-3">
                 <div className="category-container">

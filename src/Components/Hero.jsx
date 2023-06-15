@@ -20,30 +20,16 @@ const Hero = () => {
         <div className="carousel">
             <div className={`slide slide-1 ${activeIndex === 0 ? 'active' : ''}`}>
                 <img src={heroImg_1} className='img-fluid slide-1-img'/>
-                <Link to='' className='slide-1-btn'>Shop now</Link>
+                <Link to='/shop' className='slide-1-btn'>Shop now</Link>
             </div>
                 <div className={`slide slide-2 ${activeIndex === 1 ? 'active' : ''}`}>
                 <img src={heroImg_2} className='img-fluid'/>
-                <Link to='' className='slide-2-btn'>Shop now</Link>
+                <Link to='/shop' className='slide-2-btn'>Shop now</Link>
                 </div>
             <div className={`slide slide-3 ${activeIndex === 2 ? 'active' : ''}`}>
                 <img src={heroImg_3} className='img-fluid'/>
-                <Link to='' className='slide-3-btn'>Shop now</Link>
+                <Link to='/shop' className='slide-3-btn'>Shop now</Link>
             </div>
-                {/* <div className="pagination">
-                  <span
-                    className={`indicator ${activeIndex === 0 ? 'active' : ''}`}
-                    onClick={() => setActiveIndex(0)}
-                  />
-                  <span
-                    className={`indicator ${activeIndex === 1 ? 'active' : ''}`}
-                    onClick={() => setActiveIndex(1)}
-                  />
-                  <span
-                    className={`indicator ${activeIndex === 2 ? 'active' : ''}`}
-                    onClick={() => setActiveIndex(2)}
-                  />
-                </div> */}
 
             <button className="prev-button" onClick={prevSlide}>
               <FaChevronLeft/>

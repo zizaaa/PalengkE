@@ -3,6 +3,9 @@ import { useState,useEffect } from "react"
 import { Route, Routes } from "react-router-dom"
 import Layout from "./Components/Layout"
 import Home from "./Pages/Home"
+import AboutUs from "./Pages/AboutUs"
+import Shop from "./Pages/Shop"
+import ContactUs from "./Pages/ContactUs"
 import AllProducts from "./Components/BestSellingCategories/AllProducts"
 import LiveStockAndPoultry from "./Components/BestSellingCategories/LiveStockAndPoultry"
 import FishAndSeaShells from "./Components/BestSellingCategories/FishAndSeaShells"
@@ -42,6 +45,9 @@ function App() {
                   <Route path="HerbsAndSpices" element={<HerbsAndSpices data={data}/>}/>
                 <Route path="Rice" element={<Rice data={data}/>}/>
             </Route>
+            <Route path="/about" element={<AboutUs/>}/>
+            <Route path="/shop" element={<Shop/>}/>
+            <Route path="/contact" element={<ContactUs/>}/>
           </Route>
       </Routes>
     </main>

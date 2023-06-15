@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { FaChevronLeft,FaChevronRight } from 'react-icons/fa'
 
 const AllProducts = (props) => {
-  const itemsPerPage = 4;
+  const [itemsPerPages, setItemsPerPages] = useState(4)
+  const itemsPerPage = itemsPerPages;
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(props.data.filter((item)=> item.bestSeller).length / itemsPerPage);
 
@@ -26,6 +27,16 @@ const AllProducts = (props) => {
     }
     return pageNumbers;
   };
+
+  useEffect(() => {
+    window.addEventListener('resize', ()=>{
+        if (window.innerWidth <= 763) {
+            setItemsPerPages(1);
+        }else{
+          setItemsPerPages(4)
+        }
+    });
+  });
   return (
     <section className='allproducts-best-sell'>
         <div className='container product-containers'>
