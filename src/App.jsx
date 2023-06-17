@@ -13,20 +13,40 @@ import UpAndLowLandVege from "./Components/BestSellingCategories/UpAndLowLandVeg
 import Fruits from "./Components/BestSellingCategories/Fruits"
 import HerbsAndSpices from "./Components/BestSellingCategories/HerbsAndSpices"
 import Rice from "./Components/BestSellingCategories/Rice"
+import Forms from "./Pages/Forms"
+import Register from "./Components/FromsComponents/Register"
+import Login from "./Components/FromsComponents/Login"
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL
 
 function App() {
   const [data, setData] = useState([]);
+  const [authorizedId, setAuthorizedId] = useState(null);
+  const [authorizedUser, setauthorizedUser] = useState({});
 
   useEffect(() => {
+    setAuthorizedId(sessionStorage.getItem('userId'))
     fetchData();
-  }, []);
+  },[]);
 
+  useEffect(() => {
+    fetchUserData();
+  });
+
+  // products
   const fetchData = async () => {
     try {
       const {data} = await axios.get(`${URL}/products`);
       setData(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  //users
+  const fetchUserData = async () => {
+    try {
+      const {data} = await axios.get(`${URL}/users`);
+          await data.filter((user)=> authorizedId === user._id ? setauthorizedUser(user):null)
     } catch (error) {
       console.error(error);
     }
@@ -41,15 +61,16 @@ function App() {
       setItemsPerPages(4)
     }
   });
-
   return (
     <main>
       <Routes>
-          <Route element={<Layout />}>
+          <Route element={<Layout authorizedId={authorizedId} authorizedUser={authorizedUser}/>}>
             <Route path="/" element={<Home />}>
                 <Route index element={
                     <AllProducts data={data} 
                         itemsPerPages={itemsPerPages}
+                          authorizedUser={authorizedUser} 
+                          // fetchUserData={fetchUserData}
                           />}/>
                   <Route path="LiveStockAndPoultry" element=  {
                       <LiveStockAndPoultry 
@@ -73,6 +94,10 @@ function App() {
             <Route path="/about" element={<AboutUs/>}/>
             <Route path="/shop" element={<Shop/>}/>
             <Route path="/contact" element={<ContactUs/>}/>
+          </Route>
+          <Route path="/forms" element={<Forms/>}>
+              <Route index element={<Register/>}/>
+              <Route path="login" element={<Login/>}/>
           </Route>
       </Routes>
     </main>

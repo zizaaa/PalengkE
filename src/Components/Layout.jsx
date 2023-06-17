@@ -1,15 +1,21 @@
+import PropTypes from 'prop-types';
 import { Outlet,Link } from "react-router-dom"
 import { HiShoppingCart } from "react-icons/hi"
-import { AiOutlineUser } from "react-icons/ai"
-import { BiChevronDown} from "react-icons/bi"
-import { HiMenuAlt3 } from "react-icons/hi"
-import { BsFacebook, BsInstagram,BsTwitter } from "react-icons/bs"
-import { FaFacebookMessenger} from "react-icons/fa"
+import { AiOutlineUser,AiOutlineStar } from "react-icons/ai"
+import { HiMenuAlt3,HiOutlineTicket } from "react-icons/hi"
+import { BsArrowLeftShort,BsFacebook, BsInstagram,BsTwitter,BsFillCreditCard2BackFill } from "react-icons/bs"
+import { FaFacebookMessenger,FaWallet,FaRegUserCircle, FaChevronRight,FaChevronDown} from "react-icons/fa"
+import { MdOutlineDeleteOutline } from 'react-icons/md'
+import { VscPackage } from 'react-icons/vsc'
+import { TbTruckDelivery } from 'react-icons/tb'
 import logo from '../assets/logo.png'
+import profile from '../assets/profile.png'
+import logoWhite from '../assets/logo_white.png'
 import logo_2 from '../assets/logo2.png'
 import { useState,useEffect } from "react"
+import numeral from 'numeral';
 
-const Layout = () => {
+const Layout = (props) => {
     const [isDropDown, setIsDropDown] = useState(false);
     const [isFixed, setIsFixed]= useState(false)
     
@@ -33,7 +39,6 @@ const Layout = () => {
         });
 
       }, []); // Remove the empty dependency array if necessary
-
 
     return (
     <>
@@ -62,14 +67,21 @@ const Layout = () => {
                           <img src={logo} className="img-fluid"/>
                         </Link>
 
-                        <div className="user-container d-none d-lg-flex">
+                        {props.authorizedId != null  ? (                        <div className="user-container d-none d-lg-flex">
                             <button className="cart" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">
                                 <HiShoppingCart/>
+                                    <span className='cart-overlay-counter'>{props.authorizedUser.cart ? (props.authorizedUser.cart.length):(0)}</span>
                             </button>
                             <button className="user" data-bs-toggle="offcanvas" data-bs-target="#profileSideNav" aria-controls="offcanvasRight">
                                 <AiOutlineUser/>
                             </button>
-                        </div>
+                        </div>):(
+                            <div className="user-container d-none d-lg-flex">
+                                <Link to='/forms' className="register-btn">
+                                    <h1><AiOutlineUser/></h1>
+                                </Link>
+                            </div>
+                        )}
 
                         <div className="menu-container d-flex d-lg-none">
                             <button type="button" onClick={dropDown}>
@@ -95,50 +107,191 @@ const Layout = () => {
                               <span className="hoverLine"></span>
                           </Link>
 
-                          <div className="dropdown-user-container">
+                        {props.authorizedId != null ? (
+                            <div className="dropdown-user-container">
                             {/* total price in cart */}
                             <button className="cart" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">
-                              <HiShoppingCart/>
-                              <p className="total-price">
-                                &#8369;  {/* peso sign */}
-                                <span>00.00</span>
-                              </p>
+                                <HiShoppingCart/>
+                                <p className='ms-2'>
+                                    Cart
+                                </p>
                             </button>
                             <button className="user" data-bs-toggle="offcanvas" data-bs-target="#profileSideNav" aria-controls="offcanvasRight">
                                 <AiOutlineUser/> 
-                                    <span className="account-name">Account Name:
-                                    </span>
+                                    <span className="account-name ms-2">{props.authorizedUser.firstName ? (props.authorizedUser.firstName):('')}</span>
                             </button>
                         </div>
-                      </div>
-                  </div>
-              </div>
+                        ):(
+                            <div className="dropdown-user-container">
+                                <Link to='/forms' className="register-btn">
+                                <h1><AiOutlineUser/></h1>
+                                </Link>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
             </div>
         </nav>
 
         <section>
         {/* cart sidenav */}
-          <div className="offcanvas offcanvas-end" tabIndex="-1" id="cartSideNav" aria-labelledby="offcanvasRightLabel">
-              <div className="offcanvas-header">
-                <h5 id="offcanvasRightLabel">Cart</h5>
-                <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-              </div>
-
-              <div className="offcanvas-body">
-                ...
-              </div>
-          </div>
+          <div className="offcanvas offcanvas-end custom-sidenav-cart" tabIndex="-1" id="cartSideNav" aria-labelledby="offcanvasRightLabel">
+              <div className="offcanvas-header custom-sidenav-cart-header">
+                <div className='header-container' id="offcanvasRightLabel">
+                    {/* <HiShoppingCart/> */}
+                        <div className='logo-container'>
+                            <img src={logoWhite} className='img-fluid'/>
+                        </div>
+                        <button type="button" className="cart-back-btn" data-bs-dismiss="offcanvas" aria-label="Close">
+                            <BsArrowLeftShort className='cart-back-icon'/>
+                        </button>
+                        <button type="button" className="cart-edit-btn">
+                            Edit items
+                        </button>
+                </div>
+            </div>
+            <div className="offcanvas-body cart-items-container">
+                {
+                    props.authorizedUser.cart ? (
+                        props.authorizedUser.cart.map((cart,index)=>(
+                        <div className='cart-product-main-container' key={index}>
+                            <input type='checkbox' className='checkBox'/>
+                            <div className='cart-product'>
+                                <div className='cart-img-container'>
+                                    <img src={cart[0].img[0].imgOne} className='img-fluid'/>
+                                </div>
+                                <div className='cart-product-info'>
+                                    <h4 className='cart-product-name'>
+                                        {cart[0].name}
+                                    </h4>
+                                    <h5 className='cart-product-price'>
+                                        <span>&#8369;</span>
+                                        {cart[0].price}
+                                    </h5>
+                                    <div className='cart-product-quantity-container'>
+                                        <p className='cart-product-quantity'>
+                                            Quantity:
+                                        </p>
+                                        <div className='cart-product-quantity-setter-container'>
+                                            <button type='button'>-</button>
+                                            <span className='quantity-count'>1</span>
+                                            <button type='button'>+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span className='trash-container'>
+                                <button type='button'>
+                                    <MdOutlineDeleteOutline className='trash-icon'/>
+                                </button>
+                            </span>
+                        </div>
+                    ))
+                    ):('')
+                }
+                    <div className='cart-bottom-container'>
+                        <div className='voucher-container'>
+                            <div className='voucher'>
+                                <div className='voucher-title'>
+                                    <HiOutlineTicket className='voucher-icon'/>
+                                    <h5>Vouncher:</h5>
+                                </div>
+                                <input type='text' placeholder='Put voucher code here...'/>
+                            </div>
+                        </div>
+                        <div className='checkOut-container'>
+                            <button type='button'>Check Out</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
           {/* profile sidenav */}
-          <div className="offcanvas offcanvas-end" tabIndex="-1" id="profileSideNav" aria-labelledby="offcanvasRightLabel">
-              <div className="offcanvas-header">
-                <h5 id="offcanvasRightLabel">Profile</h5>
-                <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-              </div>
+            <div className="offcanvas offcanvas-end custom-profile-nav text-center text-md-left" tabIndex="-1" id="profileSideNav" aria-labelledby="offcanvasRightLabel">
+                <div className="offcanvas-body profile-custom-container">
+                        <button type="button" className="profile-back-btn-container" data-bs-dismiss="offcanvas" aria-label="Close">
+                            <BsArrowLeftShort className='profile-back-btn'/>
+                        </button>
+                    <div className='row profile-container mb-4'>
+                        <div className='col-md profile-pic-container'>
+                            <img src={profile} className='img-fluid'/>
+                        </div>
+                        <div className='col-md user-info-container'>
+                            <h4 className='user-name'>{`${props.authorizedUser.firstName} ${props.authorizedUser.lastName}`}</h4>
+                            <h6 className='user-address'>{props.authorizedUser.address}</h6>
+                            <p className='user-membership'>{props.authorizedUser ? (`${props.authorizedUser.memberShip} member`):('')}</p>
+                        </div>
+                    </div>
+                    {/* account details */}
+                        <h5 className='account-details-title'>Account Details</h5>
+                    <div className='account-details-container mb-4'>
+                        <div className='account-details'>
+                            <div className='balance-container'>
+                                <FaWallet className='wallet-icon'/>
+                                <p className='balance'>Balance</p>
+                                <p className='balance-number'>&#8369;{numeral(props.authorizedUser.balance).format('0,0')}</p>
+                            </div>
+                            <div className='payLater-container'>
+                                <BsFillCreditCard2BackFill className='card-icon'/>
+                                <p className='paylater'>PayLater</p>
+                                <p className='paylater-number'>&#8369;{numeral(props.authorizedUser.payLater).format('0,0')}</p>
+                            </div>
+                            <div className='vouchers-container'>
+                                <HiOutlineTicket className='vouchers-icon'/>
+                                <p className='vouchers'>PayLater</p>
+                                <p className='vouchers-number'>{props.authorizedUser.vouchers ? (`${props.authorizedUser.vouchers.length > 100 ? (`${props.authorizedUser.vouchers.length}+`):(props.authorizedUser.vouchers.length)}`):(0)}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {/* purchase */}
+                    <h5 className='purchase-details-title'>My Purchases</h5>
+                    <div className='purchase-details-container'>
+                        <div className='purchase-details'>
+                            <div className='toShip-container'>
+                                <span className='icons-container'>
+                                    <VscPackage className='package-icon'/>
+                                    <span className='overlay-cotainer'>{props.authorizedUser.toShip ? (props.authorizedUser.toShip.length):(0)}</span>
+                                </span>
+                                <p>To Ship</p>
+                            </div>
+                            <div className='toReceive-container'>
+                                <span className='icons-container'>
+                                    <TbTruckDelivery className='toReceive-icon'/>
+                                    <span className='overlay-cotainer'>{props.authorizedUser.toReceive ? (props.authorizedUser.toReceive.length):(0)}</span>
+                                </span>
+                                <p>To Receive</p>
+                            </div>
+                            <div className='toReviews-container'>
+                                <span className='icons-container'>
+                                    <AiOutlineStar className='toReview-icon'/>
+                                        <span className='overlay-cotainer'>{props.authorizedUser.toReview ? (props.authorizedUser.toReview.length):(0)}</span>
+                                </span>
+                                <p>To Review</p>
+                            </div>
+                        </div>
+                    </div>
 
-              <div className="offcanvas-body">
-                ...
-              </div>
-          </div>
+                    {/* account settings */}
+                <div className='account-settings'>
+                    <button className="settings-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        <span className='left-side'>
+                            <FaRegUserCircle/>
+                            <p>Account Settings</p>
+                        </span>
+                        <span className='right-side'>
+                            {/* {userSettingsOn ? (<FaChevronDown/>):(<FaChevronRight/>)} */}
+                            <FaChevronRight/>
+                        </span>
+                    </button>
+                    <div className="collapse " id="collapseExample">
+                        <div className="card card-body">
+                            Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
             <Outlet />
         </section>
 
@@ -200,4 +353,8 @@ const Layout = () => {
   )
 }
 
+Layout.propTypes = {
+    authorizedId:PropTypes.string,
+    authorizedUser:PropTypes.object,
+  };
 export default Layout

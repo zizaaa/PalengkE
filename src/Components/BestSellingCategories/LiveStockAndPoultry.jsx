@@ -6,7 +6,7 @@ const LiveStockAndPoultry = (props) => {
   const itemsPerPage = props.itemsPerPages;
 
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(props.data.filter((item)=> item.bestSeller && item.category === 'LiveStock and Poultry').length / itemsPerPage);
+  const totalPages = Math.ceil(props.data.filter((item)=> item.bestSeller && item.category === 'Livestock and Poultry Products').length / itemsPerPage);
 
   const handleNextPage = () => {
     setCurrentPage((nextPage) => nextPage + 1);
@@ -18,7 +18,7 @@ const LiveStockAndPoultry = (props) => {
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const displayedItems = props.data.filter((item)=> item.bestSeller && item.category === 'LiveStock and Poultry').slice(startIndex, endIndex);
+  const displayedItems = props.data.filter((item)=> item.bestSeller && item.category === 'Livestock and Poultry Products').slice(startIndex, endIndex);
   
   const getPageNumbers = () => {
     const pageNumbers = [];
@@ -42,7 +42,7 @@ const LiveStockAndPoultry = (props) => {
           {displayedItems.map((item)=>(
             <div className='custom-box' key={item._id}>
                 <div className='img-container'>
-                  <img src={item.img}/>
+                  <img src={item.img[0].imgOne}/>
                 </div>
                 <div className='product-info-container'>
                   <h4 className='product-name'>{item.name}</h4>

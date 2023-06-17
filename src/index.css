@@ -144,8 +144,11 @@
             width: 40%;
             font-size: 1.3rem;
         }
-        nav .user-container .total-price{
-            margin-bottom: 0;
+        nav .user-container .register-btn{
+            color: var(--text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
         }
         nav .user-container .cart{
             border: none;
@@ -153,6 +156,19 @@
             color: var(--text-color);
             display: flex;
             align-items: center;
+            /* background-color: #888; */
+            padding: 20px;
+            position: relative;
+        }
+        nav .user-container .cart .cart-overlay-counter{
+            position: absolute;
+            background-color: var(--orange);
+            color: white;
+            font-size: 15px;
+            padding: 0 7px ;
+            border-radius: 50%;
+            left: 5px;
+            top: 5px;
         }
         nav .user-container .user{
             color: white;
@@ -176,6 +192,399 @@
             color: var(--text-color);
             font-size: 2rem;
         }
+/* side nav */
+        /* cart */
+            .custom-sidenav-cart .custom-sidenav-cart-header{
+                background-color: var(--orange);
+            }
+            .custom-sidenav-cart .cart-items-container{
+                padding: 0;
+                overflow-y: scroll;
+                /* background-color: var(--text-color); */
+                background-color: white;
+            }
+            .custom-sidenav-cart .custom-sidenav-cart-header .header-container{
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                width: 100%;
+                color: white;
+            }
+            .custom-sidenav-cart .custom-sidenav-cart-header .header-container .logo-container img{
+                width: 11rem;
+            }
+
+            .custom-sidenav-cart .custom-sidenav-cart-header .header-container .cart-edit-btn{
+                background-color: transparent;
+                border: none;
+                color: white;
+            }
+            .custom-sidenav-cart .custom-sidenav-cart-header .edit-btn{
+                border: none;
+                font-size: 15px;
+            }
+            .custom-sidenav-cart .custom-sidenav-cart-header .cart-back-btn{
+                border: none;
+                display: flex;
+                align-items: center;
+                padding: 5px;
+                font-size: 2rem;
+                background-color: transparent;
+                color:white;
+                position: absolute;
+                top: 0;
+            }
+
+            .cart-product-main-container{
+                display: flex;
+                width: 100%;
+                padding: 0 20px;
+                /* gap: 10px; */
+            }
+            .cart-product-main-container .cart-product{
+                display: flex;
+                width: 100%;
+                gap: 10px;
+                /* margin-bottom: 10px; */
+                padding: 10px;
+                border-bottom: 1px solid rgb(191, 191, 191);
+            }
+            .cart-product-main-container .cart-product .cart-img-container{
+                width: 10rem;
+                height: 10rem;
+            }
+            .cart-product-main-container .cart-product .cart-img-container img{
+                width: 10rem;
+                height: 10rem;
+            }
+            .cart-product-main-container .cart-product .cart-product-info {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: center;
+            }
+            .cart-product-main-container .cart-product .cart-product-info .cart-product-name{
+                /* color: white; */
+                color: black;
+                margin-bottom: 5px;
+            }
+            .cart-product-main-container .cart-product .cart-product-info .cart-product-price{
+                color: var(--orange);
+                margin: 0;
+            }
+            .cart-product-main-container .cart-product .cart-product-info .cart-product-quantity-container .cart-product-quantity{
+                margin-top: 10px;
+                margin-bottom: 5px;
+                color: black;
+                /* color: white; */
+            }
+            .cart-product-main-container .cart-product .cart-product-info .cart-product-quantity-container .cart-product-quantity-setter-container{
+                background-color: white;
+                border: 1px solid rgb(166, 166, 166);
+                display: flex;
+            }
+            .cart-product-main-container .cart-product .cart-product-info .cart-product-quantity-container .cart-product-quantity-setter-container .quantity-count{
+                border-left: 1px solid rgb(166, 166, 166);
+                border-right: 1px solid rgb(166, 166, 166);
+                padding: 0 10px;
+            }
+            .cart-product-main-container .cart-product .cart-product-info .cart-product-quantity-container .cart-product-quantity-setter-container button{
+                border: none;
+                flex: 1;
+                background-color: transparent;
+            }
+
+            .cart-bottom-container{
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+
+            .voucher-container{
+                margin-top: 20px;
+                background-color: var(--orange);
+                padding: 30px 20px;
+                color: white;
+            }
+            .voucher-container .voucher{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 20px;
+            }
+            .voucher-container .voucher .voucher-title{
+                flex: 1;
+                display: flex;
+                align-items: center;
+            }
+            .voucher-container .voucher .voucher-title h5{
+                margin: 0;
+            }
+            .voucher-container .voucher .voucher-title .voucher-icon{
+                font-size: 2rem;
+            }
+            .voucher-container .voucher input{
+                width: 170px;
+                background-color: transparent;
+                padding: 5px 3px;
+                border: 1px solid white;
+                color: white;
+                outline: none;
+            }
+            .voucher-container .voucher input::placeholder{
+                color: white;
+            }
+
+            .checkOut-container{
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+                background-color: var(--text-color);
+            }
+            .checkOut-container button{
+                width: 100%;
+                border: none;
+                background-color: var(--orange);
+                border-radius: 20px;
+                padding: 10px 0;
+                color: white;
+                font-weight: 500;
+            }
+            .checkBox{
+                cursor: pointer;
+            }
+            .trash-container{
+                display: flex;
+                align-items: flex-end;
+                padding-bottom:20px ;
+            }
+            .trash-container button{
+                border: none;
+                background-color: transparent;
+            }
+            .trash-container button .trash-icon{
+                color: var(--text-color);
+                font-size: 1.9rem;
+            }
+
+            /* profile */
+            .profile-custom-container{
+                background-color: var(--text-color);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                position: relative;
+            }
+            .profile-custom-container .profile-back-btn-container{
+                border: none;
+                display: flex;
+                align-items: center;
+                padding: 5px;
+                font-size: 2rem;
+                background-color: transparent;
+                color:white;
+                position: absolute;
+                left: 10px;
+                top: 0;
+            }
+            .profile-custom-container .profile-container .profile-pic-container{
+                padding: 0;
+            }
+            .profile-custom-container .profile-container .user-info-container{
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                color: white;
+            }
+            .profile-custom-container .profile-container .user-info-container .user-membership{
+                margin: 0;
+                color: var(--orange);
+                text-transform: uppercase;
+                font-weight: 500;
+            }
+
+            .profile-custom-container .account-details-container .account-details{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+                border-top: 1px solid rgb(166, 166, 166);
+                border-bottom: 1px solid rgb(166, 166, 166);
+            }
+            .profile-custom-container .account-details-container{
+                width: 100%;
+            }
+            .account-details-title{
+                color: white;
+                font-weight: 500;
+            }
+                /* balance */
+                .profile-custom-container .account-details-container .account-details .balance-container{
+                    color: white;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    padding: 10px;
+                    flex: 1;
+                }
+                .profile-custom-container .account-details-container .account-details .balance-container .wallet-icon{
+                    font-size: 2.5rem;
+                }
+                .profile-custom-container .account-details-container .account-details .balance-container .balance{
+                    margin: 0;
+                }
+                .profile-custom-container .account-details-container .account-details .balance-container .balance-number{
+                    margin: 0;
+                }
+                /* payLater */
+                .profile-custom-container .account-details-container .account-details .payLater-container{
+                    color: white;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    padding: 10px;
+                    flex: 1;
+                }
+                .profile-custom-container .account-details-container .account-details .payLater-container .card-icon{
+                    font-size: 2.5rem;
+                }
+                .profile-custom-container .account-details-container .account-details .payLater-container .paylater{
+                    margin: 0;
+                }
+                .profile-custom-container .account-details-container .account-details .payLater-container .paylater-number{
+                    margin: 0;
+                }
+                /* vouchers */
+                .profile-custom-container .account-details-container .account-details .vouchers-container{
+                    color: white;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    padding: 10px;
+                    flex: 1;
+                }
+                .profile-custom-container .account-details-container .account-details .vouchers-container .vouchers-icon{
+                    font-size: 2.5rem;
+                }
+                .profile-custom-container .account-details-container .account-details .vouchers-container .vouchers{
+                    margin: 0;
+                }
+                .profile-custom-container .account-details-container .account-details .vouchers-container .vouchers-number{
+                    margin: 0;
+                }
+
+        /* user settings */
+        .profile-custom-container .account-settings{
+            width: 100%;
+        }
+        .profile-custom-container .account-settings .settings-button{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            font-size: 1.3rem;
+            justify-content: space-between;
+            padding: 20px 10px;
+            border: none;
+            background-color: var(--orange);
+            color: white;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+        .profile-custom-container .account-settings .settings-button .left-side{
+            display: flex;
+            align-items: center;
+        }
+        .profile-custom-container .account-settings .settings-button .left-side p{
+            margin: 0;
+        }
+
+        /* my purchases */
+            .purchase-details-title{
+                color: white;
+                font-weight: 500;
+            }
+            .purchase-details-container{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+                width: 100%;
+                padding: 10px 0;
+                border-top: 1px solid rgb(166, 166, 166);
+                border-bottom: 1px solid rgb(166, 166, 166);
+            }
+            .purchase-details-container .purchase-details{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                color: white;
+            }
+            .purchase-details-container .purchase-details .icons-container{
+                position: relative;
+            }
+            .purchase-details-container .purchase-details .icons-container .overlay-cotainer{
+                position: absolute;
+                background-color: var(--orange);
+                padding: 0 7px;
+                border-radius: 50%;
+                left: -10px;
+                top: -10px;
+            }
+                /* toSHip */
+                .purchase-details-container .purchase-details .toShip-container{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    flex: 1;
+                    padding: 10px;
+                }
+                .purchase-details-container .purchase-details .toShip-container .package-icon{
+                    font-size: 2.5rem;
+                }
+                .purchase-details-container .purchase-details .toShip-container p{
+                    margin: 0;
+                }
+                /* toReceive */
+                .purchase-details-container .purchase-details .toReceive-container{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    flex: 1;
+                    padding: 10px;
+                }
+                .purchase-details-container .purchase-details .toReceive-container .toReceive-icon{
+                    font-size: 2.5rem;
+                }
+                .purchase-details-container .purchase-details .toReceive-container p{
+                    margin: 0;
+                }
+                /* toReview */
+                .purchase-details-container .purchase-details .toReviews-container{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    flex: 1;
+                    padding: 10px;
+                }
+                .purchase-details-container .purchase-details .toReviews-container .toReview-icon{
+                    font-size: 2.5rem;
+                }
+                .purchase-details-container .purchase-details .toReviews-container p{
+                    margin: 0;
+                }
+
 /* hero section styles */
         .carousel{
             background-color: rgb(255,255,255);
@@ -563,6 +972,15 @@
             font-size: 1.3rem;
             font-weight: 500;
         }
+        .dropDown-menu .dropdown-user-container .account-name{
+            font-weight: 500;
+        }
+        .dropDown-menu .dropdown-user-container .register-btn{
+            display: flex;
+            align-items: center;
+            color: var(--lighGreen);
+            text-decoration: none;
+        }
         .dropDown-menu .dropdown-user-container button{
             display: flex;
             align-items: center;
@@ -854,6 +1272,130 @@
             align-items: center;
         }
 
+/* Registration Form */
+        /* register */
+        .form-nav{
+            background-color: white;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 0;
+            border-radius: 10px;
+        }
+        .form-nav .img-container{
+            width: 15rem;
+        }
+        .register-section .register-form-container form{
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
+        .register-section .register-form-container form input{
+            padding: 10px 10px;
+            border-radius: 10px;
+            border: none;
+            background-color: var(--text-color);
+            color: white;
+            outline: none;
+        }
+        .register-section .register-form-container form button{
+            padding: 10px 10px;
+            border-radius: 10px;
+            border: none;
+            background-color: rgb(32,29,29);
+            color: white;
+            outline: none;
+        }
+        .register-section .register-form-container form input::placeholder{
+            color: white;
+        }
+        .register-section .register-form-container{
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .register-section .register-form-container .form-head{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+        }
+        .register-section .register-form-container .bottom-form{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.3rem;
+            text-align: center;
+            flex-wrap: wrap;
+        }
+        .register-section .register-form-container .bottom-form p{
+            margin: 0;
+        }
+        .register-section .register-form-container .form-head .img-container{
+            width: 5rem;
+        }
+
+        /* Login */
+        .Login-form-container{
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .Login-form-container .bottom-form{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.3rem;
+            text-align: center;
+            flex-wrap: wrap;
+        }
+        .Login-form-container .bottom-form p{
+            margin: 0;
+        }
+        .Login-form-container form{
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
+        .Login-form-container form input{
+            padding: 10px 10px;
+            border-radius: 10px;
+            border: none;
+            background-color: var(--text-color);
+            color: white;
+            outline: none;
+        }
+        .Login-form-container form input::placeholder{
+            color: white;
+        }
+        .Login-form-container form button{
+            padding: 10px 10px;
+            border-radius: 10px;
+            border: none;
+            background-color: rgb(32,29,29);
+            color: white;
+            outline: none;
+        }
+        .Login-form-container .Login-form-head{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+        }
+        .Login-form-container .Login-form-head .img-container{
+            width: 5rem;
+        }
 /* footer section */
         footer{
             background-color: rgb(32,29,29);

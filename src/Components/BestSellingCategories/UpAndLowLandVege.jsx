@@ -42,7 +42,7 @@ const UpAndLowLandVege = (props) => {
           {displayedItems.map((item)=>(
             <div className='custom-box' key={item._id}>
                 <div className='img-container'>
-                  <img src={item.img}/>
+                  <img src={item.img[0].imgOne}/>
                 </div>
                 <div className='product-info-container'>
                   <h4 className='product-name'>{item.name}</h4>
