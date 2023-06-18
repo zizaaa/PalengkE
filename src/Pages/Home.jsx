@@ -1,26 +1,24 @@
-import { Outlet } from "react-router-dom"
-import { useState } from "react"
+import PropTypes from 'prop-types';
 import BestSellingProduct from "../Components/BestSellingProduct"
 import Hero from "../Components/Hero"
 import Reviews from "../Components/Reviews"
 
-const Home = () => {
-  const [itemsPerPages, setItemsPerPages] = useState(2)
-  window.addEventListener('resize', ()=>{
-    if (window.innerWidth <= 1002) {
-        setItemsPerPages(1);
-    }else{
-        setItemsPerPages(2)
-    }
-  });
+const Home = (props) => {
+  const data = props.data;
+  const authorizedUser = props.authorizedUser
+
   return (
     <section>
         <Hero/>
-          <BestSellingProduct/>
-            <Outlet/>
-          <Reviews itemsPerPages={itemsPerPages}/>
+          <BestSellingProduct data={data} authorizedUser={authorizedUser}/>
+          <Reviews/>
     </section>
   )
 }
 
+Home.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  authorizedUser: PropTypes.object,
+  // fetchUserData: PropTypes.func,
+};
 export default Home

@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import { Outlet,Link } from "react-router-dom"
-import { HiShoppingCart } from "react-icons/hi"
-import { AiOutlineUser,AiOutlineStar } from "react-icons/ai"
+import { HiShoppingCart,HiMail } from "react-icons/hi"
+import { AiOutlineUser,AiOutlineStar,AiTwotonePhone } from "react-icons/ai"
 import { HiMenuAlt3,HiOutlineTicket } from "react-icons/hi"
 import { BsArrowLeftShort,BsFacebook, BsInstagram,BsTwitter,BsFillCreditCard2BackFill } from "react-icons/bs"
-import { FaFacebookMessenger,FaWallet,FaRegUserCircle, FaChevronRight,FaChevronDown} from "react-icons/fa"
+import {FaKey,FaUserEdit, FaFacebookMessenger,FaWallet,FaRegUserCircle, FaUserAlt, FaChevronRight, FaChevronDown} from "react-icons/fa"
 import { MdOutlineDeleteOutline } from 'react-icons/md'
 import { VscPackage } from 'react-icons/vsc'
 import { TbTruckDelivery } from 'react-icons/tb'
@@ -18,6 +18,7 @@ import numeral from 'numeral';
 const Layout = (props) => {
     const [isDropDown, setIsDropDown] = useState(false);
     const [isFixed, setIsFixed]= useState(false)
+    const [userSettingsOn, setUserSettingsOn] = useState(false)
     
     // dropdown function
     const dropDown=()=>{
@@ -51,12 +52,12 @@ const Layout = (props) => {
                               About Us
                               <span className="hoverLine"></span>
                           </Link>
-
+                            <>|</>
                           <Link to='/shop' type="button" className="link shop">
                               Shop 
                               <span className="hoverLine"></span>
                           </Link>
-
+                            <>|</>
                           <Link to='/contact' className="link contact">
                               Contact Us
                               <span className="hoverLine"></span>
@@ -219,75 +220,117 @@ const Layout = (props) => {
                         <div className='col-md user-info-container'>
                             <h4 className='user-name'>{`${props.authorizedUser.firstName} ${props.authorizedUser.lastName}`}</h4>
                             <h6 className='user-address'>{props.authorizedUser.address}</h6>
-                            <p className='user-membership'>{props.authorizedUser ? (`${props.authorizedUser.memberShip} member`):('')}</p>
+                            <p className='user-membership'>{props.authorizedUser ? (`${props.authorizedUser.memberShip === undefined ? (''):(props.authorizedUser.memberShip)}`):('')}</p>
                         </div>
                     </div>
-                    {/* account details */}
-                        <h5 className='account-details-title'>Account Details</h5>
-                    <div className='account-details-container mb-4'>
-                        <div className='account-details'>
-                            <div className='balance-container'>
-                                <FaWallet className='wallet-icon'/>
-                                <p className='balance'>Balance</p>
-                                <p className='balance-number'>&#8369;{numeral(props.authorizedUser.balance).format('0,0')}</p>
-                            </div>
-                            <div className='payLater-container'>
-                                <BsFillCreditCard2BackFill className='card-icon'/>
-                                <p className='paylater'>PayLater</p>
-                                <p className='paylater-number'>&#8369;{numeral(props.authorizedUser.payLater).format('0,0')}</p>
-                            </div>
-                            <div className='vouchers-container'>
-                                <HiOutlineTicket className='vouchers-icon'/>
-                                <p className='vouchers'>PayLater</p>
-                                <p className='vouchers-number'>{props.authorizedUser.vouchers ? (`${props.authorizedUser.vouchers.length > 100 ? (`${props.authorizedUser.vouchers.length}+`):(props.authorizedUser.vouchers.length)}`):(0)}</p>
+                <div className='account-overall-container'>
+                    <div className='accountDetails-container'>
+                            {/* account details */}
+                            <h5 className='account-details-title'>Account Details</h5>
+                        <div className='account-details-container mb-4'>
+                            <div className='account-details'>
+                                <div className='balance-container'>
+                                    <FaWallet className='wallet-icon'/>
+                                    <p className='balance'>Balance</p>
+                                    <p className='balance-number'>&#8369;{numeral(props.authorizedUser.balance).format('0,0')}</p>
+                                </div>
+                                <div className='payLater-container'>
+                                    <BsFillCreditCard2BackFill className='card-icon'/>
+                                    <p className='paylater'>PayLater</p>
+                                    <p className='paylater-number'>&#8369;{numeral(props.authorizedUser.payLater).format('0,0')}</p>
+                                </div>
+                                <div className='vouchers-container'>
+                                    <HiOutlineTicket className='vouchers-icon'/>
+                                    <p className='vouchers'>PayLater</p>
+                                    <p className='vouchers-number'>{props.authorizedUser.vouchers ? (`${props.authorizedUser.vouchers.length > 100 ? (`${props.authorizedUser.vouchers.length}+`):(props.authorizedUser.vouchers.length)}`):(0)}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    {/* purchase */}
-                    <h5 className='purchase-details-title'>My Purchases</h5>
-                    <div className='purchase-details-container'>
-                        <div className='purchase-details'>
-                            <div className='toShip-container'>
-                                <span className='icons-container'>
-                                    <VscPackage className='package-icon'/>
-                                    <span className='overlay-cotainer'>{props.authorizedUser.toShip ? (props.authorizedUser.toShip.length):(0)}</span>
-                                </span>
-                                <p>To Ship</p>
-                            </div>
-                            <div className='toReceive-container'>
-                                <span className='icons-container'>
-                                    <TbTruckDelivery className='toReceive-icon'/>
-                                    <span className='overlay-cotainer'>{props.authorizedUser.toReceive ? (props.authorizedUser.toReceive.length):(0)}</span>
-                                </span>
-                                <p>To Receive</p>
-                            </div>
-                            <div className='toReviews-container'>
-                                <span className='icons-container'>
-                                    <AiOutlineStar className='toReview-icon'/>
-                                        <span className='overlay-cotainer'>{props.authorizedUser.toReview ? (props.authorizedUser.toReview.length):(0)}</span>
-                                </span>
-                                <p>To Review</p>
+                        {/* purchase */}
+                        <h5 className='purchase-details-title'>My Purchases</h5>
+                        <div className='purchase-details-container'>
+                            <div className='purchase-details'>
+                                <div className='toShip-container'>
+                                    <span className='icons-container'>
+                                        <VscPackage className='package-icon'/>
+                                        <span className='overlay-cotainer'>{props.authorizedUser.toShip ? (props.authorizedUser.toShip.length):(0)}</span>
+                                    </span>
+                                    <p>To Ship</p>
+                                </div>
+                                <div className='toReceive-container'>
+                                    <span className='icons-container'>
+                                        <TbTruckDelivery className='toReceive-icon'/>
+                                        <span className='overlay-cotainer'>{props.authorizedUser.toReceive ? (props.authorizedUser.toReceive.length):(0)}</span>
+                                    </span>
+                                    <p>To Receive</p>
+                                </div>
+                                <div className='toReviews-container'>
+                                    <span className='icons-container'>
+                                        <AiOutlineStar className='toReview-icon'/>
+                                            <span className='overlay-cotainer'>{props.authorizedUser.toReview ? (props.authorizedUser.toReview.length):(0)}</span>
+                                    </span>
+                                    <p>To Review</p>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     {/* account settings */}
                 <div className='account-settings'>
-                    <button className="settings-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    <button onClick={()=>{userSettingsOn ? (setUserSettingsOn(false)):(setUserSettingsOn(true))}} className={` ${userSettingsOn ? 'settings-button-on':'settings-button'}`} type="button">
                         <span className='left-side'>
                             <FaRegUserCircle/>
                             <p>Account Settings</p>
                         </span>
                         <span className='right-side'>
-                            {/* {userSettingsOn ? (<FaChevronDown/>):(<FaChevronRight/>)} */}
-                            <FaChevronRight/>
+                            { userSettingsOn ? (<FaChevronDown/>):(<FaChevronRight/>)}
                         </span>
                     </button>
-                    <div className="collapse " id="collapseExample">
-                        <div className="card card-body">
-                            Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+                    <div className={`user-settings-card ${userSettingsOn ? 'user-settings-card-on':''}`}>
+                        <div className="userName-card-user">
+                            <div className='left-side'>
+                                <FaUserAlt className='user-icon'/>
+                                <p className='username-name'>Username</p>
+                            </div>
+                            <div className='right-side'>
+                                {props.authorizedUser.userName}
+                                <button type='button'><FaUserEdit/></button>
+                            </div>
+                        </div>
+                        <div className="userName-card-email">
+                            <div className='left-side'>
+                                <HiMail className='mail-icon'/>
+                                <p className='mail-name'>Email</p>
+                            </div>
+                            <div className='right-side'>
+                                {props.authorizedUser.email}
+                                <button type='button'><FaUserEdit/></button>
+                            </div>
+                        </div>
+                        <div className="userName-card-phone">
+                            <div className='left-side'>
+                                <AiTwotonePhone className='phone-icon'/>
+                                <p className='phone-name'>Phone</p>
+                            </div>
+                            <div className='right-side'>
+                                {props.authorizedUser.number}
+                                <button type='button'><FaUserEdit/></button>
+                            </div>
+                        </div>
+                        <div className="userName-card-key">
+                            <div className='left-side'>
+                                <FaKey className='key-icon'/>
+                                <p className='key-name'>Change password</p>
+                            </div>
+                            <div className='right-side'>
+                                <button type='button'><FaChevronRight/></button>
+                            </div>
+                        </div>
+                        <div className="userName-lagout-container">
+                            <button className='logout' onClick={()=>{sessionStorage.removeItem('userId'); location.reload()}}>Sign out</button>
                         </div>
                     </div>
+                </div>
                 </div>
                 </div>
             </div>

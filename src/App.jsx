@@ -6,16 +6,16 @@ import Home from "./Pages/Home"
 import AboutUs from "./Pages/AboutUs"
 import Shop from "./Pages/Shop"
 import ContactUs from "./Pages/ContactUs"
-import AllProducts from "./Components/BestSellingCategories/AllProducts"
-import LiveStockAndPoultry from "./Components/BestSellingCategories/LiveStockAndPoultry"
-import FishAndSeaShells from "./Components/BestSellingCategories/FishAndSeaShells"
-import UpAndLowLandVege from "./Components/BestSellingCategories/UpAndLowLandVege"
-import Fruits from "./Components/BestSellingCategories/Fruits"
-import HerbsAndSpices from "./Components/BestSellingCategories/HerbsAndSpices"
-import Rice from "./Components/BestSellingCategories/Rice"
 import Forms from "./Pages/Forms"
 import Register from "./Components/FromsComponents/Register"
 import Login from "./Components/FromsComponents/Login"
+import ShopAllProducts from './Components/Shop/AllProducts'
+import ShopLivestockAndPoultry from './Components/Shop/LiveStockAndPoulrty'
+import ShopFishAndSeaShells from './Components/Shop/FishAndSeaShells'
+import ShopUpAndLowLand from './Components/Shop/UpAndLowLand'
+import ShopFruits from './Components/Shop/Fruits'
+import ShopRice from './Components/Shop/Rice'
+import ShopSpicesAndHerbs from './Components/Shop/HerbsAndSpices'
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL
 
@@ -52,47 +52,24 @@ function App() {
     }
   };
 
-  const [itemsPerPages, setItemsPerPages] = useState(4)
-  //product best sell resizer
-  window.addEventListener('resize', ()=>{
-    if (window.innerWidth <= 763) {
-        setItemsPerPages(1);
-    }else{
-      setItemsPerPages(4)
-    }
-  });
   return (
     <main>
       <Routes>
-          <Route element={<Layout authorizedId={authorizedId} authorizedUser={authorizedUser}/>}>
-            <Route path="/" element={<Home />}>
-                <Route index element={
-                    <AllProducts data={data} 
-                        itemsPerPages={itemsPerPages}
-                          authorizedUser={authorizedUser} 
-                          // fetchUserData={fetchUserData}
-                          />}/>
-                  <Route path="LiveStockAndPoultry" element=  {
-                      <LiveStockAndPoultry 
-                          data={data}
-                            itemsPerPages={itemsPerPages}
-                          />}/>
-                    <Route path="FishAndSeaShells" element={
-                      <FishAndSeaShells 
-                          data={data}
-                            itemsPerPages={itemsPerPages}
-                          />}/>
-                      <Route path="UpAndLowLandVege" element={
-                        <UpAndLowLandVege 
-                            data={data}
-                              itemsPerPages={itemsPerPages}
-                            />}/>
-                    <Route path="Fruits" element={<Fruits data={data}/>}/>
-                  <Route path="HerbsAndSpices" element={<HerbsAndSpices data={data}/>}/>
-                <Route path="Rice" element={<Rice data={data}/>}/>
+          <Route element={<Layout authorizedId={authorizedId} authorizedUser={authorizedUser} data={data} />}>
+            <Route path="/" element={<Home 
+                data={data}
+                  authorizedUser={authorizedUser}/>}>
             </Route>
             <Route path="/about" element={<AboutUs/>}/>
-            <Route path="/shop" element={<Shop/>}/>
+            <Route path="/shop" element={<Shop/>}>
+                  <Route index element={<ShopAllProducts data={data} authorizedUser={authorizedUser}/>}/>
+                  <Route path="liveStockAndPoultryProducts" element={<ShopLivestockAndPoultry data={data} authorizedUser={authorizedUser}/>}/>
+                  <Route path="fishAndSeaShells" element={<ShopFishAndSeaShells data={data} authorizedUser={authorizedUser}/>}/>
+                  <Route path="upAndLowLandVegetables" element={<ShopUpAndLowLand data={data} authorizedUser={authorizedUser}/>}/>
+                  <Route path="fruits" element={<ShopFruits data={data} authorizedUser={authorizedUser}/>}/>
+                  <Route path="rice" element={<ShopRice data={data} authorizedUser={authorizedUser}/>}/>
+                  <Route path="herbsAndSpices" element={<ShopSpicesAndHerbs data={data} authorizedUser={authorizedUser}/>}/>
+            </Route>
             <Route path="/contact" element={<ContactUs/>}/>
           </Route>
           <Route path="/forms" element={<Forms/>}>
