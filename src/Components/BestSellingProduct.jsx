@@ -11,6 +11,8 @@ import { AiOutlineSwapRight } from 'react-icons/ai'
 const BestSellingProduct = (props) => {
     const navigate = useNavigate();
     const [category, setCategory] = useState('');
+    const [isLoading, setIsLoading] = useState(false)
+    const [toLoading,setToLoading] = useState('');
     const currentPage = 1;
     const itemsPerPage = 4;
     // Logic to slice the array based on the current page
@@ -24,6 +26,8 @@ const BestSellingProduct = (props) => {
             const currentCart = props.authorizedUser.cart
             const currentUserId = props.authorizedUser._id
             const productId = e.target.parentElement.parentElement.id
+            setToLoading(productId)
+            setIsLoading(true)
 
             await props.data.filter((product)=> productId === product._id ? choosenProducts.push(product):null)
             try{
@@ -31,6 +35,7 @@ const BestSellingProduct = (props) => {
                     cart:[...currentCart,choosenProducts]
                     }
                     await axios.put(`${URL}/user/${currentUserId}`,addToCartProducts)
+                    setIsLoading(false)
                 }catch(error){
                     alert(error)
                 }
@@ -38,7 +43,7 @@ const BestSellingProduct = (props) => {
             navigate('/forms/login')
         }
     }
-  
+    // console.log()
   return (
     <section className="mt-5">
         <div className="container">
@@ -53,10 +58,10 @@ const BestSellingProduct = (props) => {
                     <button onClick={()=>setCategory('Vegetables')}>Up And Lowland Vegetables</button>
                     <button onClick={()=>setCategory('Fruits')}>Fruits</button>
                     <button onClick={()=>setCategory('Rice')}>Rice</button>
-                    <button onClick={()=>setCategory('Herbs and Spices')}>Herbs and Spices</button>
+                    <button onClick={()=>setCategory('Herbs & Spices')}>Herbs and Spices</button>
                 </div>
             </div>
-            <div className="product-containers">
+            <div className="product-containers mt-2">
             <div className='flex-container'>
                 {props.data.filter((item)=>{
                     if(category === ''){
@@ -81,8 +86,8 @@ const BestSellingProduct = (props) => {
                         if(item.category === 'Rice'){
                             return item;
                         }
-                    }else if(category === 'Herbs and Spices'){
-                        if(item.category === 'Herbs and Spices'){
+                    }else if(category === 'Herbs & Spices'){
+                        if(item.category === 'Herbs & Spices'){
                             return item;
                         }
                     }
@@ -100,6 +105,7 @@ const BestSellingProduct = (props) => {
                             <p>{`${item.salePercentage}% off`}</p>
                         </span>
                     ):null}
+                    <Link to={`/${item._id}`} className="quick-view-btn">Quick view</Link>
                     </div>
                     <div className='product-info-container'>
                         <h5 className='product-name'>{item.name}</h5>
@@ -113,7 +119,12 @@ const BestSellingProduct = (props) => {
                             :
                             <p className='bestSeller-product-price'>&#8369;{item.price}</p>}
                         </span>
-                        <button type='button' onClick={addToCart}>Add to cart</button>
+                        
+                        <div className="bestSeller-spinner" id={item._id}>
+                            <div className={`${isLoading && toLoading === item._id ? 'spinner-border spinner-border-custom-on':'spinner-border-custom'}`} role="status">
+                                <button id={item._id} className={`${isLoading && toLoading === item._id ? 'visually-hidden':''}`} type='button' onClick={addToCart}>Add to cart</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 ))}

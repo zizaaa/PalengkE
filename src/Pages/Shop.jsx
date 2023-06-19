@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
 const Shop = () => {
@@ -50,13 +49,13 @@ const Shop = () => {
         <div className="second-flex-container">
           <div className=" shop-hero-div">
               <div className="content-container four">
-              <div className="content">
-                <h1>Fruits</h1>
-                <button id='fruits' onClick={scrollDown} className="shop-btn">Shop</button>
-              </div>
+                <div className="content">
+                  <h1>Fruits</h1>
+                  <button id='fruits' onClick={scrollDown} className="shop-btn">Shop</button>
+                </div>
                 <span className="dark-bg"></span>
               </div>
-            </div>
+          </div>
             <div className=" shop-hero-div">
               <div className="content-container five">
                 <div className="content">
@@ -77,8 +76,8 @@ const Shop = () => {
             </div>
         </div>
       </div>
-      <div className="container mt-4">
-        <h1>Our Products</h1>
+      <div className="container mt-5">
+        <h1 className="ourProducts">Our Products</h1>
         <div className="shop-categories" id='products'>
           <h6 className="shop-category-btn">Categories:</h6>
           <Link to='' className="shop-category-btn">All</Link>

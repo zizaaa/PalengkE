@@ -16,6 +16,8 @@ import ShopUpAndLowLand from './Components/Shop/UpAndLowLand'
 import ShopFruits from './Components/Shop/Fruits'
 import ShopRice from './Components/Shop/Rice'
 import ShopSpicesAndHerbs from './Components/Shop/HerbsAndSpices'
+import ProducInfo from "./Components/ProducInfo"
+import NotFound from './Pages/NotFound'
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL
 
@@ -76,6 +78,15 @@ function App() {
               <Route index element={<Register/>}/>
               <Route path="login" element={<Login/>}/>
           </Route>
+
+          <Route path=":id" element={
+              <ProducInfo 
+                data={data} 
+                  authorizedUser={authorizedUser}
+                    authorizedId={authorizedId}
+                    fetchData={fetchData()}
+                  />}/>
+          <Route path="*" element={<NotFound/>}/>
       </Routes>
     </main>
   )

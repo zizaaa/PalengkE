@@ -2,7 +2,7 @@ import axios from "axios"
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { FaChevronLeft,FaChevronRight } from 'react-icons/fa'
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL
 
@@ -10,10 +10,12 @@ const HerbsAndSpices = (props) => {
   const navigate = useNavigate();
   const [sort, setSort] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false)
+  const [toLoading,setToLoading] = useState('');
 
     const itemsPerPage = 12;
     // Logic to calculate the total number of pages
-    const totalPages = Math.ceil((props.data.filter((item)=>item.category==='Herbs and Spices')).length / itemsPerPage);
+    const totalPages = Math.ceil((props.data.filter((item)=>item.category==='Herbs & Spices')).length / itemsPerPage);
     // Logic to slice the array based on the current page
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -37,13 +39,16 @@ const HerbsAndSpices = (props) => {
       const currentCart = props.authorizedUser.cart
       const currentUserId = props.authorizedUser._id
       const productId = e.target.parentElement.parentElement.id
-  
+      setToLoading(productId)
+      setIsLoading(true)
+
       await props.data.filter((product)=> productId === product._id ? choosenProducts.push(product):null)
       try{
             const addToCartProducts = {
               cart:[...currentCart,choosenProducts]
             }
             await axios.put(`${URL}/user/${currentUserId}`,addToCartProducts)
+            setIsLoading(false)
         }catch(error){
             alert(error)
         }
@@ -72,7 +77,7 @@ const HerbsAndSpices = (props) => {
         </div>
             <div className="shop-flex-container">
             {props.data.filter((item,index,data)=>{
-                if(item.category==='Herbs and Spices'){
+                if(item.category==='Herbs & Spices'){
                   if(sort === ''){
                     return item;
                   }else if(item.name.toLowerCase().includes(sort.toLocaleLowerCase())){
@@ -105,6 +110,7 @@ const HerbsAndSpices = (props) => {
                         <p>{`${product.salePercentage}% off`}</p>
                     </span>
                   ):null}
+                    <Link to={`/${product._id}`}  className="quick-view-btn">Quick view</Link>
                 </div>
                 <div className='shop-product-info-container'>
                   <h5 className='shop-product-name'>{product.name}</h5>
@@ -118,7 +124,12 @@ const HerbsAndSpices = (props) => {
                         :
                         <p className='shop-product-price'>&#8369;{product.price}</p>}
                     </span>
-                  <button type='button' onClick={addToCart}>Add to cart</button>
+                    
+                    <div className="product-spinner-container" id={product._id}>
+                        <div className={`${isLoading && toLoading === product._id ? 'spinner-border spinner-border-on':'spinner-border-off'}`} role="status">
+                          <button className={`${isLoading && toLoading === product._id ? 'visually-hidden':''}`} type='button' onClick={addToCart}>Add to cart</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             ))

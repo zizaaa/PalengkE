@@ -2,7 +2,7 @@ import axios from "axios"
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { FaChevronLeft,FaChevronRight } from 'react-icons/fa'
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL
 
@@ -10,6 +10,8 @@ const URL = env.VITE_REACT_SERVER_URL
 const AllProducts = (props) => {
   const navigate = useNavigate();
   const [sort, setSort] = useState('');
+  const [isLoading, setIsLoading] = useState(false)
+  const [toLoading,setToLoading] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
     const itemsPerPage = 12;
@@ -38,13 +40,16 @@ const AllProducts = (props) => {
       const currentCart = props.authorizedUser.cart
       const currentUserId = props.authorizedUser._id
       const productId = e.target.parentElement.parentElement.id
-  
+      setToLoading(productId)
+      setIsLoading(true)
+
       await props.data.filter((product)=> productId === product._id ? choosenProducts.push(product):null)
       try{
             const addToCartProducts = {
               cart:[...currentCart,choosenProducts]
             }
             await axios.put(`${URL}/user/${currentUserId}`,addToCartProducts)
+            setIsLoading(false)
         }catch(error){
             alert(error)
         }
@@ -104,6 +109,7 @@ const AllProducts = (props) => {
                         <p>{`${product.salePercentage}% off`}</p>
                     </span>
                   ):null}
+                  <Link to={`/${product._id}`} className="quick-view-btn">Quick view</Link>
                 </div>
                 <div className='shop-product-info-container'>
                   <h5 className='shop-product-name'>{product.name}</h5>
@@ -117,7 +123,13 @@ const AllProducts = (props) => {
                         :
                         <p className='shop-product-price'>&#8369;{product.price}</p>}
                     </span>
-                  <button type='button' onClick={addToCart}>Add to cart</button>
+
+                    <div className="product-spinner-container" id={product._id}>
+                        <div className={`${isLoading && toLoading === product._id ? 'spinner-border spinner-border-on':'spinner-border-off'}`} role="status">
+                          <button className={`${isLoading && toLoading === product._id ? 'visually-hidden':''}`} type='button' onClick={addToCart}>Add to cart</button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             ))

@@ -1,22 +1,14 @@
 import axios from "axios"
 import { useState,useEffect } from "react";
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
-// import { BsStarFill } from 'react-icons/bs'
 import { FaChevronLeft,FaChevronRight } from 'react-icons/fa'
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL
 
 const Reviews = () => {
-    const [itemsPerPages, setItemsPerPages] = useState(2)
-    window.addEventListener('resize', ()=>{
-      if (window.innerWidth <= 1002) {
-          setItemsPerPages(1);
-      }else{
-          setItemsPerPages(2)
-      }
-    });
+
     const [reviews, setReviews] = useState([])
-    const itemsPerPage = itemsPerPages;
+    const itemsPerPage = 1;
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = Math.ceil(reviews.length / itemsPerPage);
   
