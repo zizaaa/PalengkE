@@ -82,7 +82,7 @@ const Shop = () => {
           <h6 className="shop-category-btn">Categories:</h6>
           <Link to='' className="shop-category-btn">All</Link>
           <Link to='liveStockAndPoultryProducts' className="shop-category-btn">LiveStock and Poultry Products</Link>
-          <Link to='fishAndSeaShells' className="shop-category-btn">Fish and SeaShells</Link>
+          <Link to='fishAndSeaShells' className="shop-category-btn">Fish</Link>
           <Link to='upAndLowLandVegetables' className="shop-category-btn">Vegetables</Link>
           <Link to='fruits' className="shop-category-btn">Fruits</Link>
           <Link to='rice' className="shop-category-btn">Rice</Link>

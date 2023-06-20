@@ -64,12 +64,19 @@ const Fruits = () => {
       navigate('/forms/login')
     }
   }
-
+  
   useEffect(()=>{
-    if(authorizedUser.userName != undefined){
+    if(sessionStorage.getItem('userId') != null){
+        if(authorizedUser.userName === undefined){
+            setIsUserLoading(true)
+        }else{
+            setIsUserLoading(false)
+        }
+    }else{
         setIsUserLoading(false)
     }
-  },[authorizedUser])
+    // console.log()
+},[authorizedUser])
 
   return (
     <section>

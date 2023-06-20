@@ -49,9 +49,16 @@ const BestSellingProduct = () => {
         }
     }
     useEffect(()=>{
-        if(authorizedUser.userName != undefined){
+        if(sessionStorage.getItem('userId') != null){
+            if(authorizedUser.userName === undefined){
+                setIsUserLoading(true)
+            }else{
+                setIsUserLoading(false)
+            }
+        }else{
             setIsUserLoading(false)
         }
+        // console.log()
     },[authorizedUser])
     
   return (
@@ -64,7 +71,7 @@ const BestSellingProduct = () => {
             <div className="bestSellingProducts-container mt-3">
                 <div className="category-container">
                     <button onClick={()=>setCategory('Livestock and Poultry Products')}>LiveStock And Poultry Products</button>
-                    <button onClick={()=>setCategory('Fish')}>Fish and SeaShells</button>
+                    <button onClick={()=>setCategory('Fish')}>Fish</button>
                     <button onClick={()=>setCategory('Vegetables')}>Vegetables</button>
                     <button onClick={()=>setCategory('Fruits')}>Fruits</button>
                     <button onClick={()=>setCategory('Rice')}>Rice</button>
@@ -74,7 +81,7 @@ const BestSellingProduct = () => {
             <div className="product-containers mt-2">
             <div className='flex-container'>
                 {isProductLoading ? <ProductsSkeleton/>:data.filter((item)=>{
-                    if(category === ''){
+                    if(category === '' && item.bestSeller){
                         return item
                     }else if(category === 'Livestock and Poultry Products'){
                         if(item.category === 'Livestock and Poultry Products' && item.bestSeller){
@@ -101,7 +108,7 @@ const BestSellingProduct = () => {
                             return item;
                         }
                     }
-                }).slice(startIndex, endIndex).map((item)=>(
+                }).slice(startIndex, endIndex).map((item)=>( item.bestSeller ?
                 <div className='custom-box' id={item._id} key={item._id}>
                     <div className='img-container'>
                         <img src={item.img[0].imgOne}/>
@@ -136,7 +143,7 @@ const BestSellingProduct = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> : ('')
                 ))}
             </div>
             </div>

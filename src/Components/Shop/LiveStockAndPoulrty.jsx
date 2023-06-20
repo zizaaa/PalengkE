@@ -65,10 +65,17 @@ const LiveStockAndPoulrty = () => {
     }
   }
   useEffect(()=>{
-    if(authorizedUser.userName != undefined){
+    if(sessionStorage.getItem('userId') != null){
+        if(authorizedUser.userName === undefined){
+            setIsUserLoading(true)
+        }else{
+            setIsUserLoading(false)
+        }
+    }else{
         setIsUserLoading(false)
     }
-  },[authorizedUser])
+    // console.log()
+},[authorizedUser])
   return (
     <section>
             <div className="shop-filter">
