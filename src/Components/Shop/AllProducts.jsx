@@ -65,11 +65,18 @@ const AllProducts = () => {
       navigate('/forms/login')
     }
 }
-  useEffect(()=>{
-    if(authorizedUser.userName != undefined){
-        setIsUserLoading(false)
-    }
-  },[authorizedUser])
+useEffect(()=>{
+  if(sessionStorage.getItem('userId') != null){
+      if(authorizedUser.userName === undefined){
+          setIsUserLoading(true)
+      }else{
+          setIsUserLoading(false)
+      }
+  }else{
+      setIsUserLoading(false)
+  }
+  // console.log()
+},[authorizedUser])
   return (
     <section>
             <div className="shop-filter">

@@ -17,7 +17,7 @@ const FishAndSeaShells = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [toLoading,setToLoading] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [isUserLoading, setIsUserLoading] = useState(1);
+  const [isUserLoading, setIsUserLoading] = useState(true);
 
     const itemsPerPage = 12;
     // Logic to calculate the total number of pages
@@ -66,9 +66,16 @@ const FishAndSeaShells = () => {
 
 
   useEffect(()=>{
-    if(authorizedUser.userName != undefined){
+    if(sessionStorage.getItem('userId') != null){
+        if(authorizedUser.userName === undefined){
+            setIsUserLoading(true)
+        }else{
+            setIsUserLoading(false)
+        }
+    }else{
         setIsUserLoading(false)
     }
+    // console.log()
 },[authorizedUser])
 
   return (

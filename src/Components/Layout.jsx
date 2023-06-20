@@ -46,11 +46,18 @@ const Layout = () => {
 
       }, []); // Remove the empty dependency array if necessary
 
-        useEffect(()=>{
-            if(authorizedUser.userName != undefined){
+      useEffect(()=>{
+        if(sessionStorage.getItem('userId') != null){
+            if(authorizedUser.userName === undefined){
+                setIsUserLoading(true)
+            }else{
                 setIsUserLoading(false)
             }
-        },[authorizedUser])
+        }else{
+            setIsUserLoading(false)
+        }
+        // console.log()
+    },[authorizedUser])
     return (
     <>
         <nav id={isFixed ? 'navBar':'nav'}>
