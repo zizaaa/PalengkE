@@ -1,13 +1,17 @@
 import axios from "axios"
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { FaChevronLeft,FaChevronRight } from 'react-icons/fa'
 import { Link, useNavigate } from "react-router-dom";
+import { FetchProduct } from "../../FetchProduct";
+import { FetchUsers } from "../../FetchUsers";
+import ProductsSkeleton from "../skeletonLoading/ProductsSkeleton";
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL
 
 
-const FishAndSeaShells = (props) => {
+const FishAndSeaShells = () => {
+  const { data,isProductLoading } = FetchProduct();
+  const { authorizedUser } = FetchUsers();
   const navigate = useNavigate()
   const [sort, setSort] = useState('');
   const [isLoading, setIsLoading] = useState(false)
@@ -16,7 +20,7 @@ const FishAndSeaShells = (props) => {
 
     const itemsPerPage = 12;
     // Logic to calculate the total number of pages
-    const totalPages = Math.ceil((props.data.filter((item)=>item.category==='Fish')).length / itemsPerPage);
+    const totalPages = Math.ceil((data.filter((item)=>item.category==='Fish')).length / itemsPerPage);
     // Logic to slice the array based on the current page
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -35,14 +39,14 @@ const FishAndSeaShells = (props) => {
 
   const choosenProducts = []
   const addToCart= async(e)=>{
-    if(props.authorizedUser.userName != undefined){
-      const currentCart = props.authorizedUser.cart
-      const currentUserId = props.authorizedUser._id
+    if(authorizedUser.userName != undefined){
+      const currentCart = authorizedUser.cart
+      const currentUserId = authorizedUser._id
       const productId = e.target.parentElement.parentElement.id
       setToLoading(productId)
       setIsLoading(true)
 
-      await props.data.filter((product)=> productId === product._id ? choosenProducts.push(product):null)
+      await data.filter((product)=> productId === product._id ? choosenProducts.push(product):null)
       try{
             const addToCartProducts = {
               cart:[...currentCart,choosenProducts]
@@ -52,7 +56,7 @@ const FishAndSeaShells = (props) => {
         }catch(error){
             alert(error)
         }
-      console.log(props.authorizedUser.userName)
+      console.log(authorizedUser.userName)
       // location.reload();
     }else{
       navigate('/forms/login')
@@ -76,7 +80,7 @@ const FishAndSeaShells = (props) => {
             </div>
         </div>
             <div className="shop-flex-container">
-            {props.data.filter((item,index,data)=>{
+            {isProductLoading ? <ProductsSkeleton /> :data.filter((item,index,data)=>{
               if(item.category==='Fish'){
                 if(sort === ''){
                     return item;
@@ -148,8 +152,4 @@ const FishAndSeaShells = (props) => {
   )
 }
 
-FishAndSeaShells.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
-  authorizedUser: PropTypes.object,
-};
 export default FishAndSeaShells

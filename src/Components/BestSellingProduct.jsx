@@ -1,14 +1,18 @@
 
 import axios from "axios"
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { FetchProduct } from "../FetchProduct";
+import { FetchUsers } from "../FetchUsers";
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL
 import { Link } from "react-router-dom"
 import { AiOutlineSwapRight } from 'react-icons/ai'
+import ProductsSkeleton from "./skeletonLoading/ProductsSkeleton";
 
-const BestSellingProduct = (props) => {
+const BestSellingProduct = () => {
+    const {data,isProductLoading} = FetchProduct()
+    const { authorizedUser } = FetchUsers()
     const navigate = useNavigate();
     const [category, setCategory] = useState('');
     const [isLoading, setIsLoading] = useState(false)
@@ -22,14 +26,14 @@ const BestSellingProduct = (props) => {
     const choosenProducts = []
 
     const addToCart= async(e)=>{
-        if(props.authorizedUser.userName != undefined){
-            const currentCart = props.authorizedUser.cart
-            const currentUserId = props.authorizedUser._id
+        if(authorizedUser.userName != undefined){
+            const currentCart = authorizedUser.cart
+            const currentUserId = authorizedUser._id
             const productId = e.target.parentElement.parentElement.id
             setToLoading(productId)
             setIsLoading(true)
 
-            await props.data.filter((product)=> productId === product._id ? choosenProducts.push(product):null)
+            await data.filter((product)=> productId === product._id ? choosenProducts.push(product):null)
             try{
                     const addToCartProducts = {
                     cart:[...currentCart,choosenProducts]
@@ -63,7 +67,7 @@ const BestSellingProduct = (props) => {
             </div>
             <div className="product-containers mt-2">
             <div className='flex-container'>
-                {props.data.filter((item)=>{
+                {isProductLoading ? <ProductsSkeleton/>:data.filter((item)=>{
                     if(category === ''){
                         return item
                     }else if(category === 'Livestock and Poultry Products'){
@@ -134,9 +138,4 @@ const BestSellingProduct = (props) => {
     </section>
 )
 }
-BestSellingProduct.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.object).isRequired,
-    authorizedUser: PropTypes.object,
-    // fetchUserData: PropTypes.func,
-  };
 export default BestSellingProduct

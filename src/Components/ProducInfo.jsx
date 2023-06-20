@@ -1,33 +1,35 @@
 import axios from "axios"
-import PropTypes from 'prop-types';
 import { Link, useNavigate, useParams } from "react-router-dom"
+import { useState } from 'react';
+import { FaFacebookMessenger } from 'react-icons/fa';
 import { HiShoppingCart,HiOutlineTicket } from 'react-icons/hi'
 import { BsArrowLeftShort, BsFacebook, BsInstagram,BsTwitter } from 'react-icons/bs'
 import { MdOutlineDeleteOutline  } from 'react-icons/md'
 import { AiFillStar,AiOutlineStar } from 'react-icons/ai' 
+import { FetchProduct } from "../FetchProduct";
+import { FetchUsers } from "../FetchUsers";
 import logo from '../assets/logo.png'
 import logo_2 from '../assets/logo2.png'
 import logoWhite from '../assets/logo_white.png'
 import profile from '../assets/profileDark.png'
-import { useState } from 'react';
-import { FaFacebookMessenger } from 'react-icons/fa';
+import Skeleton from '../Components/skeletonLoading/ProductInfoSkeleton'
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL
 
-const ProducInfo = (props) => {
-
+const ProducInfo = () => {
+  const {isProductLoading} = FetchProduct()
+  const { authorizedUser } = FetchUsers()
+  const data = ('session',JSON.parse(sessionStorage.getItem('data')))
+  
   const navigate = useNavigate();
   const { id } = useParams();
-  const product = props.data.find(product => product._id === id)
+
+  const product = data.find(product => product._id === id)
   const [isLoading, setIsLoading] = useState(false)
   const [toLoading,setToLoading] = useState('');
   const [imgSrc, setImgSrc] = useState(product.img[0].imgOne);
   const maxRating = 5;
-  if(!product){
-      navigate('*');
-  }
-  
-  
+
   //share url
     const shareUrl = `${window.location.href}/${id}`;
     const shareTitle = `${product.name}`;
@@ -42,14 +44,14 @@ const ProducInfo = (props) => {
     const choosenProducts = []
 
     const addToCart= async(e)=>{
-        if(props.authorizedUser.userName != undefined){
-            const currentCart = props.authorizedUser.cart
-            const currentUserId = props.authorizedUser._id
+        if(authorizedUser.userName != undefined){
+            const currentCart = authorizedUser.cart
+            const currentUserId = authorizedUser._id
             const productId = e.target.id
             setToLoading(productId)
             setIsLoading(true)
 
-            await props.data.filter((product)=> productId === product._id ? choosenProducts.push(product):null)
+            await data.filter((product)=> productId === product._id ? choosenProducts.push(product):null)
             try{
                     const addToCartProducts = {
                     cart:[...currentCart,choosenProducts]
@@ -64,10 +66,9 @@ const ProducInfo = (props) => {
         }
     }
 
-    // console.log(product)
   return (
 <>
-    <section>
+  <section>
         <div className='product-info-nav'>
             <div className='container product-info-nav-container'>
               <div className='left-side'>
@@ -76,13 +77,22 @@ const ProducInfo = (props) => {
                   </Link>
               </div>
               <div className='right-side'>
-                <button type='button' data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">
-                    <HiShoppingCart/>
-                </button>
-                <span className='cart-product-counter'>{props.authorizedUser.cart != undefined ? props.authorizedUser.cart.length:''}</span>
+                  {authorizedUser.userName != undefined ? (
+                    <>
+                    <button type='button' data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">
+                      <HiShoppingCart/>
+                    </button>
+                    <span className='cart-product-counter'>{authorizedUser.cart != undefined ? authorizedUser.cart.length:''}</span>
+                    </>
+                  ):''}
               </div>
             </div>
         </div>
+    {
+      isProductLoading ? (
+          <Skeleton/>
+      ):(
+        <>
         <div className='container'>
             <div className='product-info-card'>
                 <div className='product-info-img-container'>
@@ -244,10 +254,13 @@ const ProducInfo = (props) => {
                 </div>
             </div>
         </div>
+        </>
+      )
+    }
+    </section>
 
-
-                {/* cart sidenav */}
-                <div className="offcanvas offcanvas-end custom-sidenav-cart" tabIndex="-1" id="cartSideNav" aria-labelledby="offcanvasRightLabel">
+            {/* cart sidenav */}
+            <div className="offcanvas offcanvas-end custom-sidenav-cart" tabIndex="-1" id="cartSideNav" aria-labelledby="offcanvasRightLabel">
               <div className="offcanvas-header custom-sidenav-cart-header">
                 <div className='header-container' id="offcanvasRightLabel">
                     {/* <HiShoppingCart/> */}
@@ -264,8 +277,8 @@ const ProducInfo = (props) => {
             </div>
             <div className="offcanvas-body cart-items-container">
                 {
-                    props.authorizedUser.cart ? (
-                        props.authorizedUser.cart.map((cart,index)=>(
+                    authorizedUser.cart ? (
+                        authorizedUser.cart.map((cart,index)=>(
                         <div className='cart-product-main-container' key={index}>
                             <input type='checkbox' className='checkBox'/>
                             <div className='cart-product'>
@@ -317,8 +330,6 @@ const ProducInfo = (props) => {
                     </div>
                 </div>
             </div>
-    </section>
-
     <footer className=" py-5">
             <div className="container">
                 
@@ -376,9 +387,4 @@ const ProducInfo = (props) => {
   </>
   )
 }
-ProducInfo.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
-  authorizedUser: PropTypes.object,
-  authorizedId:PropTypes.string,
-};
 export default ProducInfo

@@ -1,5 +1,3 @@
-import axios from "axios"
-import { useState,useEffect } from "react"
 import { Route, Routes } from "react-router-dom"
 import Layout from "./Components/Layout"
 import Home from "./Pages/Home"
@@ -18,59 +16,24 @@ import ShopRice from './Components/Shop/Rice'
 import ShopSpicesAndHerbs from './Components/Shop/HerbsAndSpices'
 import ProducInfo from "./Components/ProducInfo"
 import NotFound from './Pages/NotFound'
-const env = import.meta.env;
-const URL = env.VITE_REACT_SERVER_URL
 
 function App() {
-  const [data, setData] = useState([]);
-  const [authorizedId, setAuthorizedId] = useState(null);
-  const [authorizedUser, setauthorizedUser] = useState({});
-
-  useEffect(() => {
-    setAuthorizedId(sessionStorage.getItem('userId'))
-    fetchData();
-  },[]);
-
-  useEffect(() => {
-    fetchUserData();
-  });
-
-  // products
-  const fetchData = async () => {
-    try {
-      const {data} = await axios.get(`${URL}/products`);
-      setData(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  //users
-  const fetchUserData = async () => {
-    try {
-      const {data} = await axios.get(`${URL}/users`);
-          await data.filter((user)=> authorizedId === user._id ? setauthorizedUser(user):null)
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return (
     <main>
       <Routes>
-          <Route element={<Layout authorizedId={authorizedId} authorizedUser={authorizedUser} data={data} />}>
-            <Route path="/" element={<Home 
-                data={data}
-                  authorizedUser={authorizedUser}/>}>
+          <Route element={<Layout/>}>
+            <Route path="/" element={<Home />}>
             </Route>
             <Route path="/about" element={<AboutUs/>}/>
             <Route path="/shop" element={<Shop/>}>
-                  <Route index element={<ShopAllProducts data={data} authorizedUser={authorizedUser}/>}/>
-                  <Route path="liveStockAndPoultryProducts" element={<ShopLivestockAndPoultry data={data} authorizedUser={authorizedUser}/>}/>
-                  <Route path="fishAndSeaShells" element={<ShopFishAndSeaShells data={data} authorizedUser={authorizedUser}/>}/>
-                  <Route path="upAndLowLandVegetables" element={<ShopUpAndLowLand data={data} authorizedUser={authorizedUser}/>}/>
-                  <Route path="fruits" element={<ShopFruits data={data} authorizedUser={authorizedUser}/>}/>
-                  <Route path="rice" element={<ShopRice data={data} authorizedUser={authorizedUser}/>}/>
-                  <Route path="herbsAndSpices" element={<ShopSpicesAndHerbs data={data} authorizedUser={authorizedUser}/>}/>
+                  <Route index element={<ShopAllProducts />}/>
+                  <Route path="liveStockAndPoultryProducts" element={<ShopLivestockAndPoultry />}/>
+                  <Route path="fishAndSeaShells" element={<ShopFishAndSeaShells />}/>
+                  <Route path="upAndLowLandVegetables" element={<ShopUpAndLowLand />}/>
+                  <Route path="fruits" element={<ShopFruits />}/>
+                  <Route path="rice" element={<ShopRice />}/>
+                  <Route path="herbsAndSpices" element={<ShopSpicesAndHerbs />}/>
             </Route>
             <Route path="/contact" element={<ContactUs/>}/>
           </Route>
@@ -78,14 +41,8 @@ function App() {
               <Route index element={<Register/>}/>
               <Route path="login" element={<Login/>}/>
           </Route>
-
           <Route path=":id" element={
-              <ProducInfo 
-                data={data} 
-                  authorizedUser={authorizedUser}
-                    authorizedId={authorizedId}
-                    fetchData={fetchData()}
-                  />}/>
+              <ProducInfo />}/>
           <Route path="*" element={<NotFound/>}/>
       </Routes>
     </main>
