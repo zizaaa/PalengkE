@@ -1,6 +1,6 @@
 
 import axios from "axios"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { FetchProduct } from "../FetchProduct";
 import { FetchUsers } from "../FetchUsers";
@@ -17,6 +17,7 @@ const BestSellingProduct = () => {
     const [category, setCategory] = useState('');
     const [isLoading, setIsLoading] = useState(false)
     const [toLoading,setToLoading] = useState('');
+    const [isUserLoading,setIsUserLoading] = useState(true)
     const currentPage = 1;
     const itemsPerPage = 4;
     // Logic to slice the array based on the current page
@@ -47,7 +48,12 @@ const BestSellingProduct = () => {
             navigate('/forms/login')
         }
     }
-    // console.log()
+    useEffect(()=>{
+        if(authorizedUser.userName != undefined){
+            setIsUserLoading(false)
+        }
+    },[authorizedUser])
+    
   return (
     <section className="mt-5">
         <div className="container">
@@ -59,7 +65,7 @@ const BestSellingProduct = () => {
                 <div className="category-container">
                     <button onClick={()=>setCategory('Livestock and Poultry Products')}>LiveStock And Poultry Products</button>
                     <button onClick={()=>setCategory('Fish')}>Fish and SeaShells</button>
-                    <button onClick={()=>setCategory('Vegetables')}>Up And Lowland Vegetables</button>
+                    <button onClick={()=>setCategory('Vegetables')}>Vegetables</button>
                     <button onClick={()=>setCategory('Fruits')}>Fruits</button>
                     <button onClick={()=>setCategory('Rice')}>Rice</button>
                     <button onClick={()=>setCategory('Herbs & Spices')}>Herbs and Spices</button>
@@ -71,27 +77,27 @@ const BestSellingProduct = () => {
                     if(category === ''){
                         return item
                     }else if(category === 'Livestock and Poultry Products'){
-                        if(item.category === 'Livestock and Poultry Products'){
+                        if(item.category === 'Livestock and Poultry Products' && item.bestSeller){
                             return item;
                         }
                     }else if(category === 'Fish'){
-                        if(item.category === 'Fish'){
+                        if(item.category === 'Fish' && item.bestSeller){
                             return item;
                         }
                     }else if(category === 'Vegetables'){
-                        if(item.category === 'Upland Vegetables' || item.category === 'Lowland Vegetables'){
+                        if(item.category === 'Upland Vegetables' || item.category === 'Lowland Vegetables' && item.bestSeller){
                             return item;
                         }
                     }else if(category === 'Fruits'){
-                        if(item.category === 'Fruits'){
+                        if(item.category === 'Fruits' && item.bestSeller){
                             return item;
                         }
                     }else if(category === 'Rice'){
-                        if(item.category === 'Rice'){
+                        if(item.category === 'Rice' && item.bestSeller){
                             return item;
                         }
                     }else if(category === 'Herbs & Spices'){
-                        if(item.category === 'Herbs & Spices'){
+                        if(item.category === 'Herbs & Spices' && item.bestSeller){
                             return item;
                         }
                     }
@@ -100,9 +106,9 @@ const BestSellingProduct = () => {
                     <div className='img-container'>
                         <img src={item.img[0].imgOne}/>
                         {item.bestSeller ? (
-                    <span className="bestSeller-overlay-container">
-                        <p>Best Seller</p>
-                    </span>
+                            <span className="bestSeller-overlay-container">
+                                <p>Best Seller</p>
+                            </span>
                     ):null}
                     {item.sale ? (
                         <span className="sale-overlay-container">
@@ -125,8 +131,8 @@ const BestSellingProduct = () => {
                         </span>
                         
                         <div className="bestSeller-spinner" id={item._id}>
-                            <div className={`${isLoading && toLoading === item._id ? 'spinner-border spinner-border-custom-on':'spinner-border-custom'}`} role="status">
-                                <button id={item._id} className={`${isLoading && toLoading === item._id ? 'visually-hidden':''}`} type='button' onClick={addToCart}>Add to cart</button>
+                            <div className={`${isLoading && toLoading === item._id || isUserLoading ? 'spinner-border spinner-border-custom-on':'spinner-border-custom'}`} role="status">
+                                <button id={item._id} className={`${isLoading && toLoading === item._id || isUserLoading ? 'visually-hidden':''}`} type='button' onClick={addToCart}>Add to cart</button>
                             </div>
                         </div>
                     </div>

@@ -83,7 +83,7 @@ const Shop = () => {
           <Link to='' className="shop-category-btn">All</Link>
           <Link to='liveStockAndPoultryProducts' className="shop-category-btn">LiveStock and Poultry Products</Link>
           <Link to='fishAndSeaShells' className="shop-category-btn">Fish and SeaShells</Link>
-          <Link to='upAndLowLandVegetables' className="shop-category-btn">Up And Low Land Vegetables</Link>
+          <Link to='upAndLowLandVegetables' className="shop-category-btn">Vegetables</Link>
           <Link to='fruits' className="shop-category-btn">Fruits</Link>
           <Link to='rice' className="shop-category-btn">Rice</Link>
           <Link to='herbsAndSpices' className="shop-category-btn">Herbs and Spices</Link>

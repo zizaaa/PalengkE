@@ -1,6 +1,6 @@
 import axios from "axios"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaFacebookMessenger } from 'react-icons/fa';
 import { HiShoppingCart,HiOutlineTicket } from 'react-icons/hi'
 import { BsArrowLeftShort, BsFacebook, BsInstagram,BsTwitter } from 'react-icons/bs'
@@ -27,11 +27,12 @@ const ProducInfo = () => {
   const product = data.find(product => product._id === id)
   const [isLoading, setIsLoading] = useState(false)
   const [toLoading,setToLoading] = useState('');
+  const [isUserLoading,setIsUserLoading] = useState(true)
   const [imgSrc, setImgSrc] = useState(product.img[0].imgOne);
   const maxRating = 5;
 
   //share url
-    const shareUrl = `${window.location.href}/${id}`;
+    const shareUrl = window.location.href;
     const shareTitle = `${product.name}`;
     const handleMessengerShare = () => {
       const encodedUrl = encodeURIComponent(shareUrl);
@@ -66,6 +67,33 @@ const ProducInfo = () => {
         }
     }
 
+    useEffect(()=>{
+      if(authorizedUser.userName != undefined){
+          setIsUserLoading(false)
+      }
+  },[authorizedUser])
+
+
+  const computeStarRatings = (totalRatings) => {
+    const averageRating = calculateAverageRating(totalRatings);
+    const roundedRating = Math.round(averageRating * 10) / 10; // Round to one decimal place
+    const cappedRating = Math.min(roundedRating, 5); // Cap the rating to a maximum of 5
+  
+    return cappedRating;
+  };
+  
+  const calculateAverageRating = (totalRatings) => {
+    const sumRatings = totalRatings.reduce((acc, rating) => acc + rating, 0);
+    const averageRating = sumRatings / totalRatings.length;
+  
+    return averageRating;
+  };
+
+  const ratings = product.usersProductReviews.map((data) => data.stars);
+  const cappedRating = computeStarRatings(ratings);
+  const filledStars = Math.floor(cappedRating);
+  const decimalPart = cappedRating - filledStars;
+  const starCounter = decimalPart > 0 ? `${cappedRating.toFixed(1)}` : `${filledStars}.0`;
   return (
 <>
   <section>
@@ -103,7 +131,7 @@ const ProducInfo = () => {
                         <button type="button" onClick={()=>{setImgSrc(product.img[0].imgOne)}}>
                             <img src={product.img[0].imgOne} className="img-fluid"/>
                         </button>
-                        <button type="button" onClick={()=>{setImgSrc(product.img[0].imgTwo)}}>
+                        <button type="button" className="center-btn" onClick={()=>{setImgSrc(product.img[0].imgTwo)}}>
                             <img src={product.img[0].imgTwo} className="img-fluid"/>
                         </button>
                         <button type="button" onClick={()=>{setImgSrc(product.img[0].imgThree)}}>
@@ -150,15 +178,15 @@ const ProducInfo = () => {
                     <div className='sold-ratings-container'>
                         <span className="stars-container">
                             <p className='star-counter'>
-                              {product.stars ? `${product.stars}.0`:'0'}
+                              {starCounter}
                             </p>
                             {[...Array(maxRating)].map((_, starIndex) => (
-                                        <p
-                                        key={starIndex}
-                                        className={starIndex < product.stars ? 'star-filled' : 'star'}
-                                        >
-                                        {starIndex < product.stars ? <AiFillStar /> : <AiOutlineStar />}
-                                        </p>
+                                <p
+                                  key={starIndex}
+                                  className={starIndex < filledStars ? 'star-filled' : 'star'}
+                                >
+                                  {starIndex < filledStars ? <AiFillStar /> : <AiOutlineStar />}
+                                </p>
                             ))}
                         </span>
                         <div className='reviews-solds'>
@@ -208,9 +236,9 @@ const ProducInfo = () => {
 
                       {/* add to cart and buy now btn */}
                       <div className='addToCart-BuyNow-btn'>
-                        <div className={isLoading ? 'custom-spinner-loading':'custom-spinner'} id={product._id}>
-                            <div className={`${isLoading && toLoading === product._id ? 'spinner-border':''}`} role="status">
-                            <button className={`${isLoading && toLoading === product._id ? 'visually-hidden':''}`} onClick={addToCart} type='button' id={product._id}>
+                        <div className={isLoading || isUserLoading ? 'custom-spinner-loading':'custom-spinner'} id={product._id}>
+                            <div className={`${isLoading && toLoading === product._id || isUserLoading ? 'spinner-border':''}`} role="status">
+                            <button className={`${isLoading && toLoading === product._id || isUserLoading ? 'visually-hidden':''}`} onClick={addToCart} type='button' id={product._id}>
                           <span><HiShoppingCart/></span>
                           Add to cart</button>
                             </div>

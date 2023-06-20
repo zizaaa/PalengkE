@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaChevronLeft,FaChevronRight } from 'react-icons/fa'
 import { Link, useNavigate } from "react-router-dom";
 import { FetchProduct } from "../../FetchProduct";
@@ -17,6 +17,7 @@ const Fruits = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false)
   const [toLoading,setToLoading] = useState('');
+  const [isUserLoading,setIsUserLoading] = useState(true);
 
     const itemsPerPage = 12;
     // Logic to calculate the total number of pages
@@ -63,6 +64,13 @@ const Fruits = () => {
       navigate('/forms/login')
     }
   }
+
+  useEffect(()=>{
+    if(authorizedUser.userName != undefined){
+        setIsUserLoading(false)
+    }
+  },[authorizedUser])
+
   return (
     <section>
             <div className="shop-filter">
@@ -129,8 +137,8 @@ const Fruits = () => {
                     </span>
 
                     <div className="product-spinner-container" id={product._id}>
-                        <div className={`${isLoading && toLoading === product._id ? 'spinner-border spinner-border-on':'spinner-border-off'}`} role="status">
-                          <button className={`${isLoading && toLoading === product._id ? 'visually-hidden':''}`} type='button' onClick={addToCart}>Add to cart</button>
+                        <div className={`${isLoading && toLoading === product._id || isUserLoading ? 'spinner-border spinner-border-on':'spinner-border-off'}`} role="status">
+                          <button className={`${isLoading && toLoading === product._id || isUserLoading ? 'visually-hidden':''}`} type='button' onClick={addToCart}>Add to cart</button>
                         </div>
                     </div>
                 </div>

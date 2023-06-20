@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaChevronLeft,FaChevronRight } from 'react-icons/fa'
 import { Link, useNavigate } from "react-router-dom";
 import { FetchProduct } from "../../FetchProduct";
@@ -18,6 +18,7 @@ const AllProducts = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [toLoading,setToLoading] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [isUserLoading, setIsUserLoading] = useState(true);
 
     const itemsPerPage = 12;
     // Logic to calculate the total number of pages
@@ -64,7 +65,11 @@ const AllProducts = () => {
       navigate('/forms/login')
     }
 }
-
+  useEffect(()=>{
+    if(authorizedUser.userName != undefined){
+        setIsUserLoading(false)
+    }
+  },[authorizedUser])
   return (
     <section>
             <div className="shop-filter">
@@ -99,9 +104,12 @@ const AllProducts = () => {
                   return data.sort((a,b)=> a.price - b.price)
                 }else if(sort === 'High'){
                   return data.sort((a,b)=> b.price - a.price)
+                }else{
+                  return null;
                 }
             }).slice(startIndex, endIndex).map(product=>(
               <div className='shop-custom-box' id={product._id} key={product._id}>
+                
                 <div className='shop-img-container'>
                   <img src={product.img[0].imgOne}/>
                   {product.bestSeller ? (
@@ -130,8 +138,8 @@ const AllProducts = () => {
                     </span>
 
                     <div className="product-spinner-container" id={product._id}>
-                        <div className={`${isLoading && toLoading === product._id ? 'spinner-border spinner-border-on':'spinner-border-off'}`} role="status">
-                          <button className={`${isLoading && toLoading === product._id ? 'visually-hidden':''}`} type='button' onClick={addToCart}>Add to cart</button>
+                        <div className={`${isLoading && toLoading === product._id || isUserLoading ? 'spinner-border spinner-border-on':'spinner-border-off'}`} role="status">
+                          <button className={`${isLoading && toLoading === product._id || isUserLoading ? 'visually-hidden':''}`} type='button' onClick={addToCart}>Add to cart</button>
                         </div>
                     </div>
 
