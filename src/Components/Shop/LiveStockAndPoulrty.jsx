@@ -1,21 +1,27 @@
 import axios from "axios"
-import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaChevronLeft,FaChevronRight } from 'react-icons/fa'
 import { Link, useNavigate } from "react-router-dom";
+import { FetchProduct } from "../../FetchProduct";
+import { FetchUsers } from "../../FetchUsers";
+import ProductsSkeleton from "../skeletonLoading/ProductsSkeleton";
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL
 
-const LiveStockAndPoulrty = (props) => {
+const LiveStockAndPoulrty = () => {
+  const { data,isProductLoading } = FetchProduct();
+  const { authorizedUser } = FetchUsers();
+  
   const navigate = useNavigate();
   const [sort, setSort] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false)
   const [toLoading,setToLoading] = useState('');
+  const [isUserLoading,setIsUserLoading] = useState(true);
 
     const itemsPerPage = 12;
     // Logic to calculate the total number of pages
-    const totalPages = Math.ceil((props.data.filter((item)=>item.category==='Livestock and Poultry Products')).length / itemsPerPage);
+    const totalPages = Math.ceil((data.filter((item)=>item.category==='Livestock and Poultry Products')).length / itemsPerPage);
     // Logic to slice the array based on the current page
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -35,14 +41,14 @@ const LiveStockAndPoulrty = (props) => {
   const choosenProducts = []
   const addToCart= async(e)=>{
     
-    if(props.authorizedUser.userName != undefined){
-      const currentCart = props.authorizedUser.cart
-      const currentUserId = props.authorizedUser._id
+    if(authorizedUser.userName != undefined){
+      const currentCart = authorizedUser.cart
+      const currentUserId = authorizedUser._id
       const productId = e.target.parentElement.parentElement.id
       setToLoading(productId)
       setIsLoading(true)
 
-      await props.data.filter((product)=> productId === product._id ? choosenProducts.push(product):null)
+      await data.filter((product)=> productId === product._id ? choosenProducts.push(product):null)
       try{
             const addToCartProducts = {
               cart:[...currentCart,choosenProducts]
@@ -52,13 +58,17 @@ const LiveStockAndPoulrty = (props) => {
         }catch(error){
             alert(error)
         }
-      console.log(props.authorizedUser.userName)
+      console.log(authorizedUser.userName)
       // location.reload();
     }else{
       navigate('/forms/login')
     }
   }
-
+  useEffect(()=>{
+    if(authorizedUser.userName != undefined){
+        setIsUserLoading(false)
+    }
+  },[authorizedUser])
   return (
     <section>
             <div className="shop-filter">
@@ -75,7 +85,7 @@ const LiveStockAndPoulrty = (props) => {
             </div>
         </div>
             <div className="shop-flex-container">
-            {props.data.filter((item,index,data)=>{
+            {isProductLoading ? <ProductsSkeleton />:data.filter((item,index,data)=>{
               if(item.category==='Livestock and Poultry Products'){
                   if(sort === ''){
                       return item;
@@ -124,8 +134,8 @@ const LiveStockAndPoulrty = (props) => {
                         <p className='shop-product-price'>&#8369;{product.price}</p>}
                     </span>
                     <div className="product-spinner-container" id={product._id}>
-                        <div className={`${isLoading && toLoading === product._id ? 'spinner-border spinner-border-on':'spinner-border-off'}`} role="status">
-                          <button className={`${isLoading && toLoading === product._id ? 'visually-hidden':''}`} type='button' onClick={addToCart}>Add to cart</button>
+                        <div className={`${isLoading && toLoading === product._id || isUserLoading ? 'spinner-border spinner-border-on':'spinner-border-off'}`} role="status">
+                          <button className={`${isLoading && toLoading === product._id || isUserLoading ? 'visually-hidden':''}`} type='button' onClick={addToCart}>Add to cart</button>
                         </div>
                     </div>
                 </div>
@@ -146,8 +156,4 @@ const LiveStockAndPoulrty = (props) => {
   )
 }
 
-LiveStockAndPoulrty.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
-  authorizedUser: PropTypes.object,
-};
 export default LiveStockAndPoulrty

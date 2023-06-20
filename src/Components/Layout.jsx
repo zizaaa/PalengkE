@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { Outlet,Link } from "react-router-dom"
 import { HiShoppingCart,HiMail } from "react-icons/hi"
 import { AiOutlineUser,AiOutlineStar,AiTwotonePhone } from "react-icons/ai"
@@ -12,18 +12,23 @@ import logo from '../assets/logo.png'
 import profile from '../assets/profile.png'
 import logoWhite from '../assets/logo_white.png'
 import logo_2 from '../assets/logo2.png'
-import { useState,useEffect } from "react"
 import numeral from 'numeral';
+import { useState,useEffect } from "react"
+import { FetchUsers } from "../FetchUsers"
+import CartSkeleton from "./skeletonLoading/CartSkeleton"
+import UserProfileSkeleton from "./skeletonLoading/UserProfileSkeleton"
 
-const Layout = (props) => {
+const Layout = () => {
+    const { authorizedId,authorizedUser } = FetchUsers()
+
     const [isDropDown, setIsDropDown] = useState(false);
     const [isFixed, setIsFixed]= useState(false)
     const [userSettingsOn, setUserSettingsOn] = useState(false)
-    
-    // dropdown function
+    const [isUserLoading,setIsUserLoading] = useState(true)
     const dropDown=()=>{
         isDropDown ? setIsDropDown(false):setIsDropDown(true)
     }
+
     useEffect(() => {
         
         window.addEventListener('resize', ()=>{
@@ -41,6 +46,11 @@ const Layout = (props) => {
 
       }, []); // Remove the empty dependency array if necessary
 
+        useEffect(()=>{
+            if(authorizedUser.userName != undefined){
+                setIsUserLoading(false)
+            }
+        },[authorizedUser])
     return (
     <>
         <nav id={isFixed ? 'navBar':'nav'}>
@@ -68,10 +78,12 @@ const Layout = (props) => {
                           <img src={logo} className="img-fluid"/>
                         </Link>
 
-                        {props.authorizedId != null  ? (                        <div className="user-container d-none d-lg-flex">
+                        {authorizedId != null  ? (                        <div className="user-container d-none d-lg-flex">
                             <button className="cart" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">
                                 <HiShoppingCart/>
-                                    <span className='cart-overlay-counter'>{props.authorizedUser.cart ? (props.authorizedUser.cart.length):(0)}</span>
+                                    {isUserLoading ? (''):
+                                    <span className='cart-overlay-counter'>{authorizedUser.cart ? (authorizedUser.cart.length):(0)}</span>
+                                    }
                             </button>
                             <button className="user" data-bs-toggle="offcanvas" data-bs-target="#profileSideNav" aria-controls="offcanvasRight">
                                 <AiOutlineUser/>
@@ -108,7 +120,7 @@ const Layout = (props) => {
                               <span className="hoverLine"></span>
                           </Link>
 
-                        {props.authorizedId != null ? (
+                        {authorizedId != null ? (
                             <div className="dropdown-user-container">
                             {/* total price in cart */}
                             <button className="cart" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">
@@ -119,7 +131,7 @@ const Layout = (props) => {
                             </button>
                             <button className="user" data-bs-toggle="offcanvas" data-bs-target="#profileSideNav" aria-controls="offcanvasRight">
                                 <AiOutlineUser/> 
-                                    <span className="account-name ms-2">{props.authorizedUser.firstName ? (props.authorizedUser.firstName):('')}</span>
+                                    <span className="account-name ms-2">{authorizedUser.firstName ? (authorizedUser.firstName):('')}</span>
                             </button>
                         </div>
                         ):(
@@ -153,9 +165,10 @@ const Layout = (props) => {
                 </div>
             </div>
             <div className="offcanvas-body cart-items-container">
-                {
-                    props.authorizedUser.cart ? (
-                        props.authorizedUser.cart.map((cart,index)=>(
+                { isUserLoading ? (<CartSkeleton/>)
+                    
+                    :authorizedUser.cart ? (
+                        authorizedUser.cart.map((cart,index)=>(
                         <div className='cart-product-main-container' key={index}>
                             <input type='checkbox' className='checkBox'/>
                             <div className='cart-product'>
@@ -211,127 +224,132 @@ const Layout = (props) => {
             <div className="offcanvas offcanvas-end custom-profile-nav text-center text-md-left" tabIndex="-1" id="profileSideNav" aria-labelledby="offcanvasRightLabel">
                 <div className="offcanvas-body profile-custom-container">
                         <button type="button" className="profile-back-btn-container" data-bs-dismiss="offcanvas" aria-label="Close">
-                            <BsArrowLeftShort className='profile-back-btn'/>
+                                <BsArrowLeftShort className='profile-back-btn'/>
                         </button>
-                    <div className='row profile-container mb-4'>
-                        <div className='col-md profile-pic-container'>
-                            <img src={profile} className='img-fluid'/>
+            {isUserLoading ? (<UserProfileSkeleton/>):(
+                    <>
+                        <div className='row profile-container mb-4'>
+                            <div className='col-md profile-pic-container'>
+                                <img src={profile} className='img-fluid'/>
+                            </div>
+                            <div className='col-md user-info-container'>
+                                <h4 className='user-name'>{`${authorizedUser.firstName} ${authorizedUser.lastName}`}</h4>
+                                <h6 className='user-address'>{authorizedUser.address}</h6>
+                                <p className='user-membership'>{authorizedUser ? (`${authorizedUser.memberShip === undefined ? (''):(authorizedUser.memberShip)}`):('')}</p>
+                            </div>
                         </div>
-                        <div className='col-md user-info-container'>
-                            <h4 className='user-name'>{`${props.authorizedUser.firstName} ${props.authorizedUser.lastName}`}</h4>
-                            <h6 className='user-address'>{props.authorizedUser.address}</h6>
-                            <p className='user-membership'>{props.authorizedUser ? (`${props.authorizedUser.memberShip === undefined ? (''):(props.authorizedUser.memberShip)}`):('')}</p>
-                        </div>
-                    </div>
-                <div className='account-overall-container'>
-                    <div className='accountDetails-container'>
-                            {/* account details */}
-                            <h5 className='account-details-title'>Account Details</h5>
-                        <div className='account-details-container mb-4'>
-                            <div className='account-details'>
-                                <div className='balance-container'>
-                                    <FaWallet className='wallet-icon'/>
-                                    <p className='balance'>Balance</p>
-                                    <p className='balance-number'>&#8369;{numeral(props.authorizedUser.balance).format('0,0')}</p>
+                    <div className='account-overall-container'>
+                        <div className='accountDetails-container'>
+                                {/* account details */}
+                                <h5 className='account-details-title'>Account Details</h5>
+                            <div className='account-details-container mb-4'>
+                                <div className='account-details'>
+                                    <div className='balance-container'>
+                                        <FaWallet className='wallet-icon'/>
+                                        <p className='balance'>Balance</p>
+                                        <p className='balance-number'>&#8369;{numeral(authorizedUser.balance).format('0,0')}</p>
+                                    </div>
+                                    <div className='payLater-container'>
+                                        <BsFillCreditCard2BackFill className='card-icon'/>
+                                        <p className='paylater'>PayLater</p>
+                                        <p className='paylater-number'>&#8369;{numeral(authorizedUser.payLater).format('0,0')}</p>
+                                    </div>
+                                    <div className='vouchers-container'>
+                                        <HiOutlineTicket className='vouchers-icon'/>
+                                        <p className='vouchers'>PayLater</p>
+                                        <p className='vouchers-number'>{authorizedUser.vouchers ? (`${authorizedUser.vouchers.length > 100 ? (`${authorizedUser.vouchers.length}+`):(authorizedUser.vouchers.length)}`):(0)}</p>
+                                    </div>
                                 </div>
-                                <div className='payLater-container'>
-                                    <BsFillCreditCard2BackFill className='card-icon'/>
-                                    <p className='paylater'>PayLater</p>
-                                    <p className='paylater-number'>&#8369;{numeral(props.authorizedUser.payLater).format('0,0')}</p>
-                                </div>
-                                <div className='vouchers-container'>
-                                    <HiOutlineTicket className='vouchers-icon'/>
-                                    <p className='vouchers'>PayLater</p>
-                                    <p className='vouchers-number'>{props.authorizedUser.vouchers ? (`${props.authorizedUser.vouchers.length > 100 ? (`${props.authorizedUser.vouchers.length}+`):(props.authorizedUser.vouchers.length)}`):(0)}</p>
+                            </div>
+                            {/* purchase */}
+                            <h5 className='purchase-details-title'>My Purchases</h5>
+                            <div className='purchase-details-container'>
+                                <div className='purchase-details'>
+                                    <div className='toShip-container'>
+                                        <span className='icons-container'>
+                                            <VscPackage className='package-icon'/>
+                                            <span className='overlay-cotainer'>{authorizedUser.toShip ? (authorizedUser.toShip.length):(0)}</span>
+                                        </span>
+                                        <p>To Ship</p>
+                                    </div>
+                                    <div className='toReceive-container'>
+                                        <span className='icons-container'>
+                                            <TbTruckDelivery className='toReceive-icon'/>
+                                            <span className='overlay-cotainer'>{authorizedUser.toReceive ? (authorizedUser.toReceive.length):(0)}</span>
+                                        </span>
+                                        <p>To Receive</p>
+                                    </div>
+                                    <div className='toReviews-container'>
+                                        <span className='icons-container'>
+                                            <AiOutlineStar className='toReview-icon'/>
+                                                <span className='overlay-cotainer'>{authorizedUser.toReview ? (authorizedUser.toReview.length):(0)}</span>
+                                        </span>
+                                        <p>To Review</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        {/* purchase */}
-                        <h5 className='purchase-details-title'>My Purchases</h5>
-                        <div className='purchase-details-container'>
-                            <div className='purchase-details'>
-                                <div className='toShip-container'>
-                                    <span className='icons-container'>
-                                        <VscPackage className='package-icon'/>
-                                        <span className='overlay-cotainer'>{props.authorizedUser.toShip ? (props.authorizedUser.toShip.length):(0)}</span>
-                                    </span>
-                                    <p>To Ship</p>
-                                </div>
-                                <div className='toReceive-container'>
-                                    <span className='icons-container'>
-                                        <TbTruckDelivery className='toReceive-icon'/>
-                                        <span className='overlay-cotainer'>{props.authorizedUser.toReceive ? (props.authorizedUser.toReceive.length):(0)}</span>
-                                    </span>
-                                    <p>To Receive</p>
-                                </div>
-                                <div className='toReviews-container'>
-                                    <span className='icons-container'>
-                                        <AiOutlineStar className='toReview-icon'/>
-                                            <span className='overlay-cotainer'>{props.authorizedUser.toReview ? (props.authorizedUser.toReview.length):(0)}</span>
-                                    </span>
-                                    <p>To Review</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    {/* account settings */}
-                <div className='account-settings'>
-                    <button onClick={()=>{userSettingsOn ? (setUserSettingsOn(false)):(setUserSettingsOn(true))}} className={` ${userSettingsOn ? 'settings-button-on':'settings-button'}`} type="button">
-                        <span className='left-side'>
-                            <FaRegUserCircle/>
-                            <p>Account Settings</p>
-                        </span>
-                        <span className='right-side'>
-                            { userSettingsOn ? (<FaChevronDown/>):(<FaChevronRight/>)}
-                        </span>
-                    </button>
-                    <div className={`user-settings-card ${userSettingsOn ? 'user-settings-card-on':''}`}>
-                        <div className="userName-card-user">
-                            <div className='left-side'>
-                                <FaUserAlt className='user-icon'/>
-                                <p className='username-name'>Username</p>
+                        {/* account settings */}
+                    <div className='account-settings'>
+                        <button onClick={()=>{userSettingsOn ? (setUserSettingsOn(false)):(setUserSettingsOn(true))}} className={` ${userSettingsOn ? 'settings-button-on':'settings-button'}`} type="button">
+                            <span className='left-side'>
+                                <FaRegUserCircle/>
+                                <p>Account Settings</p>
+                            </span>
+                            <span className='right-side'>
+                                { userSettingsOn ? (<FaChevronDown/>):(<FaChevronRight/>)}
+                            </span>
+                        </button>
+                        <div className={`user-settings-card ${userSettingsOn ? 'user-settings-card-on':''}`}>
+                            <div className="userName-card-user">
+                                <div className='left-side'>
+                                    <FaUserAlt className='user-icon'/>
+                                    <p className='username-name'>Username</p>
+                                </div>
+                                <div className='right-side'>
+                                    {authorizedUser.userName}
+                                    <button type='button'><FaUserEdit/></button>
+                                </div>
                             </div>
-                            <div className='right-side'>
-                                {props.authorizedUser.userName}
-                                <button type='button'><FaUserEdit/></button>
+                            <div className="userName-card-email">
+                                <div className='left-side'>
+                                    <HiMail className='mail-icon'/>
+                                    <p className='mail-name'>Email</p>
+                                </div>
+                                <div className='right-side'>
+                                    {authorizedUser.email}
+                                    <button type='button'><FaUserEdit/></button>
+                                </div>
                             </div>
-                        </div>
-                        <div className="userName-card-email">
-                            <div className='left-side'>
-                                <HiMail className='mail-icon'/>
-                                <p className='mail-name'>Email</p>
+                            <div className="userName-card-phone">
+                                <div className='left-side'>
+                                    <AiTwotonePhone className='phone-icon'/>
+                                    <p className='phone-name'>Phone</p>
+                                </div>
+                                <div className='right-side'>
+                                    {authorizedUser.number}
+                                    <button type='button'><FaUserEdit/></button>
+                                </div>
                             </div>
-                            <div className='right-side'>
-                                {props.authorizedUser.email}
-                                <button type='button'><FaUserEdit/></button>
+                            <div className="userName-card-key">
+                                <div className='left-side'>
+                                    <FaKey className='key-icon'/>
+                                    <p className='key-name'>Change password</p>
+                                </div>
+                                <div className='right-side'>
+                                    <button type='button'><FaChevronRight/></button>
+                                </div>
                             </div>
-                        </div>
-                        <div className="userName-card-phone">
-                            <div className='left-side'>
-                                <AiTwotonePhone className='phone-icon'/>
-                                <p className='phone-name'>Phone</p>
+                            <div className="userName-lagout-container">
+                                <button className='logout' onClick={()=>{sessionStorage.removeItem('userId'); location.reload()}}>Sign out</button>
                             </div>
-                            <div className='right-side'>
-                                {props.authorizedUser.number}
-                                <button type='button'><FaUserEdit/></button>
-                            </div>
-                        </div>
-                        <div className="userName-card-key">
-                            <div className='left-side'>
-                                <FaKey className='key-icon'/>
-                                <p className='key-name'>Change password</p>
-                            </div>
-                            <div className='right-side'>
-                                <button type='button'><FaChevronRight/></button>
-                            </div>
-                        </div>
-                        <div className="userName-lagout-container">
-                            <button className='logout' onClick={()=>{sessionStorage.removeItem('userId'); location.reload()}}>Sign out</button>
                         </div>
                     </div>
-                </div>
-                </div>
+                    </div>
+                </>
+            )}
+                    
                 </div>
             </div>
 
@@ -396,8 +414,8 @@ const Layout = (props) => {
   )
 }
 
-Layout.propTypes = {
-    authorizedId:PropTypes.string,
-    authorizedUser:PropTypes.object,
-  };
+// Layout.propTypes = {
+//     authorizedId:PropTypes.string,
+//     authorizedUser:PropTypes.object,
+//   };
 export default Layout

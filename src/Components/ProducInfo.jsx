@@ -1,35 +1,38 @@
 import axios from "axios"
-import PropTypes from 'prop-types';
 import { Link, useNavigate, useParams } from "react-router-dom"
+import { useEffect, useState } from 'react';
+import { FaFacebookMessenger } from 'react-icons/fa';
 import { HiShoppingCart,HiOutlineTicket } from 'react-icons/hi'
 import { BsArrowLeftShort, BsFacebook, BsInstagram,BsTwitter } from 'react-icons/bs'
 import { MdOutlineDeleteOutline  } from 'react-icons/md'
 import { AiFillStar,AiOutlineStar } from 'react-icons/ai' 
+import { FetchProduct } from "../FetchProduct";
+import { FetchUsers } from "../FetchUsers";
 import logo from '../assets/logo.png'
 import logo_2 from '../assets/logo2.png'
 import logoWhite from '../assets/logo_white.png'
 import profile from '../assets/profileDark.png'
-import { useState } from 'react';
-import { FaFacebookMessenger } from 'react-icons/fa';
+import Skeleton from '../Components/skeletonLoading/ProductInfoSkeleton'
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL
 
-const ProducInfo = (props) => {
-
+const ProducInfo = () => {
+  const {isProductLoading} = FetchProduct()
+  const { authorizedUser } = FetchUsers()
+  const data = ('session',JSON.parse(sessionStorage.getItem('data')))
+  
   const navigate = useNavigate();
   const { id } = useParams();
-  const product = props.data.find(product => product._id === id)
+
+  const product = data.find(product => product._id === id)
   const [isLoading, setIsLoading] = useState(false)
   const [toLoading,setToLoading] = useState('');
+  const [isUserLoading,setIsUserLoading] = useState(true)
   const [imgSrc, setImgSrc] = useState(product.img[0].imgOne);
   const maxRating = 5;
-  if(!product){
-      navigate('*');
-  }
-  
-  
+
   //share url
-    const shareUrl = `${window.location.href}/${id}`;
+    const shareUrl = window.location.href;
     const shareTitle = `${product.name}`;
     const handleMessengerShare = () => {
       const encodedUrl = encodeURIComponent(shareUrl);
@@ -42,14 +45,14 @@ const ProducInfo = (props) => {
     const choosenProducts = []
 
     const addToCart= async(e)=>{
-        if(props.authorizedUser.userName != undefined){
-            const currentCart = props.authorizedUser.cart
-            const currentUserId = props.authorizedUser._id
+        if(authorizedUser.userName != undefined){
+            const currentCart = authorizedUser.cart
+            const currentUserId = authorizedUser._id
             const productId = e.target.id
             setToLoading(productId)
             setIsLoading(true)
 
-            await props.data.filter((product)=> productId === product._id ? choosenProducts.push(product):null)
+            await data.filter((product)=> productId === product._id ? choosenProducts.push(product):null)
             try{
                     const addToCartProducts = {
                     cart:[...currentCart,choosenProducts]
@@ -64,10 +67,36 @@ const ProducInfo = (props) => {
         }
     }
 
-    // console.log(product)
+    useEffect(()=>{
+      if(authorizedUser.userName != undefined){
+          setIsUserLoading(false)
+      }
+  },[authorizedUser])
+
+
+  const computeStarRatings = (totalRatings) => {
+    const averageRating = calculateAverageRating(totalRatings);
+    const roundedRating = Math.round(averageRating * 10) / 10; // Round to one decimal place
+    const cappedRating = Math.min(roundedRating, 5); // Cap the rating to a maximum of 5
+  
+    return cappedRating;
+  };
+  
+  const calculateAverageRating = (totalRatings) => {
+    const sumRatings = totalRatings.reduce((acc, rating) => acc + rating, 0);
+    const averageRating = sumRatings / totalRatings.length;
+  
+    return averageRating;
+  };
+
+  const ratings = product.usersProductReviews.map((data) => data.stars);
+  const cappedRating = computeStarRatings(ratings);
+  const filledStars = Math.floor(cappedRating);
+  const decimalPart = cappedRating - filledStars;
+  const starCounter = decimalPart > 0 ? `${cappedRating.toFixed(1)}` : `${filledStars}.0`;
   return (
 <>
-    <section>
+  <section>
         <div className='product-info-nav'>
             <div className='container product-info-nav-container'>
               <div className='left-side'>
@@ -76,13 +105,22 @@ const ProducInfo = (props) => {
                   </Link>
               </div>
               <div className='right-side'>
-                <button type='button' data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">
-                    <HiShoppingCart/>
-                </button>
-                <span className='cart-product-counter'>{props.authorizedUser.cart != undefined ? props.authorizedUser.cart.length:''}</span>
+                  {authorizedUser.userName != undefined ? (
+                    <>
+                    <button type='button' data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">
+                      <HiShoppingCart/>
+                    </button>
+                    <span className='cart-product-counter'>{authorizedUser.cart != undefined ? authorizedUser.cart.length:''}</span>
+                    </>
+                  ):''}
               </div>
             </div>
         </div>
+    {
+      isProductLoading ? (
+          <Skeleton/>
+      ):(
+        <>
         <div className='container'>
             <div className='product-info-card'>
                 <div className='product-info-img-container'>
@@ -93,7 +131,7 @@ const ProducInfo = (props) => {
                         <button type="button" onClick={()=>{setImgSrc(product.img[0].imgOne)}}>
                             <img src={product.img[0].imgOne} className="img-fluid"/>
                         </button>
-                        <button type="button" onClick={()=>{setImgSrc(product.img[0].imgTwo)}}>
+                        <button type="button" className="center-btn" onClick={()=>{setImgSrc(product.img[0].imgTwo)}}>
                             <img src={product.img[0].imgTwo} className="img-fluid"/>
                         </button>
                         <button type="button" onClick={()=>{setImgSrc(product.img[0].imgThree)}}>
@@ -140,15 +178,15 @@ const ProducInfo = (props) => {
                     <div className='sold-ratings-container'>
                         <span className="stars-container">
                             <p className='star-counter'>
-                              {product.stars ? `${product.stars}.0`:'0'}
+                              {starCounter}
                             </p>
                             {[...Array(maxRating)].map((_, starIndex) => (
-                                        <p
-                                        key={starIndex}
-                                        className={starIndex < product.stars ? 'star-filled' : 'star'}
-                                        >
-                                        {starIndex < product.stars ? <AiFillStar /> : <AiOutlineStar />}
-                                        </p>
+                                <p
+                                  key={starIndex}
+                                  className={starIndex < filledStars ? 'star-filled' : 'star'}
+                                >
+                                  {starIndex < filledStars ? <AiFillStar /> : <AiOutlineStar />}
+                                </p>
                             ))}
                         </span>
                         <div className='reviews-solds'>
@@ -198,9 +236,9 @@ const ProducInfo = (props) => {
 
                       {/* add to cart and buy now btn */}
                       <div className='addToCart-BuyNow-btn'>
-                        <div className={isLoading ? 'custom-spinner-loading':'custom-spinner'} id={product._id}>
-                            <div className={`${isLoading && toLoading === product._id ? 'spinner-border':''}`} role="status">
-                            <button className={`${isLoading && toLoading === product._id ? 'visually-hidden':''}`} onClick={addToCart} type='button' id={product._id}>
+                        <div className={isLoading || isUserLoading ? 'custom-spinner-loading':'custom-spinner'} id={product._id}>
+                            <div className={`${isLoading && toLoading === product._id || isUserLoading ? 'spinner-border':''}`} role="status">
+                            <button className={`${isLoading && toLoading === product._id || isUserLoading ? 'visually-hidden':''}`} onClick={addToCart} type='button' id={product._id}>
                           <span><HiShoppingCart/></span>
                           Add to cart</button>
                             </div>
@@ -244,10 +282,13 @@ const ProducInfo = (props) => {
                 </div>
             </div>
         </div>
+        </>
+      )
+    }
+    </section>
 
-
-                {/* cart sidenav */}
-                <div className="offcanvas offcanvas-end custom-sidenav-cart" tabIndex="-1" id="cartSideNav" aria-labelledby="offcanvasRightLabel">
+            {/* cart sidenav */}
+            <div className="offcanvas offcanvas-end custom-sidenav-cart" tabIndex="-1" id="cartSideNav" aria-labelledby="offcanvasRightLabel">
               <div className="offcanvas-header custom-sidenav-cart-header">
                 <div className='header-container' id="offcanvasRightLabel">
                     {/* <HiShoppingCart/> */}
@@ -264,8 +305,8 @@ const ProducInfo = (props) => {
             </div>
             <div className="offcanvas-body cart-items-container">
                 {
-                    props.authorizedUser.cart ? (
-                        props.authorizedUser.cart.map((cart,index)=>(
+                    authorizedUser.cart ? (
+                        authorizedUser.cart.map((cart,index)=>(
                         <div className='cart-product-main-container' key={index}>
                             <input type='checkbox' className='checkBox'/>
                             <div className='cart-product'>
@@ -317,8 +358,6 @@ const ProducInfo = (props) => {
                     </div>
                 </div>
             </div>
-    </section>
-
     <footer className=" py-5">
             <div className="container">
                 
@@ -376,9 +415,4 @@ const ProducInfo = (props) => {
   </>
   )
 }
-ProducInfo.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
-  authorizedUser: PropTypes.object,
-  authorizedId:PropTypes.string,
-};
 export default ProducInfo
