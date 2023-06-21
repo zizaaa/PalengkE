@@ -50,7 +50,7 @@ const Login = () => {
           <div className='img-container'>
             <img src={enter} className='img-fluid' alt='Enter'/>
           </div>
-          <p>Create Account</p>
+          <p>Log In Account</p>
         </div>
         <form>
           <input
@@ -66,7 +66,7 @@ const Login = () => {
             required
           />
           {errorMessage && <p>{errorMessage}</p>}
-          <button type='submit' onClick={login}>Sign Up</button>
+          <button type='submit' onClick={login}>Sign In</button>
         </form>
         <div className='bottom-form'>
           <p>Don't have an account yet?</p>
