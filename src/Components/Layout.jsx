@@ -1,11 +1,11 @@
-// import PropTypes from 'prop-types';
+// import axios from "axios"
 import { Outlet,Link } from "react-router-dom"
 import { HiShoppingCart,HiMail } from "react-icons/hi"
 import { AiOutlineUser,AiOutlineStar,AiTwotonePhone } from "react-icons/ai"
 import { HiMenuAlt3,HiOutlineTicket } from "react-icons/hi"
 import { BsArrowLeftShort,BsFacebook, BsInstagram,BsTwitter,BsFillCreditCard2BackFill } from "react-icons/bs"
 import {FaKey,FaUserEdit, FaFacebookMessenger,FaWallet,FaRegUserCircle, FaUserAlt, FaChevronRight, FaChevronDown} from "react-icons/fa"
-import { MdOutlineDeleteOutline } from 'react-icons/md'
+// import { MdOutlineDeleteOutline } from 'react-icons/md'
 import { VscPackage } from 'react-icons/vsc'
 import { TbTruckDelivery } from 'react-icons/tb'
 import logo from '../assets/logo.png'
@@ -17,6 +17,9 @@ import { useState,useEffect } from "react"
 import { FetchUsers } from "../FetchUsers"
 import CartSkeleton from "./skeletonLoading/CartSkeleton"
 import UserProfileSkeleton from "./skeletonLoading/UserProfileSkeleton"
+import { MdOutlineDeleteOutline } from "react-icons/md"
+// const env = import.meta.env;
+// const URL = env.VITE_REACT_SERVER_URL
 
 const Layout = () => {
     const { authorizedId,authorizedUser } = FetchUsers()
@@ -28,6 +31,43 @@ const Layout = () => {
     const dropDown=()=>{
         isDropDown ? setIsDropDown(false):setIsDropDown(true)
     }
+
+    // const createNewCart = async () => {
+    //     if(!isUserLoading){
+
+    //         const cartItems = await Promise.all(authorizedUser.cart.map((data) => data[0]));
+        
+    //         const uniqueItems = {};
+    
+    //         cartItems.forEach(item => {
+    //             const key = JSON.stringify(item);
+    //             if (uniqueItems[key]) {
+    //                 uniqueItems[key].item++;
+    //             } else {
+    //                 uniqueItems[key] = { ...item, item: 1 };
+    //             }
+    //         });
+            
+    //         const resultArray = Object.values(uniqueItems);
+
+    //         // console.log(resultArray)
+    //         try {
+    //             const updatedCart = {
+    //                 newCart:[...resultArray]
+    //             }
+
+    //             await axios.put(`${URL}/user/${authorizedId}`,updatedCart)
+    //         } catch (error) {
+    //             console.log(error)
+    //         }
+    //     }
+    // };
+        
+    //     useEffect(() => {
+    //         createNewCart();
+    //     },[authorizedUser]);
+
+    // // console.log(authorizedUser.cart)
 
     useEffect(() => {
         
@@ -56,8 +96,9 @@ const Layout = () => {
         }else{
             setIsUserLoading(false)
         }
-        // console.log()
     },[authorizedUser])
+
+    // console.log(filteredArray)
     return (
     <>
         <nav id={isFixed ? 'navBar':'nav'}>
@@ -85,12 +126,17 @@ const Layout = () => {
                           <img src={logo} className="img-fluid"/>
                         </Link>
 
-                        {authorizedId != null  ? (                        <div className="user-container d-none d-lg-flex">
+                        {authorizedId != null  ? (                        
+                            <div className="user-container d-none d-lg-flex">
                             <button className="cart" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">
                                 <HiShoppingCart/>
-                                    {isUserLoading ? (''):
+                                    {authorizedUser.cart != undefined ? authorizedUser.cart.length <=0 ?'':(
+                                        <span className='cart-overlay-counter'>{authorizedUser.cart.length}</span>
+                                    ):''}
+                                    {/* {isUserLoading ? (''):
+                                    
                                     <span className='cart-overlay-counter'>{authorizedUser.cart ? (authorizedUser.cart.length):(0)}</span>
-                                    }
+                                    } */}
                             </button>
                             <button className="user" data-bs-toggle="offcanvas" data-bs-target="#profileSideNav" aria-controls="offcanvasRight">
                                 <AiOutlineUser/>
@@ -180,15 +226,15 @@ const Layout = () => {
                             <input type='checkbox' className='checkBox'/>
                             <div className='cart-product'>
                                 <div className='cart-img-container'>
-                                    <img src={cart[0].img[0].imgOne} className='img-fluid'/>
+                                    <img src={cart.img[0].imgOne} className='img-fluid'/>
                                 </div>
                                 <div className='cart-product-info'>
                                     <h4 className='cart-product-name'>
-                                        {cart[0].name}
+                                        {cart.name}
                                     </h4>
                                     <h5 className='cart-product-price'>
                                         <span>&#8369;</span>
-                                        {cart[0].price}
+                                        {cart.sale ? cart.newPrice:cart.price}
                                     </h5>
                                     <div className='cart-product-quantity-container'>
                                         <p className='cart-product-quantity'>
@@ -196,7 +242,7 @@ const Layout = () => {
                                         </p>
                                         <div className='cart-product-quantity-setter-container'>
                                             <button type='button'>-</button>
-                                            <span className='quantity-count'>1</span>
+                                            <span className='quantity-count'>{cart.item}</span>
                                             <button type='button'>+</button>
                                         </div>
                                     </div>

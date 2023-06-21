@@ -42,44 +42,100 @@ const ProducInfo = () => {
     };
 
 
-    const choosenProducts = []
+    let choosenProducts = {};
 
     const addToCart= async(e)=>{
         if(authorizedUser.userName != undefined){
             const currentCart = authorizedUser.cart
             const currentUserId = authorizedUser._id
-            const productId = e.target.id
+            const productId = e.target.parentElement.parentElement.id
             setToLoading(productId)
             setIsLoading(true)
 
-            await data.filter((product)=> productId === product._id ? choosenProducts.push(product):null)
-            try{
-                    const addToCartProducts = {
-                    cart:[...currentCart,choosenProducts]
+            data.filter((product)=> productId === product._id ? choosenProducts = product:null)
+
+            if(currentCart != ''){
+                let bool = false;
+                const newCart = currentCart.map((item)=>{
+                    if(item.id === choosenProducts._id){
+                        const updatedItem = {...item,item:1 + item.item}
+                        bool = true
+                        return updatedItem
                     }
-                    await axios.put(`${URL}/user/${currentUserId}`,addToCartProducts)
-                    setIsLoading(false)
-            }catch(error){
-                    alert(error)
+                    return item;
+                })
+                console.log(newCart === currentCart)
+                console.log(bool)
+                if(bool){
+                    console.log('update')
+                        try{
+                            const addToCartProducts = {
+                            cart:newCart
+                            }
+                            await axios.put(`${URL}/user/${currentUserId}`,addToCartProducts)
+                            setIsLoading(false)
+                        }catch(error){
+                            alert(error)
+                        }
+                        bool=false
+                }else{
+                    console.log('add')
+                        try{
+                            const addToCartProducts = {
+                            cart:[...currentCart,{
+                                id:choosenProducts._id,
+                                name:choosenProducts.name,
+                                newPrice:choosenProducts.newPrice,
+                                salePercentage:choosenProducts.salePercentage,
+                                price:choosenProducts.price,
+                                quantity:choosenProducts.quantity,
+                                bestSeller:choosenProducts.bestSeller,
+                                sale:choosenProducts.sale,
+                                category:choosenProducts.category,
+                                img:choosenProducts.img,
+                                usersProductReviews:choosenProducts.usersProductReviews,
+                                productSold:choosenProducts.productSold,
+                                description:choosenProducts.description,
+                                item:1,
+                            }]
+                            }
+                            await axios.put(`${URL}/user/${currentUserId}`,addToCartProducts)
+                            setIsLoading(false)
+                        }catch(error){
+                            alert(error)
+                        }
+                }
+            }else{
+                    try{
+                        const addToCartProducts = {
+                        cart:[...currentCart,{
+                            id:choosenProducts._id,
+                            name:choosenProducts.name,
+                            newPrice:choosenProducts.newPrice,
+                            salePercentage:choosenProducts.salePercentage,
+                            price:choosenProducts.price,
+                            quantity:choosenProducts.quantity,
+                            bestSeller:choosenProducts.bestSeller,
+                            sale:choosenProducts.sale,
+                            category:choosenProducts.category,
+                            img:choosenProducts.img,
+                            usersProductReviews:choosenProducts.usersProductReviews,
+                            productSold:choosenProducts.productSold,
+                            description:choosenProducts.description,
+                            item:1,
+                        }]
+                        }
+                        await axios.put(`${URL}/user/${currentUserId}`,addToCartProducts)
+                        setIsLoading(false)
+                    }catch(error){
+                        alert(error)
+                    }
             }
+
         }else{
             navigate('/forms/login')
         }
     }
-
-    useEffect(()=>{
-      if(sessionStorage.getItem('userId') != null){
-          if(authorizedUser.userName === undefined){
-              setIsUserLoading(true)
-          }else{
-              setIsUserLoading(false)
-          }
-      }else{
-          setIsUserLoading(false)
-      }
-      // console.log()
-  },[authorizedUser])
-
 
   const computeStarRatings = (totalRatings) => {
     const averageRating = calculateAverageRating(totalRatings);
@@ -101,6 +157,19 @@ const ProducInfo = () => {
   const filledStars = Math.floor(cappedRating);
   const decimalPart = cappedRating - filledStars;
   const starCounter = decimalPart > 0 ? `${cappedRating.toFixed(1)}` : `${filledStars}.0`;
+  
+  useEffect(()=>{
+    if(sessionStorage.getItem('userId') != null){
+        if(authorizedUser.userName === undefined){
+            setIsUserLoading(true)
+        }else{
+            setIsUserLoading(false)
+        }
+    }else{
+        setIsUserLoading(false)
+    }
+  },[authorizedUser])
+
   return (
 <>
   <section>
@@ -117,7 +186,9 @@ const ProducInfo = () => {
                     <button type='button' data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">
                       <HiShoppingCart/>
                     </button>
-                    <span className='cart-product-counter'>{authorizedUser.cart != undefined ? authorizedUser.cart.length:''}</span>
+                    {authorizedUser.cart != undefined ? authorizedUser.cart.length <=0 ?'':(
+                      <span className='cart-product-counter'>{authorizedUser.cart.length}</span>
+                    ):''}
                     </>
                   ):''}
               </div>
@@ -184,7 +255,7 @@ const ProducInfo = () => {
                     <h1 className='product-name'>{product.name}</h1>
                     <div className='sold-ratings-container'>
                         <span className="stars-container">
-                            <p className='star-counter'>
+                            <p className='star-counter m-0'>
                               {starCounter}
                             </p>
                             {[...Array(maxRating)].map((_, starIndex) => (
@@ -318,15 +389,15 @@ const ProducInfo = () => {
                             <input type='checkbox' className='checkBox'/>
                             <div className='cart-product'>
                                 <div className='cart-img-container'>
-                                    <img src={cart[0].img[0].imgOne} className='img-fluid'/>
+                                    <img src={cart.img[0].imgOne} className='img-fluid'/>
                                 </div>
                                 <div className='cart-product-info'>
                                     <h4 className='cart-product-name'>
-                                        {cart[0].name}
+                                        {cart.name}
                                     </h4>
                                     <h5 className='cart-product-price'>
                                         <span>&#8369;</span>
-                                        {cart[0].price}
+                                        {cart.price}
                                     </h5>
                                     <div className='cart-product-quantity-container'>
                                         <p className='cart-product-quantity'>
@@ -334,7 +405,7 @@ const ProducInfo = () => {
                                         </p>
                                         <div className='cart-product-quantity-setter-container'>
                                             <button type='button'>-</button>
-                                            <span className='quantity-count'>1</span>
+                                            <span className='quantity-count'>{cart.item}</span>
                                             <button type='button'>+</button>
                                         </div>
                                     </div>

@@ -2,11 +2,13 @@ import axios from "axios"
 import { useState,useEffect } from "react";
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
 import { FaChevronLeft,FaChevronRight } from 'react-icons/fa'
+import ReviewsSkeleton from "./skeletonLoading/ReviewsSkeleton";
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL
 
 const Reviews = () => {
 
+    const [isReviewLoading, setIsReviewLoading] = useState(true)
     const [reviews, setReviews] = useState([])
     const itemsPerPage = 1;
     const [currentPage, setCurrentPage] = useState(1);
@@ -39,6 +41,7 @@ const Reviews = () => {
             try {
                 const {data} = await axios.get(`${URL}/overAllReviews`)
                 setReviews(data)
+                setIsReviewLoading(false)
             } catch (error) {
                 console.log(error)
             }
@@ -61,13 +64,13 @@ const Reviews = () => {
         <div className="main-container">
             <div className="container users-reviews-container">
                 {/* BUTTONS */}
-                    <button type="button" className="button-left" onClick={ handlePrevPage} disabled={currentPage === 1}>
+                    <button type="button" className="button-left" onClick={ handlePrevPage} disabled={currentPage === 1 || isReviewLoading}>
                         <FaChevronLeft/>
                     </button>
-                    <button type="button" className="button-right" onClick={handleNextPage} disabled={currentPage === totalPages}>
+                    <button type="button" className="button-right" onClick={handleNextPage} disabled={currentPage === totalPages || isReviewLoading}>
                         <FaChevronRight/>
                     </button>
-                {displayedItems.map((review)=>(
+                {isReviewLoading ?  <ReviewsSkeleton/>:displayedItems.map((review)=>(
                     <div className="reviews" key={review._id}>
                         <div className="date-stars-container">
                             <span className="stars-container">

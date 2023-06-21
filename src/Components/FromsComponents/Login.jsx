@@ -50,7 +50,7 @@ const Login = () => {
               <form>
                   <input type='text' onChange={(e)=>{setUserName(e.target.value)}} placeholder='User name' required/>
                   <input type='text' onChange={(e)=>{setPassword(e.target.value)}} placeholder='Password' required/>
-                    <button type='submit' onClick={login}>Sign Up</button>
+                    <button type='submit' onClick={login}>Sign In</button>
               </form>
               <div className='bottom-form'>
                 <p>Don't have an account yet?</p>
