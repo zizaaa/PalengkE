@@ -50,7 +50,7 @@ const Login = () => {
           <div className='img-container'>
             <img src={enter} className='img-fluid' alt='Enter'/>
           </div>
-          <p>Log In Account</p>
+          <p>Sign In</p>
         </div>
         <form>
           <input
