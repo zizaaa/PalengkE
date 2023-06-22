@@ -92,6 +92,7 @@ const UpAndLowLand = () => {
                               usersProductReviews:choosenProducts.usersProductReviews,
                               productSold:choosenProducts.productSold,
                               description:choosenProducts.description,
+                              checked:false,
                               item:1,
                           }]
                           }
@@ -118,6 +119,7 @@ const UpAndLowLand = () => {
                           usersProductReviews:choosenProducts.usersProductReviews,
                           productSold:choosenProducts.productSold,
                           description:choosenProducts.description,
+                          checked:false,
                           item:1,
                       }]
                       }
@@ -163,7 +165,7 @@ const UpAndLowLand = () => {
         </div>
             <div className="shop-flex-container">
             {isProductLoading ? <ProductsSkeleton />:data.filter((item,index,data)=>{
-                if(item.category==='Upland Vegetables'||item.category==='Lowland Vegetables'){
+                if(item.category==='Vegetables'){
                   if(sort === ''){
                     return item;
                   }else if(item.name.toLowerCase().includes(sort.toLocaleLowerCase())){

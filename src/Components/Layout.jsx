@@ -1,11 +1,11 @@
-// import axios from "axios"
+import axios from "axios"
 import { Outlet,Link } from "react-router-dom"
 import { HiShoppingCart,HiMail } from "react-icons/hi"
 import { AiOutlineUser,AiOutlineStar,AiTwotonePhone } from "react-icons/ai"
 import { HiMenuAlt3,HiOutlineTicket } from "react-icons/hi"
 import { BsArrowLeftShort,BsFacebook, BsInstagram,BsTwitter,BsFillCreditCard2BackFill } from "react-icons/bs"
 import {FaKey,FaUserEdit, FaFacebookMessenger,FaWallet,FaRegUserCircle, FaUserAlt, FaChevronRight, FaChevronDown} from "react-icons/fa"
-// import { MdOutlineDeleteOutline } from 'react-icons/md'
+import { MdOutlineDeleteOutline, MdLocationPin } from "react-icons/md"
 import { VscPackage } from 'react-icons/vsc'
 import { TbTruckDelivery } from 'react-icons/tb'
 import logo from '../assets/logo.png'
@@ -17,9 +17,8 @@ import { useState,useEffect } from "react"
 import { FetchUsers } from "../FetchUsers"
 import CartSkeleton from "./skeletonLoading/CartSkeleton"
 import UserProfileSkeleton from "./skeletonLoading/UserProfileSkeleton"
-import { MdOutlineDeleteOutline } from "react-icons/md"
-// const env = import.meta.env;
-// const URL = env.VITE_REACT_SERVER_URL
+const env = import.meta.env;
+const URL = env.VITE_REACT_SERVER_URL
 
 const Layout = () => {
     const { authorizedId,authorizedUser } = FetchUsers()
@@ -32,42 +31,193 @@ const Layout = () => {
         isDropDown ? setIsDropDown(false):setIsDropDown(true)
     }
 
-    // const createNewCart = async () => {
-    //     if(!isUserLoading){
+    const checkedProducts = async (e)=>{
+        const currentCart = authorizedUser.cart
+        const productId = e.target.id
 
-    //         const cartItems = await Promise.all(authorizedUser.cart.map((data) => data[0]));
+            let productUpdated = false;
+            const checkedProduct = currentCart.map((product)=>{
+                if(product.id === productId){
+                    const editedroduct = product.checked ? {...product,checked:false}:{...product,checked:true}
+                    
+                    productUpdated = true;
+                    return editedroduct
+                }
+                return product
+            })
+
+            if(productUpdated){
+                try{
+                    const addToCartProducts = {
+                        cart:checkedProduct
+                    }
+                    await axios.put(`${URL}/user/${authorizedId}`,addToCartProducts)
+                }catch(error){
+                    alert(error)
+                }
+                    productUpdated=false
+            }
+    }
+
+    const [isAllSelected,setIsAllSelected] = useState(false)
+    const selectAll = async()=>{
+        const currentCart = authorizedUser.cart
+        setIsAllSelected(true)
+            const checkedProduct = currentCart.map((product)=>{
+                    const editedroduct = {...product,checked:true}
+                    return editedroduct
+            })
+                try{
+                    const addToCartProducts = {
+                        cart:checkedProduct
+                    }
+                    await axios.put(`${URL}/user/${authorizedId}`,addToCartProducts)
+                }catch(error){
+                    alert(error)
+                }
+    }
+    const unSelectAll = async()=>{
+        const currentCart = authorizedUser.cart
+        setIsAllSelected(false)
+
+            const checkedProduct = currentCart.map((product)=>{
+                    const editedroduct = {...product,checked:false}
+                    return editedroduct
+            })
+                try{
+                    const addToCartProducts = {
+                        cart:checkedProduct
+                    }
+                    await axios.put(`${URL}/user/${authorizedId}`,addToCartProducts)
+                }catch(error){
+                    alert(error)
+                }
+    }
+
+    const deleteSelected = async()=>{
+        let selectedCount = 0;
+        const currentCart = authorizedUser.cart
+
+        setIsAllSelected(false)
+        currentCart.forEach((selectedItem)=>{
+            if(selectedItem.checked){
+                selectedCount += 1
+            }
+        })
         
-    //         const uniqueItems = {};
-    
-    //         cartItems.forEach(item => {
-    //             const key = JSON.stringify(item);
-    //             if (uniqueItems[key]) {
-    //                 uniqueItems[key].item++;
-    //             } else {
-    //                 uniqueItems[key] = { ...item, item: 1 };
-    //             }
-    //         });
-            
-    //         const resultArray = Object.values(uniqueItems);
+        if(selectedCount >= 1 ){
+            const updatedCart = currentCart.filter((product)=> product.checked !== true)
+                try{
+                    const addToCartProducts = {
+                        cart:updatedCart
+                    }
+                    await axios.put(`${URL}/user/${authorizedId}`,addToCartProducts)
+                }catch(error){
+                    alert(error)
+                }
+        }
+    }
 
-    //         // console.log(resultArray)
-    //         try {
-    //             const updatedCart = {
-    //                 newCart:[...resultArray]
-    //             }
-
-    //             await axios.put(`${URL}/user/${authorizedId}`,updatedCart)
-    //         } catch (error) {
-    //             console.log(error)
-    //         }
-    //     }
-    // };
+    const deleteSingleItem = async(e)=>{
+        const toDeleteId = e.target.id
+        const currentCart = authorizedUser.cart
         
-    //     useEffect(() => {
-    //         createNewCart();
-    //     },[authorizedUser]);
+            const updatedCart = currentCart.filter((product)=> product.id !== toDeleteId)
+            try{
+                const addToCartProducts = {
+                    cart:updatedCart
+                }
+                await axios.put(`${URL}/user/${authorizedId}`,addToCartProducts)
+            }catch(error){
+                alert(error)
+            }
+    }
 
-    // // console.log(authorizedUser.cart)
+    const [errorMessage, setErrorMessage] = useState('');
+    const [isCheckOut,setIsCheckOut] = useState(false)
+    const [voucher, setVoucher] = useState('')
+    const checkOut =()=>{
+        let selectedCount = 0;
+        const currentCart = authorizedUser.cart
+        //checked
+        currentCart.forEach((selectedItem)=>{
+            if(selectedItem.checked){
+                selectedCount += 1
+            }
+        })
+
+        if(selectedCount <= 0){
+            setErrorMessage('Please select product to check out!')
+        }else{
+            setErrorMessage('')
+            setIsCheckOut(true)
+        }
+    }
+
+   const increaseItem=async(e)=>{
+    const currentCart = authorizedUser.cart
+    const productId = e.target.parentElement.id
+
+        
+        const increaseItem = currentCart.map((item)=>{
+            if(item.id === productId){
+                const editedroduct = {...item,item:item.item + 1}
+                
+                return editedroduct
+            }
+            return item
+        })
+
+            try{
+                const addToCartProducts = {
+                    cart:increaseItem
+                }
+                await axios.put(`${URL}/user/${authorizedId}`,addToCartProducts)
+            }catch(error){
+                alert(error)
+            }
+   } 
+
+   const decreaseItem =async(e)=>{
+    const currentCart = authorizedUser.cart
+    const productId = e.target.parentElement.id
+        
+        const decreaseItem = currentCart.map((item)=>{
+            if(item.id === productId){
+                const editedroduct = {...item,item:item.item > 1 ? item.item - 1:1}
+                
+                return editedroduct
+            }
+            return item
+        })
+
+            try{
+                const addToCartProducts = {
+                    cart:decreaseItem
+                }
+                await axios.put(`${URL}/user/${authorizedId}`,addToCartProducts)
+            }catch(error){
+                alert(error)
+            }
+   } 
+
+    // checked item total price
+    let totalPrice = 0;
+    const totalPriceFunc =()=>{
+        const currentCart = authorizedUser.cart
+        if(currentCart != undefined){
+            currentCart.forEach(item => {
+                if(item.checked){
+                    if (item.sale) {
+                        totalPrice += item.newPrice * item.item;
+                    } else {
+                        totalPrice += item.price * item.item;
+                    }
+                }
+            });
+        }
+    }
+    totalPriceFunc();
 
     useEffect(() => {
         
@@ -98,7 +248,6 @@ const Layout = () => {
         }
     },[authorizedUser])
 
-    // console.log(filteredArray)
     return (
     <>
         <nav id={isFixed ? 'navBar':'nav'}>
@@ -133,10 +282,6 @@ const Layout = () => {
                                     {authorizedUser.cart != undefined ? authorizedUser.cart.length <=0 ?'':(
                                         <span className='cart-overlay-counter'>{authorizedUser.cart.length}</span>
                                     ):''}
-                                    {/* {isUserLoading ? (''):
-                                    
-                                    <span className='cart-overlay-counter'>{authorizedUser.cart ? (authorizedUser.cart.length):(0)}</span>
-                                    } */}
                             </button>
                             <button className="user" data-bs-toggle="offcanvas" data-bs-target="#profileSideNav" aria-controls="offcanvasRight">
                                 <AiOutlineUser/>
@@ -202,8 +347,8 @@ const Layout = () => {
 
         <section>
         {/* cart sidenav */}
-          <div className="offcanvas offcanvas-end custom-sidenav-cart" tabIndex="-1" id="cartSideNav" aria-labelledby="offcanvasRightLabel">
-              <div className="offcanvas-header custom-sidenav-cart-header">
+        <div className="offcanvas offcanvas-end custom-sidenav-cart" tabIndex="-1" id="cartSideNav" aria-labelledby="offcanvasRightLabel">
+            <div className={`offcanvas-header custom-sidenav-cart-header ${isCheckOut ? 'hide-cart':''}`}>
                 <div className='header-container' id="offcanvasRightLabel">
                     {/* <HiShoppingCart/> */}
                         <div className='logo-container'>
@@ -212,18 +357,27 @@ const Layout = () => {
                         <button type="button" className="cart-back-btn" data-bs-dismiss="offcanvas" aria-label="Close">
                             <BsArrowLeftShort className='cart-back-icon'/>
                         </button>
-                        <button type="button" className="cart-edit-btn">
+                        <button type="button" className="cart-edit-btn"  id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                             Edit items
                         </button>
+                        {/* dropdown */}
+                        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            {isAllSelected ? 
+                                <li><button onClick={unSelectAll} className="dropdown-item">Unselect all</button></li>
+                            :
+                                <li><button onClick={selectAll} className="dropdown-item">Select all</button></li>
+                            }
+                                <li><button onClick={deleteSelected} className="dropdown-item">Delete all selected</button></li>
+                        </ul>
                 </div>
             </div>
-            <div className="offcanvas-body cart-items-container">
+            <div className={` offcanvas-body cart-items-container ${isCheckOut ? 'hide-cart':''}`}>
                 { isUserLoading ? (<CartSkeleton/>)
                     
                     :authorizedUser.cart ? (
                         authorizedUser.cart.map((cart,index)=>(
                         <div className='cart-product-main-container' key={index}>
-                            <input type='checkbox' className='checkBox'/>
+                            <input id={cart.id} checked={cart.checked} type='checkbox' onChange={(e)=>{checkedProducts(e)}} className='checkBox'/>
                             <div className='cart-product'>
                                 <div className='cart-img-container'>
                                     <img src={cart.img[0].imgOne} className='img-fluid'/>
@@ -240,16 +394,16 @@ const Layout = () => {
                                         <p className='cart-product-quantity'>
                                             Quantity:
                                         </p>
-                                        <div className='cart-product-quantity-setter-container'>
-                                            <button type='button'>-</button>
+                                        <div className='cart-product-quantity-setter-container' id={cart.id}>
+                                            <button type='button' onClick={(e)=>{decreaseItem(e)}}>-</button>
                                             <span className='quantity-count'>{cart.item}</span>
-                                            <button type='button'>+</button>
+                                            <button type='button' onClick={(e)=>{increaseItem(e)}}>+</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <span className='trash-container'>
-                                <button type='button'>
+                                <button type='button' id={cart.id} onClick={(e)=>{deleteSingleItem(e)}}>
                                     <MdOutlineDeleteOutline className='trash-icon'/>
                                 </button>
                             </span>
@@ -262,13 +416,107 @@ const Layout = () => {
                             <div className='voucher'>
                                 <div className='voucher-title'>
                                     <HiOutlineTicket className='voucher-icon'/>
-                                    <h5>Vouncher:</h5>
+                                    <h5>Voucher:</h5>
                                 </div>
-                                <input type='text' placeholder='Put voucher code here...'/>
+                                <div className="voucher-input">
+                                    <div className="dropdown custom-dropdown">
+                                        <button className='dropdown-btn' type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            {voucher ? voucher.name:'Select Voucher'}
+                                        </button>
+                                        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            {authorizedUser.vouchers != undefined ? authorizedUser.vouchers != '' ? 
+                                            
+                                            authorizedUser.vouchers.map((voucher)=>(
+                                                voucher.expired === 'true' || voucher.used === 'true' ? '':
+                                                    <li key={voucher.name}>
+                                                        <button onClick={()=>{setVoucher(voucher)}} className="dropdown-item">
+                                                            {voucher.name}
+                                                            {` - ${voucher.salePercentage}% off`}
+                                                        </button>
+                                                    </li>
+                                            ))
+
+                                            :
+                                                <li>
+                                                    <p className="no-voucher-message">You don't have vouchers</p>
+                                                </li>
+                                            :''}
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div className='checkOut-container'>
-                            <button type='button'>Check Out</button>
+                            <button type='button' onClick={checkOut}>Check Out</button>
+                            <p className="checkout-error-message">
+                                {errorMessage}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* checkOut */}
+                <div className={`${isCheckOut ? 'check-out-container':'hide-checkOut'}`}>
+                    <div className="checkout-header">
+                        <h3>Check Out</h3>
+                        <div className='logo-container'>
+                            <img src={logoWhite} className='img-fluid'/>
+                        </div>
+                        <button type="button" onClick={()=>{setIsCheckOut(false),setVoucher('')}} className="checkout-back-btn">
+                            <BsArrowLeftShort className='checkout-back-icon'/>
+                        </button>
+                    </div>
+                    <div className="delivery-address">
+                        <div className="top-container">
+                            <div className="location-icon-container">
+                                <MdLocationPin/>
+                                <p>Delivery Address</p>
+                            </div>
+                            <div className="edit-location-container">
+                                <button type='button'><FaUserEdit/></button>
+                            </div>
+                        </div>
+                        <div className="user-location-container">
+                            <div className="user-location-info">
+                                <span className="user-name-phone">
+                                    <p className="user-name">
+                                        {`${authorizedUser.firstName}  ${authorizedUser.lastName}`}
+                                    </p>
+                                    <span className="divider">|</span>
+                                    <p className="user-phone">
+                                    {authorizedUser.number}
+                                    </p>
+                                </span>
+                                <p className="user-add">{authorizedUser.address}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="checked-out-Products-container">
+                            {authorizedUser.cart !== undefined ? authorizedUser.cart.map((product,index)=>(
+                                product.checked ? 
+                                <div className="order-products" key={index}>
+                                    <div className="product-img-container">
+                                        <img src={product.img[0].imgOne}/>
+                                    </div>
+                                    <div className="product-info">
+                                        <h3>{product.name}</h3>
+                                        <span className="price-quantity">
+                                            <p>&#8369;{product.sale ? product.newPrice:product.price}</p>
+                                            <p>{product.item}x</p>
+                                        </span>
+                                    </div>
+                                </div>
+                                :''
+                            )):''}
+                    </div>
+                    <div className="place-order-container">
+                        <div className="total-payments-container">
+                            <p>Total payment</p>
+                            {voucher ? <p className="voucher-percent">{`-${voucher.salePercentage}%`}</p>:''}
+                            <p>&#8369;{voucher ? Math.floor(totalPrice - (totalPrice * (voucher.salePercentage / 100))).toLocaleString():totalPrice}</p>
+                        </div>
+                        <div className="placeorder-btn-container">
+                            <button className={voucher ? 'place-order-w-voucher':'place-order'}>Place Order</button>
                         </div>
                     </div>
                 </div>
@@ -309,7 +557,7 @@ const Layout = () => {
                                     </div>
                                     <div className='vouchers-container'>
                                         <HiOutlineTicket className='vouchers-icon'/>
-                                        <p className='vouchers'>PayLater</p>
+                                        <p className='vouchers'>Vouchers</p>
                                         <p className='vouchers-number'>{authorizedUser.vouchers ? (`${authorizedUser.vouchers.length > 100 ? (`${authorizedUser.vouchers.length}+`):(authorizedUser.vouchers.length)}`):(0)}</p>
                                     </div>
                                 </div>

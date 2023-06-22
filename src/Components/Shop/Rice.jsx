@@ -92,6 +92,7 @@ const Rice = () => {
                               usersProductReviews:choosenProducts.usersProductReviews,
                               productSold:choosenProducts.productSold,
                               description:choosenProducts.description,
+                              checked:false,
                               item:1,
                           }]
                           }
@@ -118,6 +119,7 @@ const Rice = () => {
                           usersProductReviews:choosenProducts.usersProductReviews,
                           productSold:choosenProducts.productSold,
                           description:choosenProducts.description,
+                          checked:false,
                           item:1,
                       }]
                       }

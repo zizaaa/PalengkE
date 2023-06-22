@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import axios from "axios"
 import { Link, useNavigate } from "react-router-dom"
 import enter from '/src/assets/enter.png'

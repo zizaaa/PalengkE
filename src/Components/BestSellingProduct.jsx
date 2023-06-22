@@ -46,10 +46,8 @@ const BestSellingProduct = () => {
                     }
                     return item;
                 })
-                console.log(newCart === currentCart)
-                console.log(bool)
+
                 if(bool){
-                    console.log('update')
                         try{
                             const addToCartProducts = {
                             cart:newCart
@@ -61,7 +59,7 @@ const BestSellingProduct = () => {
                         }
                         bool=false
                 }else{
-                    console.log('add')
+
                         try{
                             const addToCartProducts = {
                             cart:[...currentCart,{
@@ -78,6 +76,7 @@ const BestSellingProduct = () => {
                                 usersProductReviews:choosenProducts.usersProductReviews,
                                 productSold:choosenProducts.productSold,
                                 description:choosenProducts.description,
+                                checked:false,
                                 item:1,
                             }]
                             }
@@ -104,6 +103,7 @@ const BestSellingProduct = () => {
                             usersProductReviews:choosenProducts.usersProductReviews,
                             productSold:choosenProducts.productSold,
                             description:choosenProducts.description,
+                            checked:false,
                             item:1,
                         }]
                         }
@@ -129,7 +129,7 @@ const BestSellingProduct = () => {
         }else{
             setIsUserLoading(false)
         }
-        // console.log()
+
     },[authorizedUser])
     
   return (
@@ -163,7 +163,7 @@ const BestSellingProduct = () => {
                             return item;
                         }
                     }else if(category === 'Vegetables'){
-                        if(item.category === 'Upland Vegetables' || item.category === 'Lowland Vegetables' && item.bestSeller){
+                        if(item.category === 'Vegetables' && item.bestSeller){
                             return item;
                         }
                     }else if(category === 'Fruits'){

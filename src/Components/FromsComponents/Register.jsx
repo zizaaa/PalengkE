@@ -24,6 +24,7 @@ const Register = () => {
         setErrorMessage(`Username ${userName} already exists`);
         navigate('/forms/login');
       } else {
+        sessionStorage.setItem('userId', userFound._id);
         navigate('/');
         location.reload();
       }
