@@ -1,8 +1,11 @@
-import PropTypes from 'prop-types'
-import axios from "axios"
-import { Link, useNavigate } from "react-router-dom"
-import enter from '/src/assets/enter.png'
-import { useEffect, useState } from "react"
+import PropTypes from 'prop-types';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import { Link, useNavigate } from 'react-router-dom';
+import enter from '/src/assets/enter.png';
+
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL;
 
@@ -22,7 +25,11 @@ const Login = () => {
       const { data } = await axios.get(`${URL}/users`);
       setUsers(data);
     } catch (error) {
-      alert(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.message,
+      });
     }
   };
 
@@ -36,10 +43,21 @@ const Login = () => {
         navigate('/');
         location.reload();
       } else {
-        setErrorMessage('Wrong password');
+        Swal.fire({
+          showConfirmButton: "true",
+          icon: 'success',
+          title: 'Login Successfully',
+          text: 'Done',
+          confirmButtonColor: "#435e39",
+        });
       }
     } else {
-      setErrorMessage(`No username of ${userName} registered on our database`);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: `Invalid username or password`,
+        confirmButtonColor: "#435e39",
+      });
     }
   };
 
@@ -48,7 +66,7 @@ const Login = () => {
       <div className="Login-form-container">
         <div className='Login-form-head'>
           <div className='img-container'>
-            <img src={enter} className='img-fluid' alt='Enter'/>
+            <img src={enter} className='img-fluid' alt='Enter' />
           </div>
           <p>Sign In</p>
         </div>
