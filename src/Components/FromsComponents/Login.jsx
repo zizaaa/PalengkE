@@ -1,18 +1,9 @@
-<<<<<<< HEAD
-import axios from "axios"
-import { Link, useNavigate } from "react-router-dom"
-import enter from '/src/assets/enter.png'
-import { useEffect, useState } from "react"
-=======
-import PropTypes from 'prop-types';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { Link, useNavigate } from 'react-router-dom';
 import enter from '/src/assets/enter.png';
-
->>>>>>> b17e1be884c1f4f256fbfa9bdfa53ecb56e543b4
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL;
 
