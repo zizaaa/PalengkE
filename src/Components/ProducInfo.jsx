@@ -329,6 +329,100 @@ const productId = e.target.parentElement.id
         }
 } 
 
+  const buyNow = async(e)=>{
+    if(authorizedUser.userName != undefined){
+      const currentCart = authorizedUser.cart
+      const currentUserId = authorizedUser._id
+      const productId = e.target.id
+
+      data.filter((product)=> productId === product._id ? choosenProducts = product:null)
+
+      if(currentCart != ''){
+          let bool = false;
+          const newCart = currentCart.map((item)=>{
+              if(item.id === choosenProducts._id){
+                  const updatedItem = {...item,item:1 + item.item,checked:true}
+                  bool = true
+                  return updatedItem
+              }
+              return item;
+          })
+
+          if(bool){
+                  try{
+                      const addToCartProducts = {
+                      cart:newCart
+                      }
+                      await axios.put(`${URL}/user/${currentUserId}`,addToCartProducts)
+                      setIsLoading(false)
+                      setIsCheckOut(true)
+                  }catch(error){
+                      alert(error)
+                  }
+                  bool=false
+          }else{
+
+                  try{
+                      const addToCartProducts = {
+                      cart:[...currentCart,{
+                          id:choosenProducts._id,
+                          name:choosenProducts.name,
+                          newPrice:choosenProducts.newPrice,
+                          salePercentage:choosenProducts.salePercentage,
+                          price:choosenProducts.price,
+                          quantity:choosenProducts.quantity,
+                          bestSeller:choosenProducts.bestSeller,
+                          sale:choosenProducts.sale,
+                          category:choosenProducts.category,
+                          img:choosenProducts.img,
+                          usersProductReviews:choosenProducts.usersProductReviews,
+                          productSold:choosenProducts.productSold,
+                          description:choosenProducts.description,
+                          checked:true,
+                          item:1,
+                      }]
+                      }
+                      await axios.put(`${URL}/user/${currentUserId}`,addToCartProducts)
+                      setIsLoading(false)
+                      setIsCheckOut(true)
+                  }catch(error){
+                      alert(error)
+                  }
+          }
+      }else{
+              try{
+                  const addToCartProducts = {
+                  cart:[...currentCart,{
+                      id:choosenProducts._id,
+                      name:choosenProducts.name,
+                      newPrice:choosenProducts.newPrice,
+                      salePercentage:choosenProducts.salePercentage,
+                      price:choosenProducts.price,
+                      quantity:choosenProducts.quantity,
+                      bestSeller:choosenProducts.bestSeller,
+                      sale:choosenProducts.sale,
+                      category:choosenProducts.category,
+                      img:choosenProducts.img,
+                      usersProductReviews:choosenProducts.usersProductReviews,
+                      productSold:choosenProducts.productSold,
+                      description:choosenProducts.description,
+                      checked:true,
+                      item:1,
+                  }]
+                  }
+                  await axios.put(`${URL}/user/${currentUserId}`,addToCartProducts)
+                  setIsLoading(false)
+                  setIsCheckOut(true)
+              }catch(error){
+                  alert(error)
+              }
+      }
+
+  }else{
+      navigate('/forms/login')
+  }
+  }
+
 // checked item total price
 let totalPrice = 0;
 const totalPriceFunc =()=>{
@@ -509,7 +603,7 @@ totalPriceFunc();
                           Add to cart</button>
                             </div>
                         </div>
-                          <button type='button'>Buy Now</button>
+                          <button type='button' id={product._id} onClick={(e)=>{buyNow(e)}} data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">Buy Now</button>
                       </div>
                 </div>
             </div>
@@ -554,14 +648,14 @@ totalPriceFunc();
     </section>
 
             {/* cart sidenav */}
-            <div className="offcanvas offcanvas-end custom-sidenav-cart" tabIndex="-1" id="cartSideNav" aria-labelledby="offcanvasRightLabel">
+            <div className="offcanvas offcanvas-end custom-sidenav-cart" data-bs-backdrop="false" tabIndex="-1" id="cartSideNav" aria-labelledby="offcanvasScrollingLabel">
             <div className={`offcanvas-header custom-sidenav-cart-header ${isCheckOut ? 'hide-cart':''}`}>
                 <div className='header-container' id="offcanvasRightLabel">
                     {/* <HiShoppingCart/> */}
                         <div className='logo-container'>
                             <img src={logoWhite} className='img-fluid'/>
                         </div>
-                        <button type="button" className="cart-back-btn" data-bs-dismiss="offcanvas" aria-label="Close">
+                        <button type="button" onClick={unSelectAll} className="cart-back-btn" data-bs-dismiss="offcanvas" aria-label="Close">
                             <BsArrowLeftShort className='cart-back-icon'/>
                         </button>
                         <button type="button" className="cart-edit-btn"  id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
