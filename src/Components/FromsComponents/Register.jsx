@@ -22,25 +22,18 @@ const Register = () => {
   const SwalE = withReactContent(Swal);
 
   const checkNewUser = async () => {
-    try {
-      const { data } = await axios.get(`${URL}/users`);
-      const userFound = data.find((user) => user.userName === userName);
-      if (userFound) {
+    const { data } = await axios.get(`${URL}/users`);
+    data.map((user) => {
+      console.log(user)
+      if (user.userName === userName) {
         setErrorMessage(`Username ${userName} already exists`);
         navigate('/forms/login');
-      } else {
-        sessionStorage.setItem('userId', userFound._id);
+      }else {
+        sessionStorage.setItem('userId', user._id);
         navigate('/');
         location.reload();
       }
-    } catch (error) {
-      SwalE.fire({
-        icon: 'error',
-        title: 'Username already exists',
-        text: error.message,
-        confirmButtonColor: "#435e39",
-      });
-    }
+    });
   };
 
   const addUser = async () => {

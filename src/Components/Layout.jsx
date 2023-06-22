@@ -347,14 +347,15 @@ const Layout = () => {
 
         <section>
         {/* cart sidenav */}
-        <div className="offcanvas offcanvas-end custom-sidenav-cart" tabIndex="-1" id="cartSideNav" aria-labelledby="offcanvasRightLabel">
+        <div className="offcanvas offcanvas-end custom-sidenav-cart" data-bs-backdrop="false" tabIndex="-1" id="cartSideNav" aria-labelledby="offcanvasScrollingLabel">
             <div className={`offcanvas-header custom-sidenav-cart-header ${isCheckOut ? 'hide-cart':''}`}>
                 <div className='header-container' id="offcanvasRightLabel">
                     {/* <HiShoppingCart/> */}
+                    
                         <div className='logo-container'>
                             <img src={logoWhite} className='img-fluid'/>
                         </div>
-                        <button type="button" className="cart-back-btn" data-bs-dismiss="offcanvas" aria-label="Close">
+                        <button type="button" onClick={unSelectAll} className="cart-back-btn" data-bs-dismiss="offcanvas" aria-label="Close">
                             <BsArrowLeftShort className='cart-back-icon'/>
                         </button>
                         <button type="button" className="cart-edit-btn"  id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
