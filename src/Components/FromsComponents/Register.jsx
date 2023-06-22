@@ -2,6 +2,9 @@ import axios from "axios";
 import { Link, useNavigate } from 'react-router-dom';
 import enter from '/src/assets/enter.png';
 import { useState } from 'react';
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
+
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL;
 
@@ -16,6 +19,8 @@ const Register = () => {
   const [address, setAddress] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  const SwalE = withReactContent(Swal);
+
   const checkNewUser = async () => {
     try {
       const { data } = await axios.get(`${URL}/users`);
@@ -29,7 +34,12 @@ const Register = () => {
         location.reload();
       }
     } catch (error) {
-      alert(error);
+      SwalE.fire({
+        icon: 'error',
+        title: 'Username already exists',
+        text: error.message,
+        confirmButtonColor: "#435e39",
+      });
     }
   };
 
@@ -46,17 +56,26 @@ const Register = () => {
       };
       await axios.post(`${URL}/users`, model);
     } catch (error) {
-      alert(error);
+      SwalE.fire({
+        icon: 'success',
+        title: 'Succesfuly Registered',
+        confirmButtonColor: "#435e39",
+      });
     }
   };
 
   const validation = (e) => {
     e.preventDefault();
     if (firstName && lastName && userName && email && password && number && address) {
-      addUser();
       checkNewUser();
+      addUser();
     } else {
-      setErrorMessage('Please fill in all fields');
+      SwalE.fire({
+        icon: 'warning',
+        title: 'Incomplete Fields',
+        text: 'Please fill in all fields',
+        confirmButtonColor: "#435e39",
+      });
     }
   };
 
