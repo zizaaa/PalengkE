@@ -22,42 +22,35 @@ const Register = () => {
   const SwalE = withReactContent(Swal);
 
   const checkNewUser = async () => {
-    try {
-      const { data } = await axios.get(`${URL}/users`);
-      const userFound = data.find((user) => user.userName === userName);
-      if (userFound) {
+    const { data } = await axios.get(`${URL}/users`);
+    data.map((user) => {
+      console.log(user)
+      if (user.userName === userName) {
         setErrorMessage(`Username ${userName} already exists`);
         navigate('/forms/login');
-      } else {
+      }else {
+        sessionStorage.setItem('userId', user._id);
         navigate('/');
         location.reload();
       }
-    } catch (error) {
-      SwalE.fire({
-        icon: 'error',
-        title: 'Username already exists',
-        text: error.message,
-        confirmButtonColor: "#435e39",
-      });
-    }
+    });
   };
 
   const addUser = async () => {
-    try {
-      const model = {
-        firstName: firstName,
-        lastName: lastName,
-        userName: userName,
-        email: email,
-        password: password,
-        number: number,
-        address: address
-      };
-      await axios.post(`${URL}/users`, model);
-    } catch (error) {
+    const model = {
+      firstName: firstName,
+      lastName: lastName,
+      userName: userName,
+      email: email,
+      password: password,
+      number: number,
+      address: address
+    };
+    const response = await axios.post(`${URL}/users`, model);
+    if (response) {
       SwalE.fire({
-        icon: 'success',
-        title: 'Succesfuly Registered',
+        icon: 'error',
+        title: 'Account Already Registered',
         confirmButtonColor: "#435e39",
       });
     }

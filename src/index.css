@@ -2780,3 +2780,161 @@
             color: white;
             text-decoration: none;
         }
+
+/* Contact Us Section */
+.contactUs {
+    display: flex;
+    justify-content: space-between;
+    height: 800px;
+    
+  }
+  
+  .contact.info {
+    order: 1;
+    align-self: flex-start;
+    flex: 1;
+    padding-right: 20px;
+    margin-right: 50px;
+  }
+  
+  .contact.info h2 {
+    text-align: right;
+    margin-bottom: 20px;
+    color: rgb(0, 0, 0);
+  }
+  
+  .contact.info h4 {
+    text-align: right;
+    margin-bottom: 20px;
+    color: white;
+  }
+  
+  .contact textarea {
+    height: 450px;
+  }
+  
+  .contact.container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .contact button.btn {
+    padding: 10px 20px;
+    background-color: rgba(67, 94, 56, 1);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .contact.img {
+    order: 1;
+    flex: 1;
+    background-image: url('https://images.pexels.com/photos/11483977/pexels-photo-11483977.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .contactUs {
+      flex-direction: column;
+      height: auto;
+    }
+  
+    .contact.info {
+      order: 2;
+      align-self: center;
+      margin: 0;
+      padding: 20px;
+    }
+  
+    .contact.info h2,
+    .contact.info h4 {
+      text-align: center;
+    }
+  
+    .contact.img {
+      order: 1;
+      flex: 1;
+      background-position: center;
+    }
+  }
+  
+/* .contactUs {
+    display: flex;
+    justify-content: space-between;
+    height: 800px;
+    background: white;
+  }
+  
+  .contact.info {
+    order: 1;
+    align-self: flex-start;
+    flex: 1;
+    padding-right: 20px;
+    margin-right: 50px;
+  }
+  
+  .contact.info h2 {
+    text-align: right;
+    margin-bottom: 20px;
+    color: rgb(0, 0, 0);
+  }
+  
+  .contact.info h4 {
+    text-align: right;
+    margin-bottom: 20px;
+  }
+  
+  .contact textarea {
+    height: 450px;
+  }
+  
+  .contact.container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .contact button.btn {
+    padding: 10px 20px;
+    background-color: rgba(67, 94, 56, 1);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .contact.img {
+    order: 1;
+    flex: 1;
+    background-image: url('https://images.pexels.com/photos/11483977/pexels-photo-11483977.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+    background-repeat: no-repeat;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .contactUs {
+      flex-direction: column;
+      height: auto;
+    }
+  
+    .contact.info {
+      order: 2;
+      align-self: center;
+      margin: 0;
+      padding: 20px;
+    }
+  
+    .contact.info h2,
+    .contact.info h4 {
+      text-align: center;
+    }
+  
+    .contact.img {
+      order: 1;
+      flex: 1;
+      background-position: center;
+    }
+  } */
