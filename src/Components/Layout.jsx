@@ -161,7 +161,12 @@ const Layout = () => {
         
         const increaseItem = currentCart.map((item)=>{
             if(item.id === productId){
-                const editedroduct = {...item,item:item.item + 1}
+                const editedroduct = {
+                    ...item,
+                    item:item.item + 1,
+                    newPrice:item.sale ? item.origPrice * (item.item + 1) :'',
+                    price:item.sale ? '':item.origPrice * (item.item + 1)
+                }
                 
                 return editedroduct
             }
@@ -184,7 +189,12 @@ const Layout = () => {
         
         const decreaseItem = currentCart.map((item)=>{
             if(item.id === productId){
-                const editedroduct = {...item,item:item.item > 1 ? item.item - 1:1}
+                const editedroduct = {
+                    ...item,
+                    item:item.item > 1 ? item.item - 1:1,
+                    newPrice:item.sale ? item.item <= 1 ? item.origPrice:item.newPrice - item.origPrice :'',
+                    price:item.sale ? '':item.item <= 1 ? item.origPrice:item.price - item.origPrice
+                }
                 
                 return editedroduct
             }
@@ -209,9 +219,9 @@ const Layout = () => {
             currentCart.forEach(item => {
                 if(item.checked){
                     if (item.sale) {
-                        totalPrice += item.newPrice * item.item;
+                        totalPrice += item.newPrice;
                     } else {
-                        totalPrice += item.price * item.item;
+                        totalPrice += item.price;
                     }
                 }
             });
