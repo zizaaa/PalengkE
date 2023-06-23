@@ -40,7 +40,12 @@ const BestSellingProduct = () => {
                 let bool = false;
                 const newCart = currentCart.map((item)=>{
                     if(item.id === choosenProducts._id){
-                        const updatedItem = {...item,item:1 + item.item}
+                        const updatedItem = {
+                            ...item,
+                            item:1 + item.item,
+                            newPrice:item.sale ? item.origPrice * (item.item + 1) :'',
+                            price:item.sale ? '':item.origPrice * (item.item + 1)
+                        }
                         bool = true
                         return updatedItem
                     }
@@ -68,6 +73,7 @@ const BestSellingProduct = () => {
                                 newPrice:choosenProducts.newPrice,
                                 salePercentage:choosenProducts.salePercentage,
                                 price:choosenProducts.price,
+                                origPrice: choosenProducts.sale ?choosenProducts.newPrice:choosenProducts.price,
                                 quantity:choosenProducts.quantity,
                                 bestSeller:choosenProducts.bestSeller,
                                 sale:choosenProducts.sale,
@@ -95,6 +101,7 @@ const BestSellingProduct = () => {
                             newPrice:choosenProducts.newPrice,
                             salePercentage:choosenProducts.salePercentage,
                             price:choosenProducts.price,
+                            origPrice: choosenProducts.sale ?choosenProducts.newPrice:choosenProducts.price,
                             quantity:choosenProducts.quantity,
                             bestSeller:choosenProducts.bestSeller,
                             sale:choosenProducts.sale,

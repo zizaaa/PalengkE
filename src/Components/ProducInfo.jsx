@@ -59,7 +59,12 @@ const ProducInfo = () => {
                 let bool = false;
                 const newCart = currentCart.map((item)=>{
                     if(item.id === choosenProducts._id){
-                        const updatedItem = {...item,item:1 + item.item}
+                        const updatedItem = {
+                            ...item,
+                            item:1 + item.item,
+                            newPrice:item.sale ? item.origPrice * (item.item + 1) :'',
+                            price:item.sale ? '':item.origPrice * (item.item + 1)
+                        }
                         bool = true
                         return updatedItem
                     }
@@ -87,6 +92,7 @@ const ProducInfo = () => {
                                 newPrice:choosenProducts.newPrice,
                                 salePercentage:choosenProducts.salePercentage,
                                 price:choosenProducts.price,
+                                origPrice: choosenProducts.sale ?choosenProducts.newPrice:choosenProducts.price,
                                 quantity:choosenProducts.quantity,
                                 bestSeller:choosenProducts.bestSeller,
                                 sale:choosenProducts.sale,
@@ -114,6 +120,7 @@ const ProducInfo = () => {
                             newPrice:choosenProducts.newPrice,
                             salePercentage:choosenProducts.salePercentage,
                             price:choosenProducts.price,
+                            origPrice: choosenProducts.sale ?choosenProducts.newPrice:choosenProducts.price,
                             quantity:choosenProducts.quantity,
                             bestSeller:choosenProducts.bestSeller,
                             sale:choosenProducts.sale,
@@ -283,51 +290,61 @@ const checkOut =()=>{
 }
 
 const increaseItem=async(e)=>{
-const currentCart = authorizedUser.cart
-const productId = e.target.parentElement.id
+    const currentCart = authorizedUser.cart
+    const productId = e.target.parentElement.id
 
-    
-    const increaseItem = currentCart.map((item)=>{
-        if(item.id === productId){
-            const editedroduct = {...item,item:item.item + 1}
-            
-            return editedroduct
-        }
-        return item
-    })
-
-        try{
-            const addToCartProducts = {
-                cart:increaseItem
+        
+        const increaseItem = currentCart.map((item)=>{
+            if(item.id === productId){
+                const editedroduct = {
+                    ...item,
+                    item:item.item + 1,
+                    newPrice:item.sale ? item.origPrice * (item.item + 1) :'',
+                    price:item.sale ? '':item.origPrice * (item.item + 1)
+                }
+                
+                return editedroduct
             }
-            await axios.put(`${URL}/user/${authorizedId}`,addToCartProducts)
-        }catch(error){
-            alert(error)
-        }
-} 
+            return item
+        })
 
-const decreaseItem =async(e)=>{
-const currentCart = authorizedUser.cart
-const productId = e.target.parentElement.id
-    
-    const decreaseItem = currentCart.map((item)=>{
-        if(item.id === productId){
-            const editedroduct = {...item,item:item.item > 1 ? item.item - 1:1}
-            
-            return editedroduct
-        }
-        return item
-    })
-
-        try{
-            const addToCartProducts = {
-                cart:decreaseItem
+            try{
+                const addToCartProducts = {
+                    cart:increaseItem
+                }
+                await axios.put(`${URL}/user/${authorizedId}`,addToCartProducts)
+            }catch(error){
+                alert(error)
             }
-            await axios.put(`${URL}/user/${authorizedId}`,addToCartProducts)
-        }catch(error){
-            alert(error)
-        }
-} 
+   } 
+
+   const decreaseItem =async(e)=>{
+    const currentCart = authorizedUser.cart
+    const productId = e.target.parentElement.id
+        
+        const decreaseItem = currentCart.map((item)=>{
+            if(item.id === productId){
+                const editedroduct = {
+                    ...item,
+                    item:item.item > 1 ? item.item - 1:1,
+                    newPrice:item.sale ? item.item <= 1 ? item.origPrice:item.newPrice - item.origPrice :'',
+                    price:item.sale ? '':item.item <= 1 ? item.origPrice:item.price - item.origPrice
+                }
+                
+                return editedroduct
+            }
+            return item
+        })
+
+            try{
+                const addToCartProducts = {
+                    cart:decreaseItem
+                }
+                await axios.put(`${URL}/user/${authorizedId}`,addToCartProducts)
+            }catch(error){
+                alert(error)
+            }
+   } 
 
   const buyNow = async(e)=>{
     if(authorizedUser.userName != undefined){
@@ -341,7 +358,13 @@ const productId = e.target.parentElement.id
           let bool = false;
           const newCart = currentCart.map((item)=>{
               if(item.id === choosenProducts._id){
-                  const updatedItem = {...item,item:1 + item.item,checked:true}
+                  const updatedItem = {
+                    ...item,
+                    item:1 + item.item,
+                    checked:true,
+                    newPrice:item.sale ? item.origPrice * (item.item + 1) :'',
+                    price:item.sale ? '':item.origPrice * (item.item + 1)
+                }
                   bool = true
                   return updatedItem
               }
@@ -370,6 +393,7 @@ const productId = e.target.parentElement.id
                           newPrice:choosenProducts.newPrice,
                           salePercentage:choosenProducts.salePercentage,
                           price:choosenProducts.price,
+                          origPrice: choosenProducts.sale ?choosenProducts.newPrice:choosenProducts.price,
                           quantity:choosenProducts.quantity,
                           bestSeller:choosenProducts.bestSeller,
                           sale:choosenProducts.sale,
@@ -398,6 +422,7 @@ const productId = e.target.parentElement.id
                       newPrice:choosenProducts.newPrice,
                       salePercentage:choosenProducts.salePercentage,
                       price:choosenProducts.price,
+                      origPrice: choosenProducts.sale ?choosenProducts.newPrice:choosenProducts.price,
                       quantity:choosenProducts.quantity,
                       bestSeller:choosenProducts.bestSeller,
                       sale:choosenProducts.sale,
@@ -431,9 +456,9 @@ const totalPriceFunc =()=>{
         currentCart.forEach(item => {
             if(item.checked){
                 if (item.sale) {
-                    totalPrice += item.newPrice * item.item;
+                    totalPrice += item.newPrice
                 } else {
-                    totalPrice += item.price * item.item;
+                    totalPrice += item.price;
                 }
             }
         });
