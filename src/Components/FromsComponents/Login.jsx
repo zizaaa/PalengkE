@@ -39,7 +39,7 @@ const Login = () => {
         console.log('Login successful');
         sessionStorage.setItem('userId', userFound._id);
         navigate('/');
-        location.reload();
+        // location.reload();
       } else {
         Swal.fire({
           showConfirmButton: "true",

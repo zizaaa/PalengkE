@@ -1955,14 +1955,38 @@
             color: white;
             outline: none;
         }
-        .register-section .register-form-container form button{
+        .register-section .register-form-container form .custom-spinner{
             padding: 10px 10px;
             border-radius: 10px;
             border: none;
             background-color: rgb(32,29,29);
             color: white;
             outline: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+            .register-section .register-form-container form .custom-spinner .custom-spinner-border{
+                background-color: transparent;
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        .register-section .register-form-container form .form-btn{
+            border: none;
+            background-color: transparent;
+            color: white;
+            outline: none;
+        }
+        /* .register-section .register-form-container form .form-btn{
+            padding: 10px 10px;
+            border-radius: 10px;
+            border: none;
+            background-color: rgb(32,29,29);
+            color: white;
+            outline: none;
+        } */
         .register-section .register-form-container form input::placeholder{
             color: white;
         }
