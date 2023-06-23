@@ -47,7 +47,8 @@ const Register = () => {
               setIsLoading(false)
               saveUser=false;
           }
-          if(saveUser){            
+          if(saveUser){  
+            setIsLoading(true)          
             addUser();
           }
 
@@ -78,8 +79,8 @@ const Register = () => {
       await axios.post(`${URL}/users`, model);
     } catch (error) {
       SwalE.fire({
-        icon: 'success',
-        title: 'Succesfuly Registered',
+        icon: 'error',
+        title: `${error}`,
         confirmButtonColor: "#435e39",
       });
     }
@@ -116,7 +117,6 @@ const Register = () => {
         }else if(wordInName.length < 2){
             isValid.firstName = false;
         }
-        setIsLoading(false)
     }
         const userLastNameValidation =()=>{
             let wordInName = lastName.split("");
@@ -126,7 +126,7 @@ const Register = () => {
             }else if(wordInName.length < 2){
                 isValid.lastName = false;
             }
-            setIsLoading(false)
+            
         }
     const userNameValidation =()=>{
         let wordInName = userName.split("");
@@ -136,7 +136,7 @@ const Register = () => {
         }else if(wordInName.length < 2){
             isValid.userName = false;
         }
-        setIsLoading(false)
+        
     }
 
     const userEmailValidation =()=>{
@@ -147,7 +147,7 @@ const Register = () => {
         }else{
             isValid.email = false;
         }
-            setIsLoading(false)
+            
     }
 
         const usernumberValidation =()=>{
@@ -156,7 +156,7 @@ const Register = () => {
             }else{
               isValid.number= false;
             }
-                setIsLoading(false)
+                
         }
     const useraddValidation =()=>{
         if(address != ''){
@@ -164,7 +164,7 @@ const Register = () => {
         }else{
           isValid.address= false;
         }
-            setIsLoading(false)
+            
     }
         const userpassValidation =()=>{
             if(password === confirmPassword){
@@ -174,7 +174,7 @@ const Register = () => {
               isValid.password= false;
               isValid.confirmPassword= false;
             }
-                setIsLoading(false)
+                
         }
     userFirstNameValidation();
     userLastNameValidation();
@@ -190,8 +190,8 @@ const Register = () => {
     } else {
       SwalE.fire({
         icon: 'error',
-        title: 'Incomplete Fields',
-        text: `Please fill in all fields`,
+        title: 'Opss...',
+        text: 'There\'s an error in your information. Please check the details above.',
         confirmButtonColor: "#435e39",
       });
       setIsLoading(false)
