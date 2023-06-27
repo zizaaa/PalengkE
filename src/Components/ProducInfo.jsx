@@ -887,14 +887,16 @@ totalPriceFunc();
                     </div>
                     <div className="col-md">
                         <div className="footer-right-container">
-                            <h4>Navigation</h4>
+                        <h4>Website </h4>
                             <div className="footerLinks">
-                                <Link to='#' className="footer-link">Deliver Tommorow</Link>
-                                <Link to='#' className="footer-link">All Categories</Link>
-                                <Link to='#' className="footer-link">Sale</Link>
-                                <Link to='#' className="footer-link">Refund Policy</Link>
-                                <Link to='#' className="footer-link">Terms of Service</Link>
-                                <Link to='#' className="footer-link">Shipping Policy</Link>
+                                <Link to='/policies' className="footer-link">Privacy Policy</Link>
+                                <Link to='/policies' className="footer-link">Terms and Conditions</Link>
+                                <Link to='/policies' className="footer-link">Shipping and Delivery</Link>
+                                <Link to='/policies' className="footer-link">Returns and Refunds</Link>
+                                <Link to='/policies' className="footer-link">Payment Methods</Link>
+                                <Link to='/policies' className="footer-link">Product Descriptions</Link>
+                                <Link to='/policies' className="footer-link">Intellectual Property</Link>
+                                <Link to='/policies' className="footer-link">Customer Support</Link>
                             </div>
                         </div>
                     </div>
