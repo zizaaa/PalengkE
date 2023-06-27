@@ -47,12 +47,11 @@ const Register = () => {
               setIsLoading(false)
               saveUser=false;
           }
-          if(saveUser){  
-            setIsLoading(true)          
-            addUser();
-          }
-
         });
+        if(saveUser){  
+          setIsLoading(true)          
+          addUser();
+        }
 
     } catch (error) {
       Swal.fire({
@@ -62,20 +61,22 @@ const Register = () => {
       })
       setIsLoading(false)
     }
+
   };
 
   const addUser = async () => {
-    const model = {
-      firstName: firstName,
-      lastName: lastName,
-      userName: userName,
-      email: email,
-      password: password,
-      number: number,
-      address: address
-    };
-    const response = await axios.post(`${URL}/users`, model);
-    if (response) {
+    try {
+      const model = {
+        firstName: firstName,
+        lastName: lastName,
+        userName: userName,
+        email: email,
+        password: password,
+        number: number,
+        address: address
+      };
+      await axios.post(`${URL}/users`, model);
+    } catch (error) {
       SwalE.fire({
         icon: 'error',
         title: `${error}`,
