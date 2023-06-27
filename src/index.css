@@ -2078,6 +2078,9 @@
                 display: flex;
                 align-items: center;
             }
+                .Login-form-container .input-container .eye{
+                    cursor: pointer;
+                }
 
         .Login-form-container form input{
             padding:10px;

@@ -12,7 +12,7 @@ const Login = () => {
   const [users, setUsers] = useState([]);
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  const [isHidePass,setIsHidePass] = useState(false)
+  const [isHidePass,setIsHidePass] = useState(true)
 
   useEffect(() => {
     fetchUsers();
