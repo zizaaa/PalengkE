@@ -2,7 +2,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { Link, useNavigate } from 'react-router-dom';
-import profileDark from '/src/assets/profileDark.png';
+import { FaLock,FaUserAlt,FaEye,FaEyeSlash } from 'react-icons/fa'
+import signInImg from '/src/assets/signin.png'
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL;
 
@@ -11,6 +12,7 @@ const Login = () => {
   const [users, setUsers] = useState([]);
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [isHidePass,setIsHidePass] = useState(true)
 
   useEffect(() => {
     fetchUsers();
@@ -40,10 +42,9 @@ const Login = () => {
         // location.reload();
       } else {
         Swal.fire({
-          showConfirmButton: "true",
-          icon: 'success',
-          title: 'Login Successfully',
-          text: 'Done',
+          icon: 'error',
+          title: 'Error',
+          text: `Incorrect password`,
           confirmButtonColor: "#435e39",
         });
       }
@@ -51,39 +52,54 @@ const Login = () => {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: `Invalid username or password`,
+        text: `Invalid username`,
         confirmButtonColor: "#435e39",
       });
     }
   };
 
+  const showPass =()=> isHidePass ? setIsHidePass(false):setIsHidePass(true)
+
   return (
     <section>
-      <div className="Login-form-container">
-        <div className='Login-form-head'>
-          <div className='img-container'>
-            <img src={profileDark} className='img-fluid' alt='Enter' />
-          </div>
-          <p>Sign In</p>
+      <div className='signIn-container'>
+        <div className='img-container'>
+          <img src={signInImg} className="img-fluid"/>
         </div>
-        <form>
-          <input
-            type='text'
-            onChange={(e) => setUserName(e.target.value)}
-            placeholder='User name'
-            required
-          />
-          <input
-            type='password'
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder='Password'
-            required
-          />
-          <button type='submit' onClick={login}>Sign In</button>
-        </form>
-        <div className='bottom-form'>
-          <p>Don't have an account yet?</p>
-          <Link to='/forms'>Register</Link>
+        <div className="Login-form-container">
+          <h1 className='title'>Sign In</h1>
+          <form>
+            <div className='input-container'>
+              <span className='icon'>
+                <FaUserAlt/>
+              </span>
+              <input
+                type='text'
+                onChange={(e) => setUserName(e.target.value)}
+                placeholder='User name'
+                required
+              />
+            </div>
+            <div className='input-container'>
+              <span className='icon'>
+                <FaLock/>
+              </span>
+              <input
+                type={`${isHidePass ? 'password':'text'}`}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder='Password'
+                required
+              />
+              <span onClick={showPass} className='eye icon'>
+                {isHidePass ? <FaEye/>:<FaEyeSlash/>}
+              </span>
+            </div>
+            <button type='submit' onClick={login}>Sign In</button>
+          </form>
+          <div className='bottom-form'>
+            <p>Don't have an account yet?</p>
+            <Link to='/forms'>Register</Link>
+          </div>
         </div>
       </div>
     </section>
