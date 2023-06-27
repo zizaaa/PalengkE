@@ -2003,11 +2003,48 @@
         }
 
         /* Login */
-        .Login-form-container{
+        @media(max-width:808px) {
+            .signIn-container{
+                background-color: white;
+                filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
+                border-radius: 10px;
+                padding: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+                flex-direction: column;
+            }
+            .signIn-container .Login-form-container{
+                flex: 1;
+                padding: 20px;
+                height: 100%;
+                width: 100%;
+            }
+        }
+        .signIn-container{
             background-color: white;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
             border-radius: 10px;
             padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
         }
+            .signIn-container .img-container{
+                flex: 1;
+                height: 100%;
+            }
+        .signIn-container .Login-form-container{
+            flex: 1;
+            padding: 20px;
+            height: 100%;
+        }
+            .signIn-container .Login-form-container .title{
+                margin-bottom: 20px;
+                color: var(--text-color);
+            }
         .Login-form-container .bottom-form{
             width: 100%;
             display: flex;
@@ -2019,44 +2056,43 @@
             flex-wrap: wrap;
         }
         .Login-form-container .bottom-form p{
-            margin: 0;
+            margin:0;
         }
         .Login-form-container form{
             display: flex;
             flex-direction: column;
             gap: 20px;
-            padding: 20px;
         }
+        .Login-form-container .input-container{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 100%;
+            border-radius: 20px;
+            border: 1px solid var(--color-fade);
+            padding: 0 10px;
+        }
+            .Login-form-container .input-container .icon{
+                font-size: 1.3rem;
+                color: var(--text-color);
+                display: flex;
+                align-items: center;
+            }
+
         .Login-form-container form input{
-            padding: 10px 10px;
-            border-radius: 10px;
+            padding:10px;
             border: none;
-            background-color: var(--text-color);
-            color: white;
             outline: none;
-        }
-        .Login-form-container form input::placeholder{
-            color: white;
+            width: 100%;
         }
         .Login-form-container form button{
             padding: 10px 10px;
             border-radius: 10px;
             border: none;
             box-shadow: 0 1px 2px 2px rgba(0,0,0,0.3);
-            background-color: rgb(32,29,29);
+            background-color: var(--text-color);
             color: white;
             outline: none;
-        }
-        .Login-form-container .Login-form-head{
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.3rem;
-        }
-        .Login-form-container .Login-form-head .img-container{
-            width: 5rem;
         }
 
 /* shop */
@@ -2903,6 +2939,7 @@
                 flex-wrap: wrap;
                 height: 100%;
                 background-color: white;
+                filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
             }
                 .policies-section .policies-section-container .content-container{
                     flex: 1;
@@ -2969,159 +3006,103 @@
         }
 
 /* Contact Us Section */
-.contactUs {
-    display: flex;
-    justify-content: space-between;
-    height: 800px;
-    
-  }
-  
-  .contact.info {
-    order: 1;
-    align-self: flex-start;
-    flex: 1;
-    padding-right: 20px;
-    margin-right: 50px;
-  }
-  
-  .contact.info h2 {
-    text-align: right;
-    margin-bottom: 20px;
-    color: rgb(0, 0, 0);
-  }
-  
-  .contact.info h4 {
-    text-align: right;
-    margin-bottom: 20px;
-    color: white;
-  }
-  
-  .contact textarea {
-    height: 450px;
-  }
-  
-  .contact.container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .contact button.btn {
-    padding: 10px 20px;
-    background-color: rgba(67, 94, 56, 1);
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .contact.img {
-    order: 1;
-    flex: 1;
-    background-image: url('https://images.pexels.com/photos/11483977/pexels-photo-11483977.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .contactUs {
-      flex-direction: column;
-      height: auto;
+.contactUs-section{
+    margin-bottom: 10px;
+}
+    @media(max-width:989px){
+        .contactUs-section .custom-row{
+            display:flex;
+            background-color: white;
+            padding: 20px;
+            justify-content: space-between;
+            gap: 10px;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
+        } 
     }
-  
-    .contact.info {
-      order: 2;
-      align-self: center;
-      margin: 0;
-      padding: 20px;
+    .contactUs-section .custom-row{
+        display:flex;
+        background-color: white;
+        padding-left: 20px;
+        justify-content: space-between;
+        gap: 10px;
+        filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
     }
-  
-    .contact.info h2,
-    .contact.info h4 {
-      text-align: center;
+    .contactUs-section .left-side{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px 0;
+        flex: 1;
     }
-  
-    .contact.img {
-      order: 1;
-      flex: 1;
-      background-position: center;
-    }
-  }
-  
-/* .contactUs {
-    display: flex;
-    justify-content: space-between;
-    height: 800px;
-    background: white;
-  }
-  
-  .contact.info {
-    order: 1;
-    align-self: flex-start;
-    flex: 1;
-    padding-right: 20px;
-    margin-right: 50px;
-  }
-  
-  .contact.info h2 {
-    text-align: right;
-    margin-bottom: 20px;
-    color: rgb(0, 0, 0);
-  }
-  
-  .contact.info h4 {
-    text-align: right;
-    margin-bottom: 20px;
-  }
-  
-  .contact textarea {
-    height: 450px;
-  }
-  
-  .contact.container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .contact button.btn {
-    padding: 10px 20px;
-    background-color: rgba(67, 94, 56, 1);
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .contact.img {
-    order: 1;
-    flex: 1;
-    background-image: url('https://images.pexels.com/photos/11483977/pexels-photo-11483977.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
-    background-repeat: no-repeat;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .contactUs {
-      flex-direction: column;
-      height: auto;
-    }
-  
-    .contact.info {
-      order: 2;
-      align-self: center;
-      margin: 0;
-      padding: 20px;
-    }
-  
-    .contact.info h2,
-    .contact.info h4 {
-      text-align: center;
-    }
-  
-    .contact.img {
-      order: 1;
-      flex: 1;
-      background-position: center;
-    }
-  } */
+        .contactUs-section .left-side .some-text{
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            width: 100%;
+            text-align: right;
+        }
+            .contactUs-section .left-side .some-text p{
+                font-size: 1.2rem;
+            }
+        .contactUs-section .left-side form{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 10px;
+            padding: 20px;
+            border: 1px solid var(--color-fade);
+            background-color: white;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
+            border-radius: 20px;
+        }
+            .contactUs-section .left-side form input{
+                border-radius: 20px;
+                outline: none;
+                border: 1px solid var(--color-fade);
+                padding: 10px;
+            }
+                .contactUs-section .left-side form input:focus{
+                    border-radius: 20px;
+                    outline: none;
+                    border: 1px solid var(--color-fade);
+                    padding: 10px;
+                    box-shadow: 2px 2px 2px 2px inset rgba(0, 0, 0, 0.183);
+                }
+            .contactUs-section .left-side form button{
+                border-radius: 20px;
+                border: none;
+                padding: 10px 0;
+                background-color: var(--text-color);
+                color: white;
+                filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
+            }
+            .contactUs-section .left-side form textarea{
+                border-radius: 20px;
+                outline: none;
+                border: 1px solid var(--color-fade);
+                padding: 10px;
+                max-width: 100%;
+                min-width: 100%;
+                min-height: 200px;
+                max-height: 300px;
+            }
+                .contactUs-section .left-side form textarea:focus{
+                    border-radius: 20px;
+                    outline: none;
+                    border: 1px solid var(--color-fade);
+                    padding: 10px;
+                    max-width: 100%;
+                    min-width: 100%;
+                    min-height: 200px;
+                    max-height: 300px;
+                    box-shadow: 2px 2px 2px 2px inset rgba(0, 0, 0, 0.183);
+                }
+
+        .contactUs-section .img-container{
+            width: 50%;
+        }
+            .contactUs-section .img-container img{
+                width: 100%;
+                height: 100%;
+            }
