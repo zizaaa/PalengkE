@@ -1786,6 +1786,25 @@
             color: white;
             outline: none;
         }
+        .register-section .register-form-container form .custom-spinner .custom-spinner-border{
+            background-color: transparent;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .register-section .register-form-container form .form-btn{
+            border: none;
+            background-color: transparent;
+            color: white;
+            outline: none;
+        }
+        
+        .register-section .register-form-container button{
+            background-color: var(--text-color);
+        }
+
         .register-section .register-form-container form input::placeholder{
             color: white;
         }
