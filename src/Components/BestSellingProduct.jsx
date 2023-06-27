@@ -40,16 +40,19 @@ const BestSellingProduct = () => {
                 let bool = false;
                 const newCart = currentCart.map((item)=>{
                     if(item.id === choosenProducts._id){
-                        const updatedItem = {...item,item:1 + item.item}
+                        const updatedItem = {
+                            ...item,
+                            item:1 + item.item,
+                            newPrice:item.sale ? item.origPrice * (item.item + 1) :'',
+                            price:item.sale ? '':item.origPrice * (item.item + 1)
+                        }
                         bool = true
                         return updatedItem
                     }
                     return item;
                 })
-                console.log(newCart === currentCart)
-                console.log(bool)
+
                 if(bool){
-                    console.log('update')
                         try{
                             const addToCartProducts = {
                             cart:newCart
@@ -61,7 +64,7 @@ const BestSellingProduct = () => {
                         }
                         bool=false
                 }else{
-                    console.log('add')
+
                         try{
                             const addToCartProducts = {
                             cart:[...currentCart,{
@@ -70,6 +73,7 @@ const BestSellingProduct = () => {
                                 newPrice:choosenProducts.newPrice,
                                 salePercentage:choosenProducts.salePercentage,
                                 price:choosenProducts.price,
+                                origPrice: choosenProducts.sale ?choosenProducts.newPrice:choosenProducts.price,
                                 quantity:choosenProducts.quantity,
                                 bestSeller:choosenProducts.bestSeller,
                                 sale:choosenProducts.sale,
@@ -78,6 +82,7 @@ const BestSellingProduct = () => {
                                 usersProductReviews:choosenProducts.usersProductReviews,
                                 productSold:choosenProducts.productSold,
                                 description:choosenProducts.description,
+                                checked:false,
                                 item:1,
                             }]
                             }
@@ -96,6 +101,7 @@ const BestSellingProduct = () => {
                             newPrice:choosenProducts.newPrice,
                             salePercentage:choosenProducts.salePercentage,
                             price:choosenProducts.price,
+                            origPrice: choosenProducts.sale ?choosenProducts.newPrice:choosenProducts.price,
                             quantity:choosenProducts.quantity,
                             bestSeller:choosenProducts.bestSeller,
                             sale:choosenProducts.sale,
@@ -104,6 +110,7 @@ const BestSellingProduct = () => {
                             usersProductReviews:choosenProducts.usersProductReviews,
                             productSold:choosenProducts.productSold,
                             description:choosenProducts.description,
+                            checked:false,
                             item:1,
                         }]
                         }
@@ -129,7 +136,7 @@ const BestSellingProduct = () => {
         }else{
             setIsUserLoading(false)
         }
-        // console.log()
+
     },[authorizedUser])
     
   return (
@@ -163,7 +170,7 @@ const BestSellingProduct = () => {
                             return item;
                         }
                     }else if(category === 'Vegetables'){
-                        if(item.category === 'Upland Vegetables' || item.category === 'Lowland Vegetables' && item.bestSeller){
+                        if(item.category === 'Vegetables' && item.bestSeller){
                             return item;
                         }
                     }else if(category === 'Fruits'){

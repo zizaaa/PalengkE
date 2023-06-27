@@ -419,6 +419,161 @@
             .custom-sidenav-cart .custom-sidenav-cart-header{
                 background-color: var(--orange);
             }
+                .custom-sidenav-cart .hide-cart, .custom-sidenav-cart .hide-checkOut{
+                    display: none;
+                }
+                .custom-sidenav-cart .check-out-container{
+                    display: flex;
+                    flex-direction: column;
+                    height: 100%;
+                }
+                    .custom-sidenav-cart .check-out-container .checkout-header{
+                        display: flex;
+                        flex-wrap: wrap;
+                        align-items: center;
+                        padding: 10px;
+                        background-color: var(--text-color);
+                        position: relative;
+                        color: white;
+                        justify-content: space-between;
+                    }
+                        .custom-sidenav-cart .check-out-container .checkout-header .logo-container img{
+                            width: 12rem;
+                        }
+                        .custom-sidenav-cart .check-out-container .checkout-header .checkout-back-btn{
+                            position: absolute;
+                            border: none;
+                            background-color: transparent;
+                            top: -10px;
+                            padding: 0;
+                            margin: 0;
+                            left: 5px;
+                            font-size: 2rem;
+                            color: white;
+                        }
+                .custom-sidenav-cart .check-out-container .delivery-address .top-container{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 100%;
+                }
+                .custom-sidenav-cart .check-out-container .delivery-address{
+                    padding: 10px;
+                    background-color: var(--orange);
+                }
+                    .custom-sidenav-cart .check-out-container .delivery-address .top-container .location-icon-container{
+                        display: flex;
+                        align-items: center;
+                        flex: 1;
+                        color: white;
+                        font-size: 1.3rem;
+                    }
+                        .custom-sidenav-cart .check-out-container .delivery-address .top-container .location-icon-container p{
+                            margin: 0;
+                        }
+                    .custom-sidenav-cart .check-out-container .delivery-address .top-container .edit-location-container{
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-end;
+                        flex: 1;
+                    }
+                        .custom-sidenav-cart .check-out-container .delivery-address .top-container .edit-location-container button{
+                            border: none;
+                            background-color: transparent;
+                            color: white;
+                            font-size: 1.3rem;
+                        }
+
+                .custom-sidenav-cart .check-out-container .delivery-address .user-location-container{
+                    font-size: 1rem;
+                    color: white;
+                    font-weight: lighter;
+                    margin-top: 10px;
+                }
+                    .custom-sidenav-cart .check-out-container .delivery-address .user-location-container .user-location-info{
+                        width: 80%;
+                    }
+                        .custom-sidenav-cart .check-out-container .delivery-address .user-location-container .user-location-info .user-name-phone{
+                            display: flex;
+                            align-items: center;
+                        }
+                            .custom-sidenav-cart .check-out-container .delivery-address .user-location-container .user-location-info .user-name-phone .divider{
+                                margin:0 3px;
+                            }
+                            .custom-sidenav-cart .check-out-container .delivery-address .user-location-container .user-location-info .user-name-phone p{
+                                margin: 0;
+                            }
+                            
+                            
+            .custom-sidenav-cart .check-out-container .checked-out-Products-container{
+                display: flex;
+                flex-direction: column;
+                padding: 10px;
+                height: 100%;
+                overflow: auto;
+
+            }
+                .custom-sidenav-cart .check-out-container .checked-out-Products-container .order-products{
+                    display: flex;
+                    padding: 10px 0;
+                    border-bottom: 1px solid var(--color-fade);
+                }
+                    .custom-sidenav-cart .check-out-container .checked-out-Products-container .order-products .product-img-container img{
+                        min-width: 10rem;
+                        min-height: 10rem;
+                        max-width: 10rem;
+                        max-height: 10rem;
+                    }
+                    .custom-sidenav-cart .check-out-container .checked-out-Products-container .order-products .product-info{
+                        padding: 10px;
+                        flex: 1;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        justify-content: center;
+                    }
+                        .custom-sidenav-cart .check-out-container .checked-out-Products-container .order-products .product-info .price-quantity{
+                            display: flex;
+                            align-items: center;
+                            width: 100%;
+                            justify-content: space-between;
+                            font-size: 1.2rem;
+                        }
+
+            .custom-sidenav-cart .check-out-container .place-order-container{
+                background-color: #e6e6e6;
+                display: flex;
+                align-items: flex-end;
+                justify-content: flex-end;
+            }
+                .custom-sidenav-cart .check-out-container .place-order-container .total-payments-container{
+                    padding: 5px;
+                }
+                .custom-sidenav-cart .check-out-container .place-order-container .total-payments-container p{
+                    margin: 0;
+                    color: black;
+                    font-size: 1.2rem;
+                }
+                .custom-sidenav-cart .check-out-container .place-order-container .total-payments-container .voucher-percent{
+                    margin: 0;
+                    color: black;
+                    font-size: 1rem;
+                }
+                .custom-sidenav-cart .check-out-container .place-order-container .placeorder-btn-container .place-order{
+                    border: none;
+                    background-color: var(--text-color);
+                    color: white;
+                    padding: 20px 25px;
+                    font-size: 1.3rem;
+                }
+                .custom-sidenav-cart .check-out-container .place-order-container .placeorder-btn-container .place-order-w-voucher{
+                    border: none;
+                    background-color: var(--text-color);
+                    color: white;
+                    padding: 30px 25px;
+                    font-size: 1.3rem;
+                }
+
             .custom-sidenav-cart .cart-items-container{
                 padding: 0;
                 overflow-y: scroll;
@@ -476,8 +631,10 @@
                 height: 10rem;
             }
             .cart-product-main-container .cart-product .cart-img-container img{
-                width: 10rem;
-                height: 10rem;
+                min-width: 10rem;
+                min-height: 10rem;
+                max-width: 10rem;
+                max-height: 10rem;
             }
             .cart-product-main-container .cart-product .cart-product-info {
                 display: flex;
@@ -535,6 +692,20 @@
                 justify-content: space-between;
                 gap: 20px;
             }
+                .voucher-container .voucher .voucher-input .custom-dropdown .dropdown-btn{
+                    border: none;
+                    padding: 5px 10px;
+                    font-size: 1rem;
+                    background-color: transparent;
+                    border: 1px solid white;
+                    color:white;
+                }
+                    .voucher-container .voucher .voucher-input .no-voucher-message{
+                        font-size: 1rem;
+                        text-align: center;
+                        margin: 0;
+                    }
+
             .voucher-container .voucher .voucher-title{
                 flex: 1;
                 display: flex;
@@ -561,11 +732,16 @@
             .checkOut-container{
                 width: 100%;
                 display: flex;
+                flex-direction: column;
                 align-items: center;
                 justify-content: center;
                 padding: 20px;
                 background-color: var(--text-color);
             }
+                .checkOut-container p{
+                    margin: 0;
+                    color: red;
+                }
             .checkOut-container button{
                 width: 100%;
                 border: none;
@@ -590,6 +766,7 @@
             .trash-container button .trash-icon{
                 color: var(--text-color);
                 font-size: 1.9rem;
+                pointer-events: none;
             }
 
             /* profile */
@@ -1778,14 +1955,38 @@
             color: white;
             outline: none;
         }
-        .register-section .register-form-container form button{
+        .register-section .register-form-container form .custom-spinner{
             padding: 10px 10px;
             border-radius: 10px;
             border: none;
             background-color: rgb(32,29,29);
             color: white;
             outline: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+            .register-section .register-form-container form .custom-spinner .custom-spinner-border{
+                background-color: transparent;
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        .register-section .register-form-container form .form-btn{
+            border: none;
+            background-color: transparent;
+            color: white;
+            outline: none;
+        }
+        /* .register-section .register-form-container form .form-btn{
+            padding: 10px 10px;
+            border-radius: 10px;
+            border: none;
+            background-color: rgb(32,29,29);
+            color: white;
+            outline: none;
+        } */
         .register-section .register-form-container form input::placeholder{
             color: white;
         }

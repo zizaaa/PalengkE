@@ -41,97 +41,104 @@ const FishAndSeaShells = () => {
   let choosenProducts = {};
 
   const addToCart= async(e)=>{
-      if(authorizedUser.userName != undefined){
-          const currentCart = authorizedUser.cart
-          const currentUserId = authorizedUser._id
-          const productId = e.target.parentElement.parentElement.id
-          setToLoading(productId)
-          setIsLoading(true)
+    if(authorizedUser.userName != undefined){
+        const currentCart = authorizedUser.cart
+        const currentUserId = authorizedUser._id
+        const productId = e.target.parentElement.parentElement.id
+        setToLoading(productId)
+        setIsLoading(true)
 
-          data.filter((product)=> productId === product._id ? choosenProducts = product:null)
+        data.filter((product)=> productId === product._id ? choosenProducts = product:null)
 
-          if(currentCart != ''){
-              let bool = false;
-              const newCart = currentCart.map((item)=>{
-                  if(item.id === choosenProducts._id){
-                      const updatedItem = {...item,item:1 + item.item}
-                      bool = true
-                      return updatedItem
-                  }
-                  return item;
-              })
-              console.log(newCart === currentCart)
-              console.log(bool)
-              if(bool){
-                  console.log('update')
-                      try{
-                          const addToCartProducts = {
-                          cart:newCart
-                          }
-                          await axios.put(`${URL}/user/${currentUserId}`,addToCartProducts)
-                          setIsLoading(false)
-                      }catch(error){
-                          alert(error)
-                      }
-                      bool=false
-              }else{
-                  console.log('add')
-                      try{
-                          const addToCartProducts = {
-                          cart:[...currentCart,{
-                              id:choosenProducts._id,
-                              name:choosenProducts.name,
-                              newPrice:choosenProducts.newPrice,
-                              salePercentage:choosenProducts.salePercentage,
-                              price:choosenProducts.price,
-                              quantity:choosenProducts.quantity,
-                              bestSeller:choosenProducts.bestSeller,
-                              sale:choosenProducts.sale,
-                              category:choosenProducts.category,
-                              img:choosenProducts.img,
-                              usersProductReviews:choosenProducts.usersProductReviews,
-                              productSold:choosenProducts.productSold,
-                              description:choosenProducts.description,
-                              item:1,
-                          }]
-                          }
-                          await axios.put(`${URL}/user/${currentUserId}`,addToCartProducts)
-                          setIsLoading(false)
-                      }catch(error){
-                          alert(error)
-                      }
-              }
-          }else{
-                  try{
-                      const addToCartProducts = {
-                      cart:[...currentCart,{
-                          id:choosenProducts._id,
-                          name:choosenProducts.name,
-                          newPrice:choosenProducts.newPrice,
-                          salePercentage:choosenProducts.salePercentage,
-                          price:choosenProducts.price,
-                          quantity:choosenProducts.quantity,
-                          bestSeller:choosenProducts.bestSeller,
-                          sale:choosenProducts.sale,
-                          category:choosenProducts.category,
-                          img:choosenProducts.img,
-                          usersProductReviews:choosenProducts.usersProductReviews,
-                          productSold:choosenProducts.productSold,
-                          description:choosenProducts.description,
-                          item:1,
-                      }]
-                      }
-                      await axios.put(`${URL}/user/${currentUserId}`,addToCartProducts)
-                      setIsLoading(false)
-                  }catch(error){
-                      alert(error)
-                  }
-          }
+        if(currentCart != ''){
+            let bool = false;
+            const newCart = currentCart.map((item)=>{
+                if(item.id === choosenProducts._id){
+                    const updatedItem = {
+                        ...item,
+                        item:1 + item.item,
+                        newPrice:item.sale ? item.origPrice * (item.item + 1) :'',
+                        price:item.sale ? '':item.origPrice * (item.item + 1)
+                    }
+                    bool = true
+                    return updatedItem
+                }
+                return item;
+            })
 
-      }else{
-          navigate('/forms/login')
-      }
-  }
+            if(bool){
+                    try{
+                        const addToCartProducts = {
+                        cart:newCart
+                        }
+                        await axios.put(`${URL}/user/${currentUserId}`,addToCartProducts)
+                        setIsLoading(false)
+                    }catch(error){
+                        alert(error)
+                    }
+                    bool=false
+            }else{
+
+                    try{
+                        const addToCartProducts = {
+                        cart:[...currentCart,{
+                            id:choosenProducts._id,
+                            name:choosenProducts.name,
+                            newPrice:choosenProducts.newPrice,
+                            salePercentage:choosenProducts.salePercentage,
+                            price:choosenProducts.price,
+                            origPrice: choosenProducts.sale ?choosenProducts.newPrice:choosenProducts.price,
+                            quantity:choosenProducts.quantity,
+                            bestSeller:choosenProducts.bestSeller,
+                            sale:choosenProducts.sale,
+                            category:choosenProducts.category,
+                            img:choosenProducts.img,
+                            usersProductReviews:choosenProducts.usersProductReviews,
+                            productSold:choosenProducts.productSold,
+                            description:choosenProducts.description,
+                            checked:false,
+                            item:1,
+                        }]
+                        }
+                        await axios.put(`${URL}/user/${currentUserId}`,addToCartProducts)
+                        setIsLoading(false)
+                    }catch(error){
+                        alert(error)
+                    }
+            }
+        }else{
+                try{
+                    const addToCartProducts = {
+                    cart:[...currentCart,{
+                        id:choosenProducts._id,
+                        name:choosenProducts.name,
+                        newPrice:choosenProducts.newPrice,
+                        salePercentage:choosenProducts.salePercentage,
+                        price:choosenProducts.price,
+                        origPrice: choosenProducts.sale ?choosenProducts.newPrice:choosenProducts.price,
+                        quantity:choosenProducts.quantity,
+                        bestSeller:choosenProducts.bestSeller,
+                        sale:choosenProducts.sale,
+                        category:choosenProducts.category,
+                        img:choosenProducts.img,
+                        usersProductReviews:choosenProducts.usersProductReviews,
+                        productSold:choosenProducts.productSold,
+                        description:choosenProducts.description,
+                        checked:false,
+                        item:1,
+                    }]
+                    }
+                    await axios.put(`${URL}/user/${currentUserId}`,addToCartProducts)
+                    setIsLoading(false)
+                }catch(error){
+                    alert(error)
+                }
+        }
+
+    }else{
+        navigate('/forms/login')
+    }
+}
 
 
   useEffect(()=>{

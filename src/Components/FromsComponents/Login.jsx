@@ -1,11 +1,8 @@
-import PropTypes from 'prop-types';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
 import { Link, useNavigate } from 'react-router-dom';
 import enter from '/src/assets/enter.png';
-
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL;
 
@@ -14,7 +11,6 @@ const Login = () => {
   const [users, setUsers] = useState([]);
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     fetchUsers();
@@ -41,7 +37,7 @@ const Login = () => {
         console.log('Login successful');
         sessionStorage.setItem('userId', userFound._id);
         navigate('/');
-        location.reload();
+        // location.reload();
       } else {
         Swal.fire({
           showConfirmButton: "true",
@@ -83,7 +79,6 @@ const Login = () => {
             placeholder='Password'
             required
           />
-          {errorMessage && <p>{errorMessage}</p>}
           <button type='submit' onClick={login}>Sign In</button>
         </form>
         <div className='bottom-form'>

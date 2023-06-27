@@ -1,10 +1,10 @@
 import axios from "axios"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from 'react';
-import { FaFacebookMessenger } from 'react-icons/fa';
+import { FaFacebookMessenger, FaUserEdit } from 'react-icons/fa';
 import { HiShoppingCart,HiOutlineTicket } from 'react-icons/hi'
 import { BsArrowLeftShort, BsFacebook, BsInstagram,BsTwitter } from 'react-icons/bs'
-import { MdOutlineDeleteOutline  } from 'react-icons/md'
+import { MdLocationPin, MdOutlineDeleteOutline  } from 'react-icons/md'
 import { AiFillStar,AiOutlineStar } from 'react-icons/ai' 
 import { FetchProduct } from "../FetchProduct";
 import { FetchUsers } from "../FetchUsers";
@@ -13,12 +13,13 @@ import logo_2 from '../assets/logo2.png'
 import logoWhite from '../assets/logo_white.png'
 import profile from '../assets/profileDark.png'
 import Skeleton from '../Components/skeletonLoading/ProductInfoSkeleton'
+import CartSkeleton from "./skeletonLoading/CartSkeleton";
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL
 
 const ProducInfo = () => {
   const {isProductLoading} = FetchProduct()
-  const { authorizedUser } = FetchUsers()
+  const { authorizedUser,authorizedId } = FetchUsers()
   const data = ('session',JSON.parse(sessionStorage.getItem('data')))
   
   const navigate = useNavigate();
@@ -58,16 +59,19 @@ const ProducInfo = () => {
                 let bool = false;
                 const newCart = currentCart.map((item)=>{
                     if(item.id === choosenProducts._id){
-                        const updatedItem = {...item,item:1 + item.item}
+                        const updatedItem = {
+                            ...item,
+                            item:1 + item.item,
+                            newPrice:item.sale ? item.origPrice * (item.item + 1) :'',
+                            price:item.sale ? '':item.origPrice * (item.item + 1)
+                        }
                         bool = true
                         return updatedItem
                     }
                     return item;
                 })
-                console.log(newCart === currentCart)
-                console.log(bool)
+
                 if(bool){
-                    console.log('update')
                         try{
                             const addToCartProducts = {
                             cart:newCart
@@ -79,7 +83,7 @@ const ProducInfo = () => {
                         }
                         bool=false
                 }else{
-                    console.log('add')
+
                         try{
                             const addToCartProducts = {
                             cart:[...currentCart,{
@@ -88,6 +92,7 @@ const ProducInfo = () => {
                                 newPrice:choosenProducts.newPrice,
                                 salePercentage:choosenProducts.salePercentage,
                                 price:choosenProducts.price,
+                                origPrice: choosenProducts.sale ?choosenProducts.newPrice:choosenProducts.price,
                                 quantity:choosenProducts.quantity,
                                 bestSeller:choosenProducts.bestSeller,
                                 sale:choosenProducts.sale,
@@ -96,6 +101,7 @@ const ProducInfo = () => {
                                 usersProductReviews:choosenProducts.usersProductReviews,
                                 productSold:choosenProducts.productSold,
                                 description:choosenProducts.description,
+                                checked:false,
                                 item:1,
                             }]
                             }
@@ -114,6 +120,7 @@ const ProducInfo = () => {
                             newPrice:choosenProducts.newPrice,
                             salePercentage:choosenProducts.salePercentage,
                             price:choosenProducts.price,
+                            origPrice: choosenProducts.sale ?choosenProducts.newPrice:choosenProducts.price,
                             quantity:choosenProducts.quantity,
                             bestSeller:choosenProducts.bestSeller,
                             sale:choosenProducts.sale,
@@ -122,6 +129,7 @@ const ProducInfo = () => {
                             usersProductReviews:choosenProducts.usersProductReviews,
                             productSold:choosenProducts.productSold,
                             description:choosenProducts.description,
+                            checked:false,
                             item:1,
                         }]
                         }
@@ -158,6 +166,305 @@ const ProducInfo = () => {
   const decimalPart = cappedRating - filledStars;
   const starCounter = decimalPart > 0 ? `${cappedRating.toFixed(1)}` : `${filledStars}.0`;
   
+  const checkedProducts = async (e)=>{
+    const currentCart = authorizedUser.cart
+    const productId = e.target.id
+
+        let productUpdated = false;
+        const checkedProduct = currentCart.map((product)=>{
+            if(product.id === productId){
+                const editedroduct = product.checked ? {...product,checked:false}:{...product,checked:true}
+                
+                productUpdated = true;
+                return editedroduct
+            }
+            return product
+        })
+
+        if(productUpdated){
+            try{
+                const addToCartProducts = {
+                    cart:checkedProduct
+                }
+                await axios.put(`${URL}/user/${authorizedId}`,addToCartProducts)
+            }catch(error){
+                alert(error)
+            }
+                productUpdated=false
+        }
+}
+
+const [isAllSelected,setIsAllSelected] = useState(false)
+const selectAll = async()=>{
+    const currentCart = authorizedUser.cart
+    setIsAllSelected(true)
+        const checkedProduct = currentCart.map((product)=>{
+                const editedroduct = {...product,checked:true}
+                return editedroduct
+        })
+            try{
+                const addToCartProducts = {
+                    cart:checkedProduct
+                }
+                await axios.put(`${URL}/user/${authorizedId}`,addToCartProducts)
+            }catch(error){
+                alert(error)
+            }
+}
+const unSelectAll = async()=>{
+    const currentCart = authorizedUser.cart
+    setIsAllSelected(false)
+
+        const checkedProduct = currentCart.map((product)=>{
+                const editedroduct = {...product,checked:false}
+                return editedroduct
+        })
+            try{
+                const addToCartProducts = {
+                    cart:checkedProduct
+                }
+                await axios.put(`${URL}/user/${authorizedId}`,addToCartProducts)
+            }catch(error){
+                alert(error)
+            }
+}
+
+const deleteSelected = async()=>{
+    let selectedCount = 0;
+    const currentCart = authorizedUser.cart
+
+    setIsAllSelected(false)
+    currentCart.forEach((selectedItem)=>{
+        if(selectedItem.checked){
+            selectedCount += 1
+        }
+    })
+    
+    if(selectedCount >= 1 ){
+        const updatedCart = currentCart.filter((product)=> product.checked !== true)
+            try{
+                const addToCartProducts = {
+                    cart:updatedCart
+                }
+                await axios.put(`${URL}/user/${authorizedId}`,addToCartProducts)
+            }catch(error){
+                alert(error)
+            }
+    }
+}
+
+const deleteSingleItem = async(e)=>{
+    const toDeleteId = e.target.id
+    const currentCart = authorizedUser.cart
+    
+        const updatedCart = currentCart.filter((product)=> product.id !== toDeleteId)
+        try{
+            const addToCartProducts = {
+                cart:updatedCart
+            }
+            await axios.put(`${URL}/user/${authorizedId}`,addToCartProducts)
+        }catch(error){
+            alert(error)
+        }
+}
+
+const [errorMessage, setErrorMessage] = useState('');
+const [isCheckOut,setIsCheckOut] = useState(false)
+const [voucher, setVoucher] = useState('')
+const checkOut =()=>{
+    let selectedCount = 0;
+    const currentCart = authorizedUser.cart
+    //checked
+    currentCart.forEach((selectedItem)=>{
+        if(selectedItem.checked){
+            selectedCount += 1
+        }
+    })
+
+    if(selectedCount <= 0){
+        setErrorMessage('Please select product to check out!')
+    }else{
+        setErrorMessage('')
+        setIsCheckOut(true)
+    }
+}
+
+const increaseItem=async(e)=>{
+    const currentCart = authorizedUser.cart
+    const productId = e.target.parentElement.id
+
+        
+        const increaseItem = currentCart.map((item)=>{
+            if(item.id === productId){
+                const editedroduct = {
+                    ...item,
+                    item:item.item + 1,
+                    newPrice:item.sale ? item.origPrice * (item.item + 1) :'',
+                    price:item.sale ? '':item.origPrice * (item.item + 1)
+                }
+                
+                return editedroduct
+            }
+            return item
+        })
+
+            try{
+                const addToCartProducts = {
+                    cart:increaseItem
+                }
+                await axios.put(`${URL}/user/${authorizedId}`,addToCartProducts)
+            }catch(error){
+                alert(error)
+            }
+   } 
+
+   const decreaseItem =async(e)=>{
+    const currentCart = authorizedUser.cart
+    const productId = e.target.parentElement.id
+        
+        const decreaseItem = currentCart.map((item)=>{
+            if(item.id === productId){
+                const editedroduct = {
+                    ...item,
+                    item:item.item > 1 ? item.item - 1:1,
+                    newPrice:item.sale ? item.item <= 1 ? item.origPrice:item.newPrice - item.origPrice :'',
+                    price:item.sale ? '':item.item <= 1 ? item.origPrice:item.price - item.origPrice
+                }
+                
+                return editedroduct
+            }
+            return item
+        })
+
+            try{
+                const addToCartProducts = {
+                    cart:decreaseItem
+                }
+                await axios.put(`${URL}/user/${authorizedId}`,addToCartProducts)
+            }catch(error){
+                alert(error)
+            }
+   } 
+
+  const buyNow = async(e)=>{
+    if(authorizedUser.userName != undefined){
+      const currentCart = authorizedUser.cart
+      const currentUserId = authorizedUser._id
+      const productId = e.target.id
+
+      data.filter((product)=> productId === product._id ? choosenProducts = product:null)
+
+      if(currentCart != ''){
+          let bool = false;
+          const newCart = currentCart.map((item)=>{
+              if(item.id === choosenProducts._id){
+                  const updatedItem = {
+                    ...item,
+                    item:1 + item.item,
+                    checked:true,
+                    newPrice:item.sale ? item.origPrice * (item.item + 1) :'',
+                    price:item.sale ? '':item.origPrice * (item.item + 1)
+                }
+                  bool = true
+                  return updatedItem
+              }
+              return item;
+          })
+
+          if(bool){
+                  try{
+                      const addToCartProducts = {
+                      cart:newCart
+                      }
+                      await axios.put(`${URL}/user/${currentUserId}`,addToCartProducts)
+                      setIsLoading(false)
+                      setIsCheckOut(true)
+                  }catch(error){
+                      alert(error)
+                  }
+                  bool=false
+          }else{
+
+                  try{
+                      const addToCartProducts = {
+                      cart:[...currentCart,{
+                          id:choosenProducts._id,
+                          name:choosenProducts.name,
+                          newPrice:choosenProducts.newPrice,
+                          salePercentage:choosenProducts.salePercentage,
+                          price:choosenProducts.price,
+                          origPrice: choosenProducts.sale ?choosenProducts.newPrice:choosenProducts.price,
+                          quantity:choosenProducts.quantity,
+                          bestSeller:choosenProducts.bestSeller,
+                          sale:choosenProducts.sale,
+                          category:choosenProducts.category,
+                          img:choosenProducts.img,
+                          usersProductReviews:choosenProducts.usersProductReviews,
+                          productSold:choosenProducts.productSold,
+                          description:choosenProducts.description,
+                          checked:true,
+                          item:1,
+                      }]
+                      }
+                      await axios.put(`${URL}/user/${currentUserId}`,addToCartProducts)
+                      setIsLoading(false)
+                      setIsCheckOut(true)
+                  }catch(error){
+                      alert(error)
+                  }
+          }
+      }else{
+              try{
+                  const addToCartProducts = {
+                  cart:[...currentCart,{
+                      id:choosenProducts._id,
+                      name:choosenProducts.name,
+                      newPrice:choosenProducts.newPrice,
+                      salePercentage:choosenProducts.salePercentage,
+                      price:choosenProducts.price,
+                      origPrice: choosenProducts.sale ?choosenProducts.newPrice:choosenProducts.price,
+                      quantity:choosenProducts.quantity,
+                      bestSeller:choosenProducts.bestSeller,
+                      sale:choosenProducts.sale,
+                      category:choosenProducts.category,
+                      img:choosenProducts.img,
+                      usersProductReviews:choosenProducts.usersProductReviews,
+                      productSold:choosenProducts.productSold,
+                      description:choosenProducts.description,
+                      checked:true,
+                      item:1,
+                  }]
+                  }
+                  await axios.put(`${URL}/user/${currentUserId}`,addToCartProducts)
+                  setIsLoading(false)
+                  setIsCheckOut(true)
+              }catch(error){
+                  alert(error)
+              }
+      }
+
+  }else{
+      navigate('/forms/login')
+  }
+  }
+
+// checked item total price
+let totalPrice = 0;
+const totalPriceFunc =()=>{
+    const currentCart = authorizedUser.cart
+    if(currentCart != undefined){
+        currentCart.forEach(item => {
+            if(item.checked){
+                if (item.sale) {
+                    totalPrice += item.newPrice
+                } else {
+                    totalPrice += item.price;
+                }
+            }
+        });
+    }
+}
+totalPriceFunc();
   useEffect(()=>{
     if(sessionStorage.getItem('userId') != null){
         if(authorizedUser.userName === undefined){
@@ -321,7 +628,7 @@ const ProducInfo = () => {
                           Add to cart</button>
                             </div>
                         </div>
-                          <button type='button'>Buy Now</button>
+                          <button type='button' id={product._id} onClick={(e)=>{buyNow(e)}} data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">Buy Now</button>
                       </div>
                 </div>
             </div>
@@ -366,27 +673,37 @@ const ProducInfo = () => {
     </section>
 
             {/* cart sidenav */}
-            <div className="offcanvas offcanvas-end custom-sidenav-cart" tabIndex="-1" id="cartSideNav" aria-labelledby="offcanvasRightLabel">
-              <div className="offcanvas-header custom-sidenav-cart-header">
+            <div className="offcanvas offcanvas-end custom-sidenav-cart" data-bs-backdrop="false" tabIndex="-1" id="cartSideNav" aria-labelledby="offcanvasScrollingLabel">
+            <div className={`offcanvas-header custom-sidenav-cart-header ${isCheckOut ? 'hide-cart':''}`}>
                 <div className='header-container' id="offcanvasRightLabel">
                     {/* <HiShoppingCart/> */}
                         <div className='logo-container'>
                             <img src={logoWhite} className='img-fluid'/>
                         </div>
-                        <button type="button" className="cart-back-btn" data-bs-dismiss="offcanvas" aria-label="Close">
+                        <button type="button" onClick={unSelectAll} className="cart-back-btn" data-bs-dismiss="offcanvas" aria-label="Close">
                             <BsArrowLeftShort className='cart-back-icon'/>
                         </button>
-                        <button type="button" className="cart-edit-btn">
+                        <button type="button" className="cart-edit-btn"  id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                             Edit items
                         </button>
+                        {/* dropdown */}
+                        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            {isAllSelected ? 
+                                <li><button onClick={unSelectAll} className="dropdown-item">Unselect all</button></li>
+                            :
+                                <li><button onClick={selectAll} className="dropdown-item">Select all</button></li>
+                            }
+                                <li><button onClick={deleteSelected} className="dropdown-item">Delete all selected</button></li>
+                        </ul>
                 </div>
             </div>
-            <div className="offcanvas-body cart-items-container">
-                {
-                    authorizedUser.cart ? (
+            <div className={` offcanvas-body cart-items-container ${isCheckOut ? 'hide-cart':''}`}>
+                { isUserLoading ? (<CartSkeleton/>)
+                    
+                    :authorizedUser.cart ? (
                         authorizedUser.cart.map((cart,index)=>(
                         <div className='cart-product-main-container' key={index}>
-                            <input type='checkbox' className='checkBox'/>
+                            <input id={cart.id} checked={cart.checked} type='checkbox' onChange={(e)=>{checkedProducts(e)}} className='checkBox'/>
                             <div className='cart-product'>
                                 <div className='cart-img-container'>
                                     <img src={cart.img[0].imgOne} className='img-fluid'/>
@@ -397,22 +714,22 @@ const ProducInfo = () => {
                                     </h4>
                                     <h5 className='cart-product-price'>
                                         <span>&#8369;</span>
-                                        {cart.price}
+                                        {cart.sale ? cart.newPrice:cart.price}
                                     </h5>
                                     <div className='cart-product-quantity-container'>
                                         <p className='cart-product-quantity'>
                                             Quantity:
                                         </p>
-                                        <div className='cart-product-quantity-setter-container'>
-                                            <button type='button'>-</button>
+                                        <div className='cart-product-quantity-setter-container' id={cart.id}>
+                                            <button type='button' onClick={(e)=>{decreaseItem(e)}}>-</button>
                                             <span className='quantity-count'>{cart.item}</span>
-                                            <button type='button'>+</button>
+                                            <button type='button' onClick={(e)=>{increaseItem(e)}}>+</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <span className='trash-container'>
-                                <button type='button'>
+                                <button type='button' id={cart.id} onClick={(e)=>{deleteSingleItem(e)}}>
                                     <MdOutlineDeleteOutline className='trash-icon'/>
                                 </button>
                             </span>
@@ -425,13 +742,107 @@ const ProducInfo = () => {
                             <div className='voucher'>
                                 <div className='voucher-title'>
                                     <HiOutlineTicket className='voucher-icon'/>
-                                    <h5>Vouncher:</h5>
+                                    <h5>Voucher:</h5>
                                 </div>
-                                <input type='text' placeholder='Put voucher code here...'/>
+                                <div className="voucher-input">
+                                    <div className="dropdown custom-dropdown">
+                                        <button className='dropdown-btn' type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            {voucher ? voucher.name:'Select Voucher'}
+                                        </button>
+                                        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            {authorizedUser.vouchers != undefined ? authorizedUser.vouchers != '' ? 
+                                            
+                                            authorizedUser.vouchers.map((voucher)=>(
+                                                voucher.expired === 'true' || voucher.used === 'true' ? '':
+                                                    <li key={voucher.name}>
+                                                        <button onClick={()=>{setVoucher(voucher)}} className="dropdown-item">
+                                                            {voucher.name}
+                                                            {` - ${voucher.salePercentage}% off`}
+                                                        </button>
+                                                    </li>
+                                            ))
+
+                                            :
+                                                <li>
+                                                    <p className="no-voucher-message">You don't have vouchers</p>
+                                                </li>
+                                            :''}
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div className='checkOut-container'>
-                            <button type='button'>Check Out</button>
+                            <button type='button' onClick={checkOut}>Check Out</button>
+                            <p className="checkout-error-message">
+                                {errorMessage}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* checkOut */}
+                <div className={`${isCheckOut ? 'check-out-container':'hide-checkOut'}`}>
+                    <div className="checkout-header">
+                        <h3>Check Out</h3>
+                        <div className='logo-container'>
+                            <img src={logoWhite} className='img-fluid'/>
+                        </div>
+                        <button type="button" onClick={()=>{setIsCheckOut(false)}} className="checkout-back-btn">
+                            <BsArrowLeftShort className='checkout-back-icon'/>
+                        </button>
+                    </div>
+                    <div className="delivery-address">
+                        <div className="top-container">
+                            <div className="location-icon-container">
+                                <MdLocationPin/>
+                                <p>Delivery Address</p>
+                            </div>
+                            <div className="edit-location-container">
+                                <button type='button'><FaUserEdit/></button>
+                            </div>
+                        </div>
+                        <div className="user-location-container">
+                            <div className="user-location-info">
+                                <span className="user-name-phone">
+                                    <p className="user-name">
+                                        {`${authorizedUser.firstName}  ${authorizedUser.lastName}`}
+                                    </p>
+                                    <span className="divider">|</span>
+                                    <p className="user-phone">
+                                    {authorizedUser.number}
+                                    </p>
+                                </span>
+                                <p className="user-add">{authorizedUser.address}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="checked-out-Products-container">
+                            {authorizedUser.cart !== undefined ? authorizedUser.cart.map((product,index)=>(
+                                product.checked ? 
+                                <div className="order-products" key={index}>
+                                    <div className="product-img-container">
+                                        <img src={product.img[0].imgOne}/>
+                                    </div>
+                                    <div className="product-info">
+                                        <h3>{product.name}</h3>
+                                        <span className="price-quantity">
+                                            <p>&#8369;{product.sale ? product.newPrice:product.price}</p>
+                                            <p>{product.item}x</p>
+                                        </span>
+                                    </div>
+                                </div>
+                                :''
+                            )):''}
+                    </div>
+                    <div className="place-order-container">
+                        <div className="total-payments-container">
+                            <p>Total payment</p>
+                            {voucher ? <p className="voucher-percent">{`-${voucher.salePercentage}%`}</p>:''}
+                            <p>&#8369;{voucher ? Math.floor(totalPrice - (totalPrice * (voucher.salePercentage / 100))).toLocaleString():totalPrice}</p>
+                        </div>
+                        <div className="placeorder-btn-container">
+                            <button className={voucher ? 'place-order-w-voucher':'place-order'}>Place Order</button>
                         </div>
                     </div>
                 </div>
