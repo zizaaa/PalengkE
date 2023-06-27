@@ -62,22 +62,20 @@ const Register = () => {
       })
       setIsLoading(false)
     }
-
   };
 
   const addUser = async () => {
-    try {
-      const model = {
-        firstName: firstName,
-        lastName: lastName,
-        userName: userName,
-        email: email,
-        password: password,
-        number: number,
-        address: address
-      };
-      await axios.post(`${URL}/users`, model);
-    } catch (error) {
+    const model = {
+      firstName: firstName,
+      lastName: lastName,
+      userName: userName,
+      email: email,
+      password: password,
+      number: number,
+      address: address
+    };
+    const response = await axios.post(`${URL}/users`, model);
+    if (response) {
       SwalE.fire({
         icon: 'error',
         title: `${error}`,
