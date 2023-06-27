@@ -47,13 +47,12 @@ const Register = () => {
               setIsLoading(false)
               saveUser=false;
           }
-          if(saveUser){  
-            setIsLoading(true)          
-            addUser();
-          }
-
         });
-
+        if(saveUser){  
+          setIsLoading(true)          
+          addUser();
+        }
+        console.log('Have a Greet Day!')
     } catch (error) {
       Swal.fire({
         icon: 'error',
