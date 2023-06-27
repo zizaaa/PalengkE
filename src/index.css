@@ -1764,6 +1764,27 @@
         .form-nav .img-container{
             width: 15rem;
         }
+
+        .register-section .register-form-container .firstRw{
+            display: flex;
+            width: 100%;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .register-section .register-form-container .firstRw input::placeholder {
+        color:white;
+        }
+
+        .register-section .register-form-container .firstRw input{
+          flex: 1;
+          
+        }
+
+        .register-section .register-form-container  .resAdd::placeholder {
+            color: white;
+        }
+
         .register-section .register-form-container form{
             display: flex;
             flex-direction: column;
@@ -1778,13 +1799,21 @@
             color: white;
             outline: none;
         }
-        .register-section .register-form-container form button{
+
+        .register-section .register-form-container button{
+            color: white;
+        }
+
+        .register-section .register-form-container form .custom-spinner{
             padding: 10px 10px;
             border-radius: 10px;
             border: none;
             background-color: rgb(32,29,29);
             color: white;
             outline: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .register-section .register-form-container form .custom-spinner .custom-spinner-border{
             background-color: transparent;
@@ -1830,9 +1859,11 @@
             font-size: 1.3rem;
             text-align: center;
             flex-wrap: wrap;
+            
         }
         .register-section .register-form-container .bottom-form p{
             margin: 0;
+            
         }
         .register-section .register-form-container .form-head .img-container{
             width: 5rem;

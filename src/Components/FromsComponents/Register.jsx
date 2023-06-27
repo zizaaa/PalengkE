@@ -81,55 +81,62 @@ const Register = () => {
           <p>Create Account</p>
         </div>
         <form>
+        <div className="firstRw">
+            <input
+              type='text'
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder='First name'
+              value={firstName}
+              required
+            />
+            <input
+              type='text'
+              onChange={(e) => setLastName(e.target.value)}
+              placeholder='Last name'
+              value={lastName}
+              required
+            />
+          </div>
+          <div className="firstRw">
+            <input
+              type='text'
+              onChange={(e) => setUserName(e.target.value)}
+              placeholder='User name'
+              value={userName}
+              required
+            />
+            <input
+              type='text'
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder='Email'
+              value={email}
+              required
+            />
+          </div>
           <input
-            type='text'
-            onChange={(e) => setFirstName(e.target.value)}
-            placeholder='First name'
-            value={firstName}
-            required
-          />
-          <input
-            type='text'
-            onChange={(e) => setLastName(e.target.value)}
-            placeholder='Last name'
-            value={lastName}
-            required
-          />
-          <input
-            type='text'
-            onChange={(e) => setUserName(e.target.value)}
-            placeholder='User name'
-            value={userName}
-            required
-          />
-          <input
-            type='text'
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder='Email'
-            value={email}
-            required
-          />
-          <input
-            type='password'
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder='Password'
-            value={password}
-            required
-          />
-          <input
-            type='text'
-            onChange={(e) => setNumber(e.target.value)}
-            placeholder='Number'
-            value={number}
-            required
-          />
-          <input
+            className="resAdd"
             type='text'
             onChange={(e) => setAddress(e.target.value)}
-            placeholder='Address'
+            placeholder='Residential Address'
             value={address}
             required
           />
+          <div className="firstRw">
+            <input
+              type='password'
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder='Password'
+              value={password}
+              required
+            />
+            <input
+              type='text'
+              onChange={(e) => setNumber(e.target.value)}
+              placeholder='Number'
+              value={number}
+              required
+            />
+          </div>
           {errorMessage && <p>{errorMessage}</p>}
           <button type='submit' onClick={validation}>Sign Up</button>
         </form>
