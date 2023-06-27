@@ -1941,6 +1941,27 @@
         .form-nav .img-container{
             width: 15rem;
         }
+
+        .register-section .register-form-container .firstRw{
+            display: flex;
+            width: 100%;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .register-section .register-form-container .firstRw input::placeholder {
+        color:white;
+        }
+
+        .register-section .register-form-container .firstRw input{
+          flex: 1;
+          
+        }
+
+        .register-section .register-form-container  .resAdd::placeholder {
+            color: white;
+        }
+
         .register-section .register-form-container form{
             display: flex;
             flex-direction: column;
@@ -1955,6 +1976,11 @@
             color: white;
             outline: none;
         }
+
+        .register-section .register-form-container button{
+
+        }
+
         .register-section .register-form-container form .custom-spinner{
             padding: 10px 10px;
             border-radius: 10px;
@@ -1979,14 +2005,11 @@
             color: white;
             outline: none;
         }
-        /* .register-section .register-form-container form .form-btn{
-            padding: 10px 10px;
-            border-radius: 10px;
-            border: none;
-            background-color: rgb(32,29,29);
-            color: white;
-            outline: none;
-        } */
+        
+        .register-section .register-form-container button{
+            background-color: var(--text-color);
+        }
+
         .register-section .register-form-container form input::placeholder{
             color: white;
         }
@@ -2012,9 +2035,11 @@
             font-size: 1.3rem;
             text-align: center;
             flex-wrap: wrap;
+            
         }
         .register-section .register-form-container .bottom-form p{
             margin: 0;
+            
         }
         .register-section .register-form-container .form-head .img-container{
             width: 5rem;
@@ -3139,54 +3164,3 @@
       background-position: center;
     }
   } */
-
-
-  /* About Us */
-  .about-us-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: white;
-    padding: 0;
-    margin: 20px 0;
-  }
-  
-  .image-wrapper {
-    width: 100%;
-   
-  }
-  
-  .image-fluid {
-    width: 100%;
-    height: auto;
-  }
-  
-  .content-wrapper {
-    max-width: 800px;
-    margin-top: 20px;
-  }
-  
-  .about-us-heading {
-    text-align: center;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  .about-us-description {
-    margin-top: 10px;
-    font-size: 22px;
-    line-height: 1.5;
-  }
-  
-  /* Responsive styles */
-  @media (max-width: 768px) {
-    .image-container {
-      flex-wrap: wrap;
-    }
-  
-    .image-container img {
-      width: 100%;
-      height: auto;
-      margin: 10px 0;
-    }
-  }
