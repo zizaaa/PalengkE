@@ -17,6 +17,7 @@ import { useState,useEffect } from "react"
 import { FetchUsers } from "../FetchUsers"
 import CartSkeleton from "./skeletonLoading/CartSkeleton"
 import UserProfileSkeleton from "./skeletonLoading/UserProfileSkeleton"
+import Swal from 'sweetalert2'
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL
 
@@ -229,6 +230,320 @@ const Layout = () => {
     }
     totalPriceFunc();
 
+
+    // edit username
+    const editUserName =()=>{
+        Swal.fire({
+        input: 'text',
+        inputLabel: 'Edit username',
+        inputPlaceholder: 'Enter your new username',
+        inputAttributes: {
+            'aria-label': 'Enter your new username',
+        },
+        showCancelButton: true,
+        allowOutsideClick:false,
+        confirmButtonColor: "#435e39",
+        showLoaderOnConfirm: true,
+        preConfirm:async(result)=>{
+            if(result){
+                try {
+                    let userNameNotExist=true;
+                    const { data } = await axios.get(`${URL}/users`);
+                        data.map(async(user)=>{
+                            if(result === user.userName){
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Username is already taken!',
+                                    confirmButtonColor: "#435e39",
+                                })
+                                    userNameNotExist = false;
+                            }
+                            if(userNameNotExist){
+                                try{
+                                    const editUserName = {
+                                        userName:result
+                                    }
+                                    await axios.put(`${URL}/user/${authorizedId}`,editUserName)
+                                        Swal.fire({
+                                            icon:"success",
+                                            title:'Successful',
+                                            text:"Username changed",
+                                            confirmButtonColor: "#435e39",
+                                        })
+                                }catch(error){
+                                    Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Something went wrong!',
+                                    confirmButtonColor: "#435e39",
+                                    })
+                                }
+                            }
+                        })
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                        confirmButtonColor: "#435e39",
+                        })
+                }
+            }
+        }
+        })
+    }
+
+    //edit email
+    const editEmail =()=>{
+        Swal.fire({
+            input: 'text',
+            inputLabel: 'Edit email',
+            inputPlaceholder: 'Enter your new email',
+            inputAttributes: {
+                'aria-label': 'Enter your new email',
+            },
+            showCancelButton: true,
+            allowOutsideClick:false,
+            confirmButtonColor: "#435e39",
+            showLoaderOnConfirm: true,
+            preConfirm:async(result)=>{
+                if(result){
+                    try{
+                        let hasSign = /[@.]/.test(result);
+
+                        if(hasSign){
+                            const editEmail = {
+                                email:result
+                            }
+                            await axios.put(`${URL}/user/${authorizedId}`,editEmail)
+                                Swal.fire({
+                                    icon:"success",
+                                    title:'Successful',
+                                    text:"Email changed",
+                                    confirmButtonColor: "#435e39",
+                                })
+                        }else{
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Invalid Email!',
+                                confirmButtonColor: "#435e39",
+                                })
+                        }
+
+                    }catch(error){
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                        confirmButtonColor: "#435e39",
+                        })
+                    }
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please Enter your new email!',
+                        confirmButtonColor: "#435e39",
+                        })
+                }
+            }
+        })
+    }
+    //edit phone
+    const editPhone =()=>{
+        Swal.fire({
+            input: 'number',
+            inputLabel: 'Edit phone number',
+            inputPlaceholder: 'Enter your new phone number',
+            inputAttributes: {
+                'aria-label': 'Enter your new phone number',
+            },
+            showCancelButton: true,
+            allowOutsideClick:false,
+            confirmButtonColor: "#435e39",
+            showLoaderOnConfirm: true,
+            preConfirm:async(result)=>{
+                if(result){
+                    try{
+                            const editPhone = {
+                                number:result
+                            }
+                            await axios.put(`${URL}/user/${authorizedId}`,editPhone)
+                                Swal.fire({
+                                    icon:"success",
+                                    title:'Successful',
+                                    text:"Phone number changed",
+                                    confirmButtonColor: "#435e39",
+                                })
+
+                    }catch(error){
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                        confirmButtonColor: "#435e39",
+                        })
+                    }
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please Enter your new phone number!',
+                        confirmButtonColor: "#435e39",
+                        })
+                }
+            }
+        })
+    }
+    //edit address
+    const editAddress =()=>{
+        console.log('click')
+        setIsCheckOut(false)
+        setVoucher('')
+        Swal.fire({
+            title:'Change Delivery Information',
+            html:
+            '<input type="text" id="swal-input4" class="swal2-input" placeholder="Full Name">' +
+            '<input type="number" id="swal-input5" class="swal2-input" placeholder="Contact number">' +
+            '<input type="text" id="swal-input6" class="swal2-input" placeholder="Delivery Address">',
+            showCancelButton: true,
+            allowOutsideClick:false,
+            confirmButtonColor: "#435e39",
+            showLoaderOnConfirm: true,
+            preConfirm:async()=>{
+                const fullName = document.getElementById('swal-input4').value
+                const contactnumber = document.getElementById('swal-input5').value
+                const address = document.getElementById('swal-input6').value
+                
+                if(fullName && contactnumber && address){
+                    console.log('validated')
+                    try {
+                        const editDeliveryInfo = {
+                            deliveryInfo:{
+                                fullName:fullName,
+                                number:contactnumber,
+                                address:address
+                            }
+                        }
+                        await axios.put(`${URL}/user/${authorizedId}`,editDeliveryInfo)
+                            Swal.fire({
+                                icon:"success",
+                                title:'Successful',
+                                text:"Delivery Information changed",
+                                confirmButtonColor: "#435e39",
+                            })
+                    } catch (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                            confirmButtonColor: "#435e39",
+                        })
+                    }
+                }else if(!fullName){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please Enter your Full name!',
+                        confirmButtonColor: "#435e39",
+                    })
+                }else if(!contactnumber){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please Enter your Contact number!',
+                        confirmButtonColor: "#435e39",
+                    })
+                }else if(!address){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please Enter your complete address!',
+                        confirmButtonColor: "#435e39",
+                    })
+                }
+            }
+        })
+    }
+    //change pass
+    const changePass =()=>{
+        Swal.fire({
+            title:'Change Password',
+            html:
+            '<input id="swal-input1" class="swal2-input" placeholder="Old Password">' +
+            '<input id="swal-input2" class="swal2-input" placeholder="New Password">' +
+            '<input id="swal-input3" class="swal2-input" placeholder="Confirm New Password">',
+            showCancelButton: true,
+            allowOutsideClick:false,
+            confirmButtonColor: "#435e39",
+            showLoaderOnConfirm: true,
+            preConfirm:async()=>{
+                const oldPass = document.getElementById('swal-input1').value
+                const newPass = document.getElementById('swal-input2').value
+                const confirmNewPass = document.getElementById('swal-input3').value
+                if(oldPass && newPass === confirmNewPass && oldPass === authorizedUser.password){
+                    try{
+                            const changePass = {
+                                password:confirmNewPass
+                            }
+                            await axios.put(`${URL}/user/${authorizedId}`,changePass)
+                                Swal.fire({
+                                    icon:"success",
+                                    title:'Successful',
+                                    text:"Password changed",
+                                    confirmButtonColor: "#435e39",
+                                })
+
+                    }catch(error){
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                        confirmButtonColor: "#435e39",
+                        })
+                    }
+                }else if(!oldPass){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please Enter your old password!',
+                        confirmButtonColor: "#435e39",
+                        })
+                }else if(!newPass){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please Enter your new password!',
+                        confirmButtonColor: "#435e39",
+                        })
+                }else if(!confirmNewPass){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please Confirm your new password!',
+                        confirmButtonColor: "#435e39",
+                        })
+                }else if(oldPass !== authorizedUser.password){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Wrong password!',
+                        confirmButtonColor: "#435e39",
+                    })
+                }else if(newPass !== confirmNewPass){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Your new password and confirm password are not match!',
+                        confirmButtonColor: "#435e39",
+                    })
+                }
+            }
+        })
+    }
+
     useEffect(() => {
         
         window.addEventListener('resize', ()=>{
@@ -357,7 +672,7 @@ const Layout = () => {
 
         <section>
         {/* cart sidenav */}
-        <div className="offcanvas offcanvas-end custom-sidenav-cart" data-bs-backdrop="false" tabIndex="-1" id="cartSideNav" aria-labelledby="offcanvasScrollingLabel">
+        <div className="offcanvas offcanvas-end custom-sidenav-cart" data-bs-backdrop="true" tabIndex="-1" id="cartSideNav" aria-labelledby="offcanvasScrollingLabel">
             <div className={`offcanvas-header custom-sidenav-cart-header ${isCheckOut ? 'hide-cart':''}`}>
                 <div className='header-container' id="offcanvasRightLabel">
                     {/* <HiShoppingCart/> */}
@@ -484,21 +799,25 @@ const Layout = () => {
                                 <p>Delivery Address</p>
                             </div>
                             <div className="edit-location-container">
-                                <button type='button'><FaUserEdit/></button>
+                                <button type='button' onClick={editAddress} data-bs-dismiss="offcanvas" aria-label="Close"><FaUserEdit/></button>
                             </div>
                         </div>
                         <div className="user-location-container">
                             <div className="user-location-info">
                                 <span className="user-name-phone">
                                     <p className="user-name">
-                                        {`${authorizedUser.firstName}  ${authorizedUser.lastName}`}
+                                        {authorizedUser.deliveryInfo === undefined  ? `${authorizedUser.firstName}  ${authorizedUser.lastName}`:authorizedUser.deliveryInfo.fullName}
                                     </p>
-                                    <span className="divider">|</span>
+                                    <span className="divider">
+                                        {authorizedUser.deliveryInfo === undefined  ? '|':'|'}
+                                    </span>
                                     <p className="user-phone">
-                                    {authorizedUser.number}
+                                    {authorizedUser.deliveryInfo === undefined  ? authorizedUser.number:authorizedUser.deliveryInfo.number}
                                     </p>
                                 </span>
-                                <p className="user-add">{authorizedUser.address}</p>
+                                <p className="user-add">
+                                {authorizedUser.deliveryInfo === undefined ? authorizedUser.address:authorizedUser.deliveryInfo.address}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -533,7 +852,7 @@ const Layout = () => {
                 </div>
             </div>
           {/* profile sidenav */}
-            <div className="offcanvas offcanvas-end custom-profile-nav text-center text-md-left" tabIndex="-1" id="profileSideNav" aria-labelledby="offcanvasRightLabel">
+            <div className="offcanvas offcanvas-end custom-profile-nav text-center text-md-left" data-bs-backdrop="true" tabIndex="-1"  id="profileSideNav" aria-labelledby="offcanvasScrollingLabel">
                 <div className="offcanvas-body profile-custom-container">
                         <button type="button" className="profile-back-btn-container" data-bs-dismiss="offcanvas" aria-label="Close">
                                 <BsArrowLeftShort className='profile-back-btn'/>
@@ -621,7 +940,7 @@ const Layout = () => {
                                 </div>
                                 <div className='right-side'>
                                     {authorizedUser.userName}
-                                    <button type='button'><FaUserEdit/></button>
+                                    <button type='button' onClick={editUserName} data-bs-dismiss="offcanvas" aria-label="Close"><FaUserEdit/></button>
                                 </div>
                             </div>
                             <div className="userName-card-email">
@@ -631,7 +950,7 @@ const Layout = () => {
                                 </div>
                                 <div className='right-side'>
                                     {authorizedUser.email}
-                                    <button type='button'><FaUserEdit/></button>
+                                    <button type='button' onClick={editEmail} data-bs-dismiss="offcanvas" aria-label="Close"><FaUserEdit/></button>
                                 </div>
                             </div>
                             <div className="userName-card-phone">
@@ -641,7 +960,7 @@ const Layout = () => {
                                 </div>
                                 <div className='right-side'>
                                     {authorizedUser.number}
-                                    <button type='button'><FaUserEdit/></button>
+                                    <button type='button' onClick={editPhone} data-bs-dismiss="offcanvas" aria-label="Close"><FaUserEdit/></button>
                                 </div>
                             </div>
                             <div className="userName-card-key">
@@ -650,7 +969,7 @@ const Layout = () => {
                                     <p className='key-name'>Change password</p>
                                 </div>
                                 <div className='right-side'>
-                                    <button type='button'><FaChevronRight/></button>
+                                    <button type='button' onClick={changePass} data-bs-dismiss="offcanvas" aria-label="Close"><FaChevronRight/></button>
                                 </div>
                             </div>
                             <div className="userName-lagout-container">
