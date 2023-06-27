@@ -52,7 +52,7 @@ const Register = () => {
           setIsLoading(true)          
           addUser();
         }
-
+        console.log('Have a Greet Day!')
     } catch (error) {
       Swal.fire({
         icon: 'error',
