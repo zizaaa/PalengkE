@@ -16,6 +16,7 @@ import ShopRice from './Components/Shop/Rice'
 import ShopSpicesAndHerbs from './Components/Shop/HerbsAndSpices'
 import ProducInfo from "./Components/ProducInfo"
 import NotFound from './Pages/NotFound'
+import WebsitePolicies from "./Pages/WebsitePolicies"
 
 function App() {
 
@@ -23,8 +24,7 @@ function App() {
     <main>
       <Routes>
           <Route element={<Layout/>}>
-            <Route path="/" element={<Home />}>
-            </Route>
+            <Route path="/" element={<Home />}/>
             <Route path="/about" element={<AboutUs/>}/>
             <Route path="/shop" element={<Shop/>}>
                   <Route index element={<ShopAllProducts />}/>
@@ -36,6 +36,7 @@ function App() {
                   <Route path="herbsAndSpices" element={<ShopSpicesAndHerbs />}/>
             </Route>
             <Route path="/contact" element={<ContactUs/>}/>
+            <Route path="/policies" element={<WebsitePolicies/>}/>
           </Route>
           <Route path="/forms" element={<Forms/>}>
               <Route index element={<Register/>}/>

@@ -4,7 +4,7 @@ import Reviews from "../Components/Reviews"
 const Home = () => {
 
   return (
-    <section>
+    <section className="home-section">
         <Hero/>
           <BestSellingProduct />
           <Reviews/>
