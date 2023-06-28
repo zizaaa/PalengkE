@@ -27,6 +27,7 @@ const Layout = () => {
     const [isDropDown, setIsDropDown] = useState(false);
     const [userSettingsOn, setUserSettingsOn] = useState(false)
     const [isUserLoading,setIsUserLoading] = useState(true)
+    const [isProfileLoading, setIsProfileLoading] = useState(false)
     const dropDown=()=>{
         isDropDown ? setIsDropDown(false):setIsDropDown(true)
     }
@@ -552,6 +553,28 @@ const Layout = () => {
         })
     }
 
+    const uploadImg =async(e)=>{
+        setIsProfileLoading(true)
+        const img = e.target.files[0]
+            try {
+                const formData = new FormData();
+                formData.append('img', img)
+
+                axios.put(`${URL}/user/img/${authorizedId}`,formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                })
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'File upload failed!. Please try again later',
+                    confirmButtonColor: "#435e39",
+                })
+            }
+    }
+
     useEffect(() => {
         window.addEventListener('resize', ()=>{
             if (window.innerWidth >= 993) {
@@ -601,16 +624,27 @@ const Layout = () => {
 
                         {authorizedId != null  ? (                        
                             <div className="user-container d-none d-lg-flex">
-                            <button className="cart" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">
-                                <HiShoppingCart/>
-                                    {authorizedUser.cart != undefined ? authorizedUser.cart.length <=0 ?'':(
-                                        <span className='cart-overlay-counter'>{authorizedUser.cart.length}</span>
-                                    ):''}
-                            </button>
-                            <button className="user" data-bs-toggle="offcanvas" data-bs-target="#profileSideNav" aria-controls="offcanvasRight">
-                                <AiOutlineUser/>
-                            </button>
-                        </div>):(
+                                <button className="cart" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">
+                                    <HiShoppingCart/>
+                                        {authorizedUser.cart != undefined ? authorizedUser.cart.length <=0 ?'':(
+                                            <span className='cart-overlay-counter'>{authorizedUser.cart.length}</span>
+                                        ):''}
+                                </button>
+                                <button className="user" data-bs-toggle="offcanvas" data-bs-target="#profileSideNav" aria-controls="offcanvasRight">
+                                    <div className={`${isProfileLoading ? '':'profile-nav-custom-spinner-unloading'}profile-nav-custom-spinner`}>
+                                        <div className={`${isProfileLoading ? 'spinner-border':''}`} role="status">
+                                        </div>
+                                    </div>
+                                    {authorizedUser.img !== undefined ? 
+                                        <>
+                                            <img src={`${URL}/${authorizedUser.img}`}/>
+                                            {()=>{setIsProfileLoading(false)}}
+                                        </>
+                                    :<AiOutlineUser/>}
+                                    
+                                </button>
+                            </div>
+                        ):(
                             <div className="user-container d-none d-lg-flex">
                                 <Link to='/forms' className="register-btn">
                                     <h1><AiOutlineUser/></h1>
@@ -858,9 +892,23 @@ const Layout = () => {
                         </button>
             {isUserLoading ? (<UserProfileSkeleton/>):(
                     <>
-                        <div className='row profile-container mb-4'>
+                        <div className='row profile-container mb-4 gap-3'>
                             <div className='col-md profile-pic-container'>
-                                <img src={profile} className='img-fluid'/>
+                                <div className="img-container">
+                                    {authorizedUser.img !== undefined ? 
+                                        <>
+                                            <img src={`${URL}/${authorizedUser.img}`}/>
+                                            {()=>{setIsProfileLoading(false)}}
+                                        </>
+                                    :
+                                            <img src={profile}/>
+                                    }
+                                    <input onChange={(e)=>{uploadImg(e)}} className="custom-file-input" name="img" type="file" disabled={isProfileLoading ? true:false}/>
+                                    <div className={`${isProfileLoading ? '':'profile-custom-spinner-unloading'} profile-custom-spinner`}>
+                                        <div className={`${isProfileLoading ? 'spinner-border':''}`} role="status">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div className='col-md user-info-container'>
                                 <h4 className='user-name'>{`${authorizedUser.firstName} ${authorizedUser.lastName}`}</h4>

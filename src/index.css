@@ -396,7 +396,41 @@
             padding: 3px;
             border-radius: 50%;
             font-size: 2rem;
+            overflow: hidden;
+            position: relative;
         }
+            nav .user-container .user img{
+                height: 1.9rem;
+                width: 1.9rem;
+            }
+                nav .user-container .user .profile-nav-custom-spinner-unloading{
+                    display: none;
+                }
+                nav .user-container .user .profile-nav-custom-spinner{
+                    position: absolute;
+                    color: var(--orange);
+                    font-size: 20px;
+                    left: 0;
+                    right: 0;
+                    top: 0;
+                    bottom: 0;
+                    background-color: white;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 10px;
+                }
+                    nav .user-container .user .profile-nav-custom-spinner .spinner-border {
+                        --bs-spinner-width: 1rem;
+                        --bs-spinner-height: 1rem;
+                        --bs-spinner-vertical-align: -0.125em;
+                        --bs-spinner-border-width: 0.25em;
+                        --bs-spinner-animation-speed: 0.75s;
+                        --bs-spinner-animation-name: spinner-border;
+                        border: var(--bs-spinner-border-width) solid currentcolor;
+                        border-right-color: transparent;
+                    }
+
         nav .user-container .cart{
             font-size: 2rem;
         }
@@ -770,6 +804,7 @@
                 flex-direction: column;
                 align-items: center;
                 position: relative;
+                padding-top: 40px;
             }
             .profile-custom-container .profile-back-btn-container{
                 border: none;
@@ -785,7 +820,79 @@
             }
             .profile-custom-container .profile-container .profile-pic-container{
                 padding: 0;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 10px;
             }
+                .profile-custom-container .profile-container .profile-pic-container .img-container{
+                    border: 2px solid var(--orange);
+                    min-width: 10rem;
+                    min-height: 10rem;
+                    max-width: 10rem;
+                    max-height: 10rem;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: relative;
+                    cursor: pointer;
+                }
+                    .profile-custom-container .profile-container .profile-pic-container .profile-custom-spinner{
+                        background-color: #888;
+                        position: absolute;
+                        left: 0;
+                        right: 0;
+                        top: 0;
+                        bottom: 0;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: white;
+                    }
+                        .profile-custom-container .profile-container .profile-pic-container .profile-custom-spinner-unloading{
+                            display: none;
+                        }
+                .profile-custom-container .profile-container .profile-pic-container .img-container img{
+                    min-width: 10rem;
+                    min-height: 10rem;
+                    max-width: 10rem;
+                    max-height: 10rem;
+                    border-radius: 50%;
+                }
+                .profile-custom-container .profile-container .profile-pic-container .img-container:hover .custom-file-input::before {
+                    transform: translateY(0);
+                }
+
+                .custom-file-input::-webkit-file-upload-button {
+                    visibility: hidden;
+                }
+                .custom-file-input::before {
+                    content: 'Edit profile';
+                    /* transform: translateX(50%); */
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    right: 0;
+                    text-align: center;
+                    display: inline-block;
+                    color: white;
+                    border: none;
+                    background-color: var(--orange);
+                    padding: 7px 8px;
+                    cursor: pointer;
+                    z-index: 2;
+                    font-size: 12px;
+                    transform: translateY(40px);
+                    transition: all .3s;
+                }
+
+                .profile-custom-container .profile-container .profile-pic-container img{
+                    border-radius: 50%;
+                }
+                
             .profile-custom-container .profile-container .user-info-container{
                 padding: 0;
                 display: flex;
