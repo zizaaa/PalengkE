@@ -226,6 +226,7 @@ const Register = () => {
             <img src={signupImg} className="img-fluid"/>
           </div>
           <div className="register-form-container">
+            <h1 className="title">Sign up</h1>
             <form>
               <div className="name-container user-reg-container">
                 <input
