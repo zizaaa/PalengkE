@@ -392,16 +392,20 @@
             background-color: var(--text-color);
             display: flex;
             align-items: center;
+            justify-content: center;
             border: 1px solid var(--text-color);
             padding: 3px;
             border-radius: 50%;
             font-size: 2rem;
             overflow: hidden;
             position: relative;
+            height: 2.5rem;
+            width: 2.5rem;
         }
             nav .user-container .user img{
-                height: 1.9rem;
-                width: 1.9rem;
+                height: 2.5rem;
+                width: 2.5rem;
+                border-radius: 50%;
             }
                 nav .user-container .user .profile-nav-custom-spinner-unloading{
                     display: none;
@@ -817,6 +821,8 @@
                 position: absolute;
                 left: 10px;
                 top: 0;
+                background-color: transparent;
+                z-index: 3;
             }
             .profile-custom-container .profile-container .profile-pic-container{
                 padding: 0;

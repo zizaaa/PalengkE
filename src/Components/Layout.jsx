@@ -565,6 +565,7 @@ const Layout = () => {
                         'Content-Type': 'multipart/form-data',
                     },
                 })
+                setIsProfileLoading(false)
             } catch (error) {
                 Swal.fire({
                     icon: 'error',
@@ -635,13 +636,7 @@ const Layout = () => {
                                         <div className={`${isProfileLoading ? 'spinner-border':''}`} role="status">
                                         </div>
                                     </div>
-                                    {authorizedUser.img !== undefined ? 
-                                        <>
-                                            <img src={`${URL}/${authorizedUser.img}`}/>
-                                            {()=>{setIsProfileLoading(false)}}
-                                        </>
-                                    :<AiOutlineUser/>}
-                                    
+                                    {authorizedUser.img !== undefined ? <img src={`${URL}/${authorizedUser.img}`}/>:<AiOutlineUser/>}
                                 </button>
                             </div>
                         ):(
@@ -895,14 +890,7 @@ const Layout = () => {
                         <div className='row profile-container mb-4 gap-3'>
                             <div className='col-md profile-pic-container'>
                                 <div className="img-container">
-                                    {authorizedUser.img !== undefined ? 
-                                        <>
-                                            <img src={`${URL}/${authorizedUser.img}`}/>
-                                            {()=>{setIsProfileLoading(false)}}
-                                        </>
-                                    :
-                                            <img src={profile}/>
-                                    }
+                                    {authorizedUser.img !== undefined ? <img src={`${URL}/${authorizedUser.img}`}/>:<img src={profile}/>}
                                     <input onChange={(e)=>{uploadImg(e)}} className="custom-file-input" name="img" type="file" disabled={isProfileLoading ? true:false}/>
                                     <div className={`${isProfileLoading ? '':'profile-custom-spinner-unloading'} profile-custom-spinner`}>
                                         <div className={`${isProfileLoading ? 'spinner-border':''}`} role="status">
