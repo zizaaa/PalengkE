@@ -849,16 +849,6 @@ totalPriceFunc();
             </div>
     <footer className=" py-5">
             <div className="container">
-                
-                <div className="footer-input-container mb-5">
-                    <form>
-                        <input type="email" placeholder="Enter your Email" required/>
-                        <button type="submit" className="px-3" name="submitEmail">
-                            Get in touch
-                        </button>
-                    </form>
-                </div>
-
                 <div className="row">
                     <div className="col-md">
                         <div className="footer-left-container">

@@ -1,7 +1,8 @@
 import axios from "axios";
 import { Link, useNavigate } from 'react-router-dom';
-import enter from '/src/assets/enter.png';
+import signupImg from '/src/assets/signup.png'
 import { useState } from 'react';
+import { FaEye,FaEyeSlash } from 'react-icons/fa'
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 
@@ -17,7 +18,8 @@ const Register = () => {
     "password":false,
     "confirmPassword":false,
     "number":false,
-    "address":false
+    "address":false,
+    "isAgree":false
   }
 
   const navigate = useNavigate();
@@ -29,7 +31,10 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [number, setNumber] = useState('');
   const [address, setAddress] = useState('');
+  const [isAgree, setIsAgree] = useState(false);
   const [isLoading,setIsLoading] = useState(false)
+  const [isPassHide, setIsPassHide] = useState(true)
+  const [isConfirmPassHide, setIsConfirmPassHide] = useState(true)
 
   const SwalE = withReactContent(Swal);
 
@@ -175,6 +180,14 @@ const Register = () => {
             }
                 
         }
+
+    const agree =()=>{
+      if(isAgree){
+        isValid.isAgree = true;
+      }else{
+        isValid.isAgree = false
+      }
+    }
     userFirstNameValidation();
     userLastNameValidation();
     userNameValidation();
@@ -182,11 +195,20 @@ const Register = () => {
     userpassValidation();
     usernumberValidation();
     useraddValidation();
+    agree();
 
-    if (isValid.firstName && isValid.lastName && isValid.userName && isValid.email && isValid.password &&isValid.confirmPassword && isValid.number && isValid.address) {
+    if (isValid.firstName && isValid.lastName && isValid.userName && isValid.email && isValid.password &&isValid.confirmPassword && isValid.number && isValid.address && isValid.isAgree) {
       console.log('validated')
       checkNewUser()
-    } else {
+    } else if(!isValid.isAgree){
+      SwalE.fire({
+        icon: 'error',
+        title: 'Opss...',
+        text: 'Make sure that the information you type is correct and true',
+        confirmButtonColor: "#435e39",
+      });
+      setIsLoading(false)
+    }else{
       SwalE.fire({
         icon: 'error',
         title: 'Opss...',
@@ -199,81 +221,102 @@ const Register = () => {
 
   return (
     <section className='register-section mb-5'>
-      <div className="register-form-container">
-        <div className='form-head'>
-          <div className='img-container'>
-            <img src={enter} className='img-fluid' alt='Enter' />
+        <div className="singup-container">
+          <div className="register-img-container">
+            <img src={signupImg} className="img-fluid"/>
           </div>
-          <p>Create Account</p>
-        </div>
-        <form>
-          <input
-            type='text'
-            onChange={(e) => setFirstName(e.target.value)}
-            placeholder='First name'
-            value={firstName}
-            required
-          />
-          <input
-            type='text'
-            onChange={(e) => setLastName(e.target.value)}
-            placeholder='Last name'
-            value={lastName}
-            required
-          />
-          <input
-            type='text'
-            onChange={(e) => setUserName(e.target.value)}
-            placeholder='User name'
-            value={userName}
-            required
-          />
-          <input
-            type='mail'
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder='Email'
-            value={email}
-            required
-          />
-          <input
-            type='password'
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder='Password'
-            value={password}
-            required
-          />
-          <input
-            type='password'
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder='Confirm password'
-            value={confirmPassword}
-            required
-          />
-          <input
-            type='text'
-            onChange={(e) => setNumber(e.target.value)}
-            placeholder='Number'
-            value={number}
-            required
-          />
-          <input
-            type='text'
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder='Address'
-            value={address}
-            required
-          />
-          <div className="bestSeller-spinner custom-spinner">
-            <div className={`${isLoading ? 'spinner-border':'custom-spinner-border'}`} role="status">
-                <button onClick={(e)=>{validation(e)}} className={`${isLoading ? 'visually-hidden':'form-btn'}`} type='button' >Register</button>
+          <div className="register-form-container">
+            <form>
+              <div className="name-container user-reg-container">
+                <input
+                  type='text'
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder='First name'
+                  value={firstName}
+                  required
+                />
+                <input
+                  type='text'
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder='Last name'
+                  value={lastName}
+                  required
+                />
+              </div>
+              <div className="username-email-container  user-reg-container">
+                  <input
+                    type='text'
+                    onChange={(e) => setUserName(e.target.value)}
+                    placeholder='User name'
+                    value={userName}
+                    required
+                  />
+                  <input
+                    type='mail'
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder='Email'
+                    value={email}
+                    required
+                  />
+              </div>
+              <div className="password-container  user-reg-container">
+                <span className="pass-container">
+                  <input
+                    type={isPassHide ? 'password':'text'}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder='Password'
+                    value={password}
+                    required
+                  />
+                  <span onClick={()=>{isPassHide ? setIsPassHide(false):setIsPassHide(true)}} className="eye-icon">
+                    {isPassHide ? <FaEye/>:<FaEyeSlash/>}
+                  </span>
+                </span>
+                <span className="confirm-pass-container">
+                  <input
+                    type={isConfirmPassHide ? 'password':'text'}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder='Confirm password'
+                    value={confirmPassword}
+                    required
+                  />
+                  <span onClick={()=>{isConfirmPassHide ? setIsConfirmPassHide(false):setIsConfirmPassHide(true)}} className="eye-icon">
+                  {isConfirmPassHide ? <FaEye/>:<FaEyeSlash/>}
+                  </span>
+                </span>
+              </div>
+              <div className="number-add-container  user-reg-container">
+                  <input
+                    type='number'
+                    onChange={(e) => setNumber(e.target.value)}
+                    placeholder='Number'
+                    value={number}
+                    required
+                  />
+                  <input
+                    type='text'
+                    onChange={(e) => setAddress(e.target.value)}
+                    placeholder='Address'
+                    value={address}
+                    required
+                  />
+              </div>
+              <div className="agreed-container">
+                <input type="checkbox" checked={isAgree} onChange={()=>{isAgree ? setIsAgree(false):setIsAgree(true)}} required/>
+                <p>I agree that all information giver are correct and true.</p>
+              </div>
+              <div className="bestSeller-spinner custom-spinner">
+                <div className={`${isLoading ? 'spinner-border':'custom-spinner-border'}`} role="status">
+                    <button onClick={(e)=>{validation(e)}} className={`${isLoading ? 'visually-hidden':'form-btn'}`} type='button' >Register</button>
+                </div>
+              </div>
+            </form>
+            <div className='bottom-form'>
+              <p>Already have an account?</p>
+              <Link to='login'>Login</Link>
             </div>
           </div>
-        </form>
-        <div className='bottom-form'>
-          <p>Already have an account?</p>
-          <Link to='login'>Login</Link>
         </div>
-      </div>
     </section>
   );
 }
