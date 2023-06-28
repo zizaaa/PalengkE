@@ -1,5 +1,5 @@
 import axios from 'axios';
-import contactImg from '/src/assets/contactImg.jpeg'
+import contactImg from '/src/assets/contact_us.png'
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 const env = import.meta.env;
@@ -100,7 +100,7 @@ const ContactUs = () => {
                   </div>
                 </form>
             </div>
-            <div className="d-none d-lg-block img-container">
+            <div className="img-container">
               <img src={contactImg} className='img-fluid'/>
             </div>
           </div>

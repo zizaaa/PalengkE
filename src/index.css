@@ -1994,7 +1994,7 @@
                     align-items: center;
                     width: 100%;
                     padding: 0 10px 0 0;
-                    border-radius: 10px;
+                    border-radius: 20px;
                     border: 1px solid var(--color-fade);
                 }
                 .register-section .register-form-container form .password-container .pass-container input ,.register-section .register-form-container form .password-container .confirm-pass-container input{
@@ -2024,7 +2024,7 @@
             }
         .register-section .register-form-container form input{
             padding: 10px 10px;
-            border-radius: 10px;
+            border-radius: 20px;
             border: 1px solid var(--color-fade);
             outline: none;
             width: 100%;
@@ -3068,22 +3068,24 @@
 .contactUs-section{
     margin-bottom: 10px;
 }
-    @media(max-width:989px){
+    @media(max-width:1063px){
         .contactUs-section .custom-row{
             display:flex;
+            flex-direction: column-reverse;
+            align-items: center;
             background-color: white;
             border-radius: 20px;
             padding: 20px;
             justify-content: space-between;
             gap: 10px;
             filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
-        } 
+        }
     }
     .contactUs-section .custom-row{
         display:flex;
+        align-items: center;
         background-color: white;
         border-radius: 20px;
-        padding-left: 20px;
         justify-content: space-between;
         gap: 10px;
         filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
@@ -3160,10 +3162,7 @@
 
         .contactUs-section .img-container{
             width: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-            .contactUs-section .img-container img{
-                width: 100%;
-                height: 100%;
-                border-top-right-radius: 20px;
-                border-bottom-right-radius: 20px;
-            }
