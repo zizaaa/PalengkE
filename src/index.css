@@ -4,6 +4,19 @@
     background-color: rgb(67,94,57);
     font-family: 'Roboto', sans-serif;
 }
+
+    /* Hide the up and down icons in number inputs */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    /* Optional: Hide the input arrows in other browsers */
+    input[type="number"] {
+    -moz-appearance: textfield;
+    }
+
     :root{
         --text-color:rgb(67,94,57);
         --border-color:rgb(67,94,57);
@@ -1923,25 +1936,106 @@
         .form-nav .img-container{
             width: 15rem;
         }
+
+        @media(max-width:773px){
+            .register-section .singup-container{
+                display: flex;
+                flex-direction: column;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                align-items: center;
+                background-color: white;
+                filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
+                border-radius: 10px;
+                padding: 20px;
+            }
+            .register-section .register-form-container form{
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                width: 100%;
+                margin-top: 20px;
+            }
+        }
+        .register-section .singup-container{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
+            border-radius: 10px;
+            padding: 20px;
+        }
+            .register-section .singup-container .register-img-container{
+                flex: 1;
+            }
         .register-section .register-form-container form{
             display: flex;
             flex-direction: column;
             gap: 20px;
-            padding: 20px;
+            width: 100%;
         }
+
+            @media(max-width:349px){
+                .register-section .register-form-container form .user-reg-container{
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    width: 100%;
+                }
+            }
+            .register-section .register-form-container form .user-reg-container{
+                display: flex;
+                gap: 10px;
+                width: 100%;
+            }
+                .register-section .register-form-container form .password-container .pass-container , .register-section .register-form-container form .password-container .confirm-pass-container{
+                    display: flex;
+                    align-items: center;
+                    width: 100%;
+                    padding: 0 10px 0 0;
+                    border-radius: 10px;
+                    border: 1px solid var(--color-fade);
+                }
+                .register-section .register-form-container form .password-container .pass-container input ,.register-section .register-form-container form .password-container .confirm-pass-container input{
+                    border: none;
+                }
+
+        .register-section .register-form-container{
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            flex: 1;
+        }
+        .register-section .agreed-container{
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+        }
+            .register-section .agreed-container input{
+                margin: 0;
+                flex: 1;
+                margin-right: 10px;
+            }
+            .register-section .agreed-container p{
+                margin: 0;
+                width: 100%;
+            }
         .register-section .register-form-container form input{
             padding: 10px 10px;
             border-radius: 10px;
-            border: none;
-            background-color: var(--text-color);
-            color: white;
+            border: 1px solid var(--color-fade);
             outline: none;
+            width: 100%;
         }
         .register-section .register-form-container form .custom-spinner{
             padding: 10px 10px;
             border-radius: 10px;
             border: none;
-            background-color: rgb(32,29,29);
+            background-color: var(--text-color);
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
             color: white;
             outline: none;
             display: flex;
@@ -1961,30 +2055,7 @@
             color: white;
             outline: none;
         }
-        /* .register-section .register-form-container form .form-btn{
-            padding: 10px 10px;
-            border-radius: 10px;
-            border: none;
-            background-color: rgb(32,29,29);
-            color: white;
-            outline: none;
-        } */
-        .register-section .register-form-container form input::placeholder{
-            color: white;
-        }
-        .register-section .register-form-container{
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-        }
-        .register-section .register-form-container .form-head{
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.3rem;
-        }
+
         .register-section .register-form-container .bottom-form{
             width: 100%;
             display: flex;
@@ -1997,9 +2068,6 @@
         }
         .register-section .register-form-container .bottom-form p{
             margin: 0;
-        }
-        .register-section .register-form-container .form-head .img-container{
-            width: 5rem;
         }
 
         /* Login */
@@ -2054,6 +2122,7 @@
             font-size: 1.3rem;
             text-align: center;
             flex-wrap: wrap;
+            margin-top: 15px;
         }
         .Login-form-container .bottom-form p{
             margin:0;
@@ -2942,8 +3011,13 @@
                 flex-wrap: wrap;
                 height: 100%;
                 background-color: white;
+                border-radius: 20px;
                 filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
             }
+                .policies-section img{
+                    border-top-left-radius: 20px;
+                    border-bottom-left-radius: 20px;
+                }
                 .policies-section .policies-section-container .content-container{
                     flex: 1;
                     padding: 20px;
@@ -2956,23 +3030,6 @@
             text-align: center;
         }
 
-        footer .footer-input-container form input{
-            width: 50%;
-            padding: 10px 10px;
-            border: none;
-            outline: none;
-            border-top-left-radius: 10px;
-            border-bottom-left-radius: 10px;
-        }
-        footer .footer-input-container form button{
-            border: none;
-            padding: 10px 10px;
-            border-top-right-radius: 10px;
-            border-bottom-right-radius: 10px;
-            background-color: var(--text-color);
-            color: white;
-            font-weight: 500;
-        }
         footer .footer-left-container p{
             margin-top: 10px;
         }
@@ -3016,6 +3073,7 @@
         .contactUs-section .custom-row{
             display:flex;
             background-color: white;
+            border-radius: 20px;
             padding: 20px;
             justify-content: space-between;
             gap: 10px;
@@ -3025,6 +3083,7 @@
     .contactUs-section .custom-row{
         display:flex;
         background-color: white;
+        border-radius: 20px;
         padding-left: 20px;
         justify-content: space-between;
         gap: 10px;
@@ -3054,9 +3113,7 @@
             width: 100%;
             gap: 10px;
             padding: 20px;
-            border: 1px solid var(--color-fade);
             background-color: white;
-            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
             border-radius: 20px;
         }
             .contactUs-section .left-side form input{
@@ -3065,20 +3122,11 @@
                 border: 1px solid var(--color-fade);
                 padding: 10px;
             }
-                .contactUs-section .left-side form input:focus{
-                    border-radius: 20px;
-                    outline: none;
-                    border: 1px solid var(--color-fade);
-                    padding: 10px;
-                    box-shadow: 2px 2px 2px 2px inset rgba(0, 0, 0, 0.183);
-                }
-            .contactUs-section .left-side form button{
-                border-radius: 20px;
+
+            .contactUs-section .left-side form .contact-btn{
                 border: none;
-                padding: 10px 0;
-                background-color: var(--text-color);
+                background-color: transparent;
                 color: white;
-                filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
             }
             .contactUs-section .left-side form textarea{
                 border-radius: 20px;
@@ -3090,17 +3138,26 @@
                 min-height: 200px;
                 max-height: 300px;
             }
-                .contactUs-section .left-side form textarea:focus{
+                .contactUs-section .left-side .contactUs-spinner{
                     border-radius: 20px;
-                    outline: none;
-                    border: 1px solid var(--color-fade);
-                    padding: 10px;
-                    max-width: 100%;
-                    min-width: 100%;
-                    min-height: 200px;
-                    max-height: 300px;
-                    box-shadow: 2px 2px 2px 2px inset rgba(0, 0, 0, 0.183);
+                    border: none;
+                    padding: 10px 0;
+                    background-color: var(--text-color);
+                    color: white;
+                    filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
+                    margin-top: 20px;
+                    text-align: center;
                 }
+                    .contactUs-section .left-side .contactUs-spinner-loading{
+                        border-radius: 20px;
+                        border: none;
+                        padding: 5px 0;
+                        background-color: var(--text-color);
+                        color: white;
+                        filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
+                        margin-top: 20px;
+                        text-align: center;
+                    }
 
         .contactUs-section .img-container{
             width: 50%;
@@ -3108,4 +3165,6 @@
             .contactUs-section .img-container img{
                 width: 100%;
                 height: 100%;
+                border-top-right-radius: 20px;
+                border-bottom-right-radius: 20px;
             }
