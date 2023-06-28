@@ -640,7 +640,7 @@ totalPriceFunc();
                 {product.usersProductReviews.map((review,index)=>(
                   <div className="review-cards" key={index}>
                       <div className="img-container">
-                          <img src={profile}/>
+                        {review.img !== undefined ? <img src={`${URL}/${review.img}`}/>:<img src={profile}/>}
                       </div>
                       <div className="reviews-content">
                         <div className="head-container">
