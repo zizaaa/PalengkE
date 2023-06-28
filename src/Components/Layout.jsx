@@ -98,6 +98,11 @@ const Layout = () => {
     const deleteSelected = async()=>{
         let selectedCount = 0;
         const currentCart = authorizedUser.cart
+        const deleting = document.querySelectorAll('.true-cart-checked')
+
+        deleting.forEach((parent)=>{
+            parent.style = 'opacity:0.2'
+        })
 
         setIsAllSelected(false)
         currentCart.forEach((selectedItem)=>{
@@ -107,6 +112,7 @@ const Layout = () => {
         })
         
         if(selectedCount >= 1 ){
+            // document.querySelectorAll('.true-cart-checked').style = 'opacity:0.2'
             const updatedCart = currentCart.filter((product)=> product.checked !== true)
                 try{
                     const addToCartProducts = {
@@ -121,8 +127,10 @@ const Layout = () => {
 
     const deleteSingleItem = async(e)=>{
         const toDeleteId = e.target.id
+        const parent = e.target.parentNode.parentNode
         const currentCart = authorizedUser.cart
-        
+
+            parent.style = 'opacity:0.2;'
             const updatedCart = currentCart.filter((product)=> product.id !== toDeleteId)
             try{
                 const addToCartProducts = {
@@ -692,8 +700,8 @@ const Layout = () => {
                 { isUserLoading ? (<CartSkeleton/>)
                     
                     :authorizedUser.cart ? (
-                        authorizedUser.cart.map((cart,index)=>(
-                        <div className='cart-product-main-container' key={index}>
+                        authorizedUser.cart.map((cart)=> (
+                        <div className={`${cart.checked}-cart-checked cart-product-main-container`} key={cart.id}>
                             <input id={cart.id} checked={cart.checked} type='checkbox' onChange={(e)=>{checkedProducts(e)}} className='checkBox'/>
                             <div className='cart-product'>
                                 <div className='cart-img-container'>
@@ -1030,8 +1038,4 @@ const Layout = () => {
   )
 }
 
-// Layout.propTypes = {
-//     authorizedId:PropTypes.string,
-//     authorizedUser:PropTypes.object,
-//   };
 export default Layout
