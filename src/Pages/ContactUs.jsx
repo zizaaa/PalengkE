@@ -26,8 +26,8 @@ const ContactUs = () => {
         await axios.post(`${URL}/messages`,model)
           Swal.fire({
             icon: 'success',
-            title: 'Message Sent',
-            text: 'Thank you for contacting us! We\'ll get back to you us soon as we can. ',
+            title: 'We received your message!',
+            text: 'Thank you for contacting us! We\'ll get back to you as soon as we can. ',
             confirmButtonColor: "#435e39",
           }).then(()=>{
             setFullName('')
