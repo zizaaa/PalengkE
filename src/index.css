@@ -2988,3 +2988,55 @@
       background-position: center;
     }
   } */
+
+  /* About Us Section */
+
+  /* About Us */
+  .about-us-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    padding: 0;
+    margin: 20px 0;
+  }
+  
+  .image-wrapper {
+    width: 100%;
+   
+  }
+  
+  .image-fluid {
+    width: 100%;
+    height: auto;
+  }
+  
+  .content-wrapper {
+    max-width: 800px;
+    margin-top: 20px;
+  }
+  
+  .about-us-heading {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .about-us-description {
+    margin-top: 10px;
+    font-size: 22px;
+    line-height: 1.5;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .image-container {
+      flex-wrap: wrap;
+    }
+  
+    .image-container img {
+      width: 100%;
+      height: auto;
+      margin: 10px 0;
+    }
+  }
