@@ -27,6 +27,7 @@ const Layout = () => {
     const [isDropDown, setIsDropDown] = useState(false);
     const [userSettingsOn, setUserSettingsOn] = useState(false)
     const [isUserLoading,setIsUserLoading] = useState(true)
+    const [isProfileLoading, setIsProfileLoading] = useState(false)
     const dropDown=()=>{
         isDropDown ? setIsDropDown(false):setIsDropDown(true)
     }
@@ -98,6 +99,11 @@ const Layout = () => {
     const deleteSelected = async()=>{
         let selectedCount = 0;
         const currentCart = authorizedUser.cart
+        const deleting = document.querySelectorAll('.true-cart-checked')
+
+        deleting.forEach((parent)=>{
+            parent.style = 'opacity:0.2'
+        })
 
         setIsAllSelected(false)
         currentCart.forEach((selectedItem)=>{
@@ -107,6 +113,7 @@ const Layout = () => {
         })
         
         if(selectedCount >= 1 ){
+            // document.querySelectorAll('.true-cart-checked').style = 'opacity:0.2'
             const updatedCart = currentCart.filter((product)=> product.checked !== true)
                 try{
                     const addToCartProducts = {
@@ -121,8 +128,10 @@ const Layout = () => {
 
     const deleteSingleItem = async(e)=>{
         const toDeleteId = e.target.id
+        const parent = e.target.parentNode.parentNode
         const currentCart = authorizedUser.cart
-        
+
+            parent.style = 'opacity:0.2;'
             const updatedCart = currentCart.filter((product)=> product.id !== toDeleteId)
             try{
                 const addToCartProducts = {
@@ -544,6 +553,29 @@ const Layout = () => {
         })
     }
 
+    const uploadImg =async(e)=>{
+        setIsProfileLoading(true)
+        const img = e.target.files[0]
+            try {
+                const formData = new FormData();
+                formData.append('img', img)
+
+                axios.put(`${URL}/user/img/${authorizedId}`,formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                })
+                setIsProfileLoading(false)
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'File upload failed!. Please try again later',
+                    confirmButtonColor: "#435e39",
+                })
+            }
+    }
+
     useEffect(() => {
         window.addEventListener('resize', ()=>{
             if (window.innerWidth >= 993) {
@@ -593,16 +625,21 @@ const Layout = () => {
 
                         {authorizedId != null  ? (                        
                             <div className="user-container d-none d-lg-flex">
-                            <button className="cart" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">
-                                <HiShoppingCart/>
-                                    {authorizedUser.cart != undefined ? authorizedUser.cart.length <=0 ?'':(
-                                        <span className='cart-overlay-counter'>{authorizedUser.cart.length}</span>
-                                    ):''}
-                            </button>
-                            <button className="user" data-bs-toggle="offcanvas" data-bs-target="#profileSideNav" aria-controls="offcanvasRight">
-                                <AiOutlineUser/>
-                            </button>
-                        </div>):(
+                                <button className="cart" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">
+                                    <HiShoppingCart/>
+                                        {authorizedUser.cart != undefined ? authorizedUser.cart.length <=0 ?'':(
+                                            <span className='cart-overlay-counter'>{authorizedUser.cart.length}</span>
+                                        ):''}
+                                </button>
+                                <button className="user" data-bs-toggle="offcanvas" data-bs-target="#profileSideNav" aria-controls="offcanvasRight">
+                                    <div className={`${isProfileLoading ? '':'profile-nav-custom-spinner-unloading'}profile-nav-custom-spinner`}>
+                                        <div className={`${isProfileLoading ? 'spinner-border':''}`} role="status">
+                                        </div>
+                                    </div>
+                                    {authorizedUser.img !== undefined ? <img src={`${URL}/${authorizedUser.img}`}/>:<AiOutlineUser/>}
+                                </button>
+                            </div>
+                        ):(
                             <div className="user-container d-none d-lg-flex">
                                 <Link to='/forms' className="register-btn">
                                     <h1><AiOutlineUser/></h1>
@@ -692,8 +729,8 @@ const Layout = () => {
                 { isUserLoading ? (<CartSkeleton/>)
                     
                     :authorizedUser.cart ? (
-                        authorizedUser.cart.map((cart,index)=>(
-                        <div className='cart-product-main-container' key={index}>
+                        authorizedUser.cart.map((cart)=> (
+                        <div className={`${cart.checked}-cart-checked cart-product-main-container`} key={cart.id}>
                             <input id={cart.id} checked={cart.checked} type='checkbox' onChange={(e)=>{checkedProducts(e)}} className='checkBox'/>
                             <div className='cart-product'>
                                 <div className='cart-img-container'>
@@ -850,9 +887,16 @@ const Layout = () => {
                         </button>
             {isUserLoading ? (<UserProfileSkeleton/>):(
                     <>
-                        <div className='row profile-container mb-4'>
+                        <div className='row profile-container mb-4 gap-3'>
                             <div className='col-md profile-pic-container'>
-                                <img src={profile} className='img-fluid'/>
+                                <div className="img-container">
+                                    {authorizedUser.img !== undefined ? <img src={`${URL}/${authorizedUser.img}`}/>:<img src={profile}/>}
+                                    <input onChange={(e)=>{uploadImg(e)}} className="custom-file-input" name="img" type="file" disabled={isProfileLoading ? true:false}/>
+                                    <div className={`${isProfileLoading ? '':'profile-custom-spinner-unloading'} profile-custom-spinner`}>
+                                        <div className={`${isProfileLoading ? 'spinner-border':''}`} role="status">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div className='col-md user-info-container'>
                                 <h4 className='user-name'>{`${authorizedUser.firstName} ${authorizedUser.lastName}`}</h4>
@@ -982,16 +1026,6 @@ const Layout = () => {
 
         <footer className=" py-5">
             <div className="container">
-                
-                <div className="footer-input-container mb-5">
-                    <form>
-                        <input type="email" placeholder="Enter your Email" required/>
-                        <button type="submit" className="px-3" name="submitEmail">
-                            Get in touch
-                        </button>
-                    </form>
-                </div>
-
                 <div className="row">
                     <div className="col-md">
                         <div className="footer-left-container">
@@ -1040,8 +1074,4 @@ const Layout = () => {
   )
 }
 
-// Layout.propTypes = {
-//     authorizedId:PropTypes.string,
-//     authorizedUser:PropTypes.object,
-//   };
 export default Layout
