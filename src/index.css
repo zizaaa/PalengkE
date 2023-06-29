@@ -3279,3 +3279,37 @@
         .contactUs-section .img-container{
             flex: 1;
         }
+
+    /* About Us Section */
+  /* About Us */
+    .about-us-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
+        padding: 0;
+        border-radius: 20px;
+    }
+    
+    .image-wrapper {
+        width: 100%;
+    }
+        .image-wrapper img{
+            width: 100%;
+            height: 100%;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-top: 2px solid var(--orange);
+            border-left: 2px solid var(--orange);
+            border-right: 2px solid var(--orange);
+        }
+
+    .content-wrapper {
+        padding: 20px;
+    }
+    
+    .about-us-description {
+        margin-top: 10px;
+        font-size: 1.3rem;
+        line-height: 1.5;
+    }
