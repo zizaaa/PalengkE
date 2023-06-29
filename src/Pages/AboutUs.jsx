@@ -3,7 +3,6 @@ import React from 'react';
 
 const AboutUs = () => {
   return (
-    <div>AboutUs
       <div className="container">
         <div className="about-us-container">
           <div className="image-wrapper">
@@ -23,7 +22,6 @@ const AboutUs = () => {
           </div>
         </div>
       </div>
-    </div>
   )
 }
 
