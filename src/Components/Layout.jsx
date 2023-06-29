@@ -887,7 +887,7 @@ const Layout = () => {
                         </button>
             {isUserLoading ? (<UserProfileSkeleton/>):(
                     <>
-                        <div className='row profile-container mb-4 gap-3'>
+                        <div className='row profile-container mb-4'>
                             <div className='col-md profile-pic-container'>
                                 <div className="img-container">
                                     {authorizedUser.img !== undefined ? <img src={`${URL}/${authorizedUser.img}`}/>:<img src={profile}/>}
