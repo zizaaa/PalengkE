@@ -1750,124 +1750,6 @@
             align-items: center;
         }
 
-/* Registration Form */
-        /* register */
-        .form-nav{
-            background-color: white;
-            margin: 20px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 15px 0;
-            border-radius: 10px;
-        }
-        .form-nav .img-container{
-            width: 15rem;
-        }
-
-        .register-section .register-form-container .firstRw{
-            display: flex;
-            width: 100%;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .register-section .register-form-container .firstRw input::placeholder {
-        color:white;
-        }
-
-        .register-section .register-form-container .firstRw input{
-          flex: 1;
-          
-        }
-
-        .register-section .register-form-container  .resAdd::placeholder {
-            color: white;
-        }
-
-        .register-section .register-form-container form{
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding: 20px;
-        }
-        .register-section .register-form-container form input{
-            padding: 10px 10px;
-            border-radius: 10px;
-            border: none;
-            background-color: var(--text-color);
-            color: white;
-            outline: none;
-        }
-
-        .register-section .register-form-container button{
-            color: white;
-        }
-
-        .register-section .register-form-container form .custom-spinner{
-            padding: 10px 10px;
-            border-radius: 10px;
-            border: none;
-            background-color: rgb(32,29,29);
-            color: white;
-            outline: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .register-section .register-form-container form .custom-spinner .custom-spinner-border{
-            background-color: transparent;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .register-section .register-form-container form .form-btn{
-            border: none;
-            background-color: transparent;
-            color: white;
-            outline: none;
-        }
-        
-        .register-section .register-form-container button{
-            background-color: var(--text-color);
-        }
-
-        .register-section .register-form-container form input::placeholder{
-            color: white;
-        }
-        .register-section .register-form-container{
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-        }
-        .register-section .register-form-container .form-head{
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.3rem;
-        }
-        .register-section .register-form-container .bottom-form{
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-size: 1.3rem;
-            text-align: center;
-            flex-wrap: wrap;
-            
-        }
-        .register-section .register-form-container .bottom-form p{
-            margin: 0;
-            
-        }
-        .register-section .register-form-container .form-head .img-container{
-            width: 5rem;
-        }
 
         /* Login */
         .Login-form-container{
@@ -1923,6 +1805,107 @@
         }
         .Login-form-container .Login-form-head .img-container{
             width: 5rem;
+        }
+        .register-section .register-form-container .bottom-form p{
+            margin: 0;
+            
+        }
+
+        /* Login */
+        @media(max-width:808px) {
+            .signIn-container{
+                background-color: white;
+                filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
+                border-radius: 10px;
+                padding: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+                flex-direction: column;
+            }
+            .signIn-container .Login-form-container{
+                flex: 1;
+                padding: 20px;
+                height: 100%;
+                width: 100%;
+            }
+        }
+        .signIn-container{
+            background-color: white;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+            .signIn-container .img-container{
+                flex: 1;
+                height: 100%;
+            }
+        .signIn-container .Login-form-container{
+            flex: 1;
+            padding: 20px;
+            height: 100%;
+        }
+            .signIn-container .Login-form-container .title{
+                margin-bottom: 20px;
+                color: var(--text-color);
+            }
+        .Login-form-container .bottom-form{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.3rem;
+            text-align: center;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        .Login-form-container .bottom-form p{
+            margin:0;
+        }
+        .Login-form-container form{
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .Login-form-container .input-container{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 100%;
+            border-radius: 20px;
+            border: 1px solid var(--color-fade);
+            padding: 0 10px;
+        }
+            .Login-form-container .input-container .icon{
+                font-size: 1.3rem;
+                color: var(--text-color);
+                display: flex;
+                align-items: center;
+            }
+                .Login-form-container .input-container .eye{
+                    cursor: pointer;
+                }
+
+        .Login-form-container form input{
+            padding:10px;
+            border: none;
+            outline: none;
+            width: 100%;
+        }
+        .Login-form-container form button{
+            padding: 10px 10px;
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 1px 2px 2px rgba(0,0,0,0.3);
+            background-color: var(--text-color);
+            color: white;
+            outline: none;
         }
 
 /* shop */
