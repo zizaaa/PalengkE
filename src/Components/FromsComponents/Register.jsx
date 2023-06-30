@@ -304,7 +304,7 @@ const Register = () => {
               </div>
               <div className="agreed-container">
                 <input type="checkbox" checked={isAgree} onChange={()=>{isAgree ? setIsAgree(false):setIsAgree(true)}} required/>
-                <p>I agree that all information giver are correct and true.</p>
+                <p>I agree that all information given are correct and true.</p>
               </div>
               <div className="bestSeller-spinner custom-spinner">
                 <div className={`${isLoading ? 'spinner-border':'custom-spinner-border'}`} role="status">

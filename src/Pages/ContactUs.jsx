@@ -55,7 +55,7 @@ const ContactUs = () => {
     }
   }
   return (
-    <section className="contactUs-section">
+    <section className="contactUs-section py-5">
       <div className="container">
           <div className="custom-row">
             <div className="left-side">

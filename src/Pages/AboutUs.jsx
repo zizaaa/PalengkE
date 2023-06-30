@@ -2,7 +2,7 @@ import usImg from '/src/assets/palengketeambannerv2.jpg'
 
 const AboutUs = () => {
   return (
-  <section className='my-5 pt-5'>
+  <section className='py-5'>
     <div className="container text-center">
       <div className="about-us-container">
       <div className="image-wrapper">

@@ -560,7 +560,7 @@ const Layout = () => {
                 const formData = new FormData();
                 formData.append('img', img)
 
-                axios.put(`${URL}/user/img/${authorizedId}`,formData, {
+                await axios.put(`${URL}/user/img/${authorizedId}`,formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
