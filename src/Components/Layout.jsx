@@ -657,34 +657,34 @@ const Layout = () => {
                   {/* dropdown */}
                   <div className={`col-12 dropDown-menu-container ${isDropDown ? "d-block":"d-none"}`}>
                       <div className="dropDown-menu">
-                          <Link to='/about' className="link about">
+                          <Link to='/about' onClick={()=>{setIsDropDown(false)}} className="link about">
                               About Us
                               <span className="hoverLine"></span>
                           </Link>
 
-                          <Link to='/shop' type="button" className="link shop">
+                          <Link to='/shop' onClick={()=>{setIsDropDown(false)}} type="button" className="link shop">
                               Shop 
                           </Link>
 
-                          <Link to='/contact' className="link contact">
+                          <Link to='/contact' onClick={()=>{setIsDropDown(false)}} className="link contact">
                               Contact Us
                               <span className="hoverLine"></span>
                           </Link>
 
                         {authorizedId != null ? (
                             <div className="dropdown-user-container">
-                            {/* total price in cart */}
-                            <button className="cart" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">
-                                <HiShoppingCart/>
-                                <p className='ms-2'>
-                                    Cart
-                                </p>
-                            </button>
-                            <button className="user" data-bs-toggle="offcanvas" data-bs-target="#profileSideNav" aria-controls="offcanvasRight">
-                                <AiOutlineUser/> 
-                                    <span className="account-name ms-2">{authorizedUser.firstName ? (authorizedUser.firstName):('')}</span>
-                            </button>
-                        </div>
+                                {/* total price in cart */}
+                                <button className="cart" onClick={()=>{setIsDropDown(false)}} type="button" data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">
+                                    <HiShoppingCart/>
+                                    <p className='ms-2'>
+                                        Cart
+                                    </p>
+                                </button>
+                                <button className="user" onClick={()=>{setIsDropDown(false)}} data-bs-toggle="offcanvas" data-bs-target="#profileSideNav" aria-controls="offcanvasRight">
+                                    <AiOutlineUser/> 
+                                        <span className="account-name ms-2">{authorizedUser.firstName ? (authorizedUser.firstName):('')}</span>
+                                </button>
+                            </div>
                         ):(
                             <div className="dropdown-user-container">
                                 <Link to='/forms' className="register-btn">
