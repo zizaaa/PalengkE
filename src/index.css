@@ -1434,10 +1434,10 @@
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            color: white;
+            color: var(--text-color);
         }
         .bestselling-head-container .viewAll-btn{
-            color: white;
+            color: var(--text-color);
             text-decoration: none;
             font-size: 1.3rem;
         }
@@ -1661,7 +1661,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: black;
+            color: var(--text-color);
         }
         .reviews-section .users-review-head .stars-container{
             display: flex;
