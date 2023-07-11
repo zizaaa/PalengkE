@@ -602,26 +602,26 @@ const Layout = () => {
             <div className="container">
                 <div className="row custom-row-style">
                     <div className={`col-12 ${isDropDown ? "nav-on-flex-container":"flex-container"}`}>
+                        <Link to='/' className="logo-container">
+                          <img src={logo} className="img-fluid"/>
+                        </Link>
+
                         <div className="link-container d-none d-lg-flex">
-                          <Link to='/about' className="link about">
+                            <Link to='/shop' type="button" className="link shop">
+                                Shop 
+                                <span className="hoverLine"></span>
+                            </Link>
+                            <>|</>
+                            <Link to='/about' className="link about">
                               About Us
                               <span className="hoverLine"></span>
-                          </Link>
-                            <>|</>
-                          <Link to='/shop' type="button" className="link shop">
-                              Shop 
-                              <span className="hoverLine"></span>
-                          </Link>
+                            </Link>
                             <>|</>
                           <Link to='/contact' className="link contact">
                               Contact Us
                               <span className="hoverLine"></span>
                           </Link>
                         </div>
-
-                        <Link to='/' className="logo-container">
-                          <img src={logo} className="img-fluid"/>
-                        </Link>
 
                         {authorizedId != null  ? (                        
                             <div className="user-container d-none d-lg-flex">
@@ -871,7 +871,7 @@ const Layout = () => {
                         <div className="total-payments-container">
                             <p>Total payment</p>
                             {voucher ? <p className="voucher-percent">{`-${voucher.salePercentage}%`}</p>:''}
-                            <p>&#8369;{voucher ? Math.floor(totalPrice - (totalPrice * (voucher.salePercentage / 100))).toLocaleString():totalPrice}</p>
+                            <p className="total-price">&#8369;{voucher ? Math.floor(totalPrice - (totalPrice * (voucher.salePercentage / 100))).toLocaleString():totalPrice}</p>
                         </div>
                         <div className="placeorder-btn-container">
                             <button className={voucher ? 'place-order-w-voucher':'place-order'}>Place Order</button>
@@ -1007,11 +1007,11 @@ const Layout = () => {
                                     <button type='button' onClick={changePass} data-bs-dismiss="offcanvas" aria-label="Close"><FaChevronRight/></button>
                                 </div>
                             </div>
+                        </div>
+                    </div>
                             <div className="userName-lagout-container">
                                 <button className='logout' onClick={()=>{sessionStorage.removeItem('userId'); location.reload()}}>Sign out</button>
                             </div>
-                        </div>
-                    </div>
                     </div>
                 </>
             )}

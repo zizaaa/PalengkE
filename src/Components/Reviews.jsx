@@ -53,13 +53,6 @@ const Reviews = () => {
     <section className="reviews-section mt-5">
         <div className="users-review-head">
             <h1>REVIEWS FROM OUR CUSTOMERS</h1>
-            <span className="stars-container">
-                <h1><AiOutlineStar/></h1>
-                <h1><AiOutlineStar/></h1>
-                <h1><AiOutlineStar/></h1>
-                <h1><AiOutlineStar/></h1>
-                <h1><AiOutlineStar/></h1>
-            </span>
         </div>
         <div className="main-container">
             <div className="container users-reviews-container">
