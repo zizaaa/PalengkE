@@ -1,5 +1,5 @@
 import axios from "axios"
-import { Outlet,Link } from "react-router-dom"
+import { Outlet,Link, useLocation } from "react-router-dom"
 import { HiShoppingCart,HiMail } from "react-icons/hi"
 import { AiOutlineUser,AiOutlineStar,AiTwotonePhone } from "react-icons/ai"
 import { HiMenuAlt3,HiOutlineTicket } from "react-icons/hi"
@@ -22,6 +22,7 @@ const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL
 
 const Layout = () => {
+    const location = useLocation()
     const { authorizedId,authorizedUser } = FetchUsers()
 
     const [isDropDown, setIsDropDown] = useState(false);
@@ -607,19 +608,16 @@ const Layout = () => {
                         </Link>
 
                         <div className="link-container d-none d-lg-flex">
-                            <Link to='/shop' type="button" className="link shop">
+                            <Link to='/shop' type="button" className={`${location.pathname === '/shop' ? 'link-active':''} link about`}>
                                 Shop 
-                                <span className="hoverLine"></span>
                             </Link>
-                            <>|</>
-                            <Link to='/about' className="link about">
+
+                            <Link to='/about' className={`${location.pathname === '/about' ? 'link-active':''} link about`}>
                               About Us
-                              <span className="hoverLine"></span>
                             </Link>
-                            <>|</>
-                          <Link to='/contact' className="link contact">
+
+                          <Link to='/contact' className={`${location.pathname === '/contact' ? 'link-active':''} link about`}>
                               Contact Us
-                              <span className="hoverLine"></span>
                           </Link>
                         </div>
 

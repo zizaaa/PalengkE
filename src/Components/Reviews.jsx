@@ -52,7 +52,7 @@ const Reviews = () => {
   return (
     <section className="reviews-section mt-5">
         <div className="users-review-head">
-            <h1>REVIEWS FROM OUR CUSTOMERS</h1>
+            <h1>CUSTOMER REVIEWS</h1>
         </div>
         <div className="main-container">
             <div className="container users-reviews-container">
