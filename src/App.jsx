@@ -17,6 +17,8 @@ import ShopSpicesAndHerbs from './Components/Shop/HerbsAndSpices'
 import ProducInfo from "./Components/ProducInfo"
 import NotFound from './Pages/NotFound'
 import WebsitePolicies from "./Pages/WebsitePolicies"
+import AdminLayout from "./admin/AdminLayout"
+import AdminHome from "./admin/Home"
 
 function App() {
 
@@ -45,6 +47,10 @@ function App() {
           <Route path=":id" element={
               <ProducInfo />}/>
           <Route path="*" element={<NotFound/>}/>
+
+          <Route path="/adminDashboard" element={<AdminLayout/>}>
+              <Route index element={<AdminHome/>}/>
+          </Route>
       </Routes>
     </main>
   )

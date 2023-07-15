@@ -334,6 +334,14 @@
             font-weight: 500;
             position: relative;
         }
+            nav .link-container .link-active{
+                text-decoration: none;
+                color: var(--orange);
+                font-size: 1.3rem;
+                font-weight: 500;
+                position: relative;
+            }
+
         nav .link-container .link:hover .hoverLine{
             width: 100%;
         }
@@ -1286,13 +1294,19 @@
 /* hero section styles */
     .hero .banner-container{
         position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
+        .hero .banner-container img{
+            width: 100%;
+        }
         .hero .banner-container a{
             position: absolute;
             left: 40%;
             right: 40%;
             bottom: 10%;
-            background-color: var(--orange);
+            background-color: var(--text-color);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1308,7 +1322,6 @@
                 left: 40%;
                 right: 40%;
                 bottom: 7%;
-                background-color: var(--orange);
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -1324,7 +1337,6 @@
                     left: 35%;
                     right: 35%;
                     bottom: 5%;
-                    background-color: var(--orange);
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -1340,13 +1352,12 @@
                         left: 30%;
                         right: 30%;
                         bottom: 3%;
-                        background-color: var(--orange);
                         display: flex;
                         align-items: center;
                         justify-content: center;
                         text-decoration: none;
                         color: white;
-                        padding: 2px 0;
+                        padding: 7px 0;
                         font-size: 13px;
                         border-radius: 10px;
                     }
@@ -1434,11 +1445,10 @@
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            color: var(--text-color);
         }
         .bestselling-head-container .viewAll-btn{
-            color: var(--text-color);
             text-decoration: none;
+            color: black;
             font-size: 1.3rem;
         }
         .bestselling-head-container .viewAll-btn .arrow-icon{
@@ -1506,7 +1516,7 @@
                     gap: 10px;
                 }
             }
-            @media(max-width:736px){
+            @media(max-width:770px){
                 .product-containers .flex-container{
                     display: grid;
                     grid-template-columns: 1fr 1fr;
@@ -1661,7 +1671,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: var(--text-color);
         }
         .reviews-section .users-review-head .stars-container{
             display: flex;
@@ -2313,7 +2322,6 @@
                 }
             .ourProducts{
                 text-align: center;
-                color: var(--text-color);
                 font-weight: 500;
             }
             .shop-categories,.shop-filter .left-side{

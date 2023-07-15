@@ -6,7 +6,7 @@ const Hero = () => {
   return (
     <section className='hero'>
         <div className="banner-container">
-            <img src={banner} className='img-fluid'/>
+            <img src={banner}/>
             <Link to='/shop'>Go to Shop</Link>
         </div>
     </section>
