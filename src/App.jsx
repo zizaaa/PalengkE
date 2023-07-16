@@ -17,7 +17,7 @@ import ShopSpicesAndHerbs from './Components/Shop/HerbsAndSpices'
 import ProducInfo from "./Components/ProducInfo"
 import NotFound from './Pages/NotFound'
 import WebsitePolicies from "./Pages/WebsitePolicies"
-import AdminLayout from "./admin/AdminLayout"
+import AdminLayout from "./admin/adminLayout"
 import AdminHome from "./admin/Home"
 
 function App() {
@@ -33,7 +33,7 @@ function App() {
                   <Route path="liveStockAndPoultryProducts" element={<ShopLivestockAndPoultry />}/>
                   <Route path="fishAndSeaShells" element={<ShopFishAndSeaShells />}/>
                   <Route path="upAndLowLandVegetables" element={<ShopUpAndLowLand />}/>
-                  <Route path="fruits" element={<ShopFruits />}/>
+                  <Route path="fruits" element={<ShopFruits />}/> 
                   <Route path="rice" element={<ShopRice />}/>
                   <Route path="herbsAndSpices" element={<ShopSpicesAndHerbs />}/>
             </Route>
@@ -50,6 +50,7 @@ function App() {
 
           <Route path="/adminDashboard" element={<AdminLayout/>}>
               <Route index element={<AdminHome/>}/>
+              
           </Route>
       </Routes>
     </main>
