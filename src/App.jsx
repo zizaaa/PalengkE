@@ -17,8 +17,14 @@ import ShopSpicesAndHerbs from './Components/Shop/HerbsAndSpices'
 import ProducInfo from "./Components/ProducInfo"
 import NotFound from './Pages/NotFound'
 import WebsitePolicies from "./Pages/WebsitePolicies"
-import AdminLayout from "./admin/adminLayout"
+import AdminLayout from "./admin/AdminLayout"
 import AdminHome from "./admin/Home"
+import AdminProducts from "./admin/Products"
+import AdminUsers from "./admin/Users"
+import AdminOrderStatus from "./admin/OrderStatus"
+import AdminNotifications from "./admin/Notifications"
+import AdminHelpCenter from "./admin/HelpCenter"
+import AdminSettings from "./admin/Settings"
 
 function App() {
 
@@ -46,12 +52,24 @@ function App() {
           </Route>
           <Route path=":id" element={
               <ProducInfo />}/>
-          <Route path="*" element={<NotFound/>}/>
 
           <Route path="/adminDashboard" element={<AdminLayout/>}>
               <Route index element={<AdminHome/>}/>
-              
+
+              <Route path="/adminDashboard/products" element={<AdminProducts/>}/>
+
+              <Route path="/adminDashboard/users" element={<AdminUsers/>}/>
+
+              <Route path="/adminDashboard/orders" element={<AdminOrderStatus/>}/>
+
+              <Route path="/adminDashboard/notifications" element={<AdminNotifications/>}/>
+
+              <Route path="/adminDashboard/help" element={<AdminHelpCenter/>}/>
+
+              <Route path="/adminDashboard/notifications" element={<AdminSettings/>}/>
           </Route>
+          
+          <Route path="*" element={<NotFound/>}/>
       </Routes>
     </main>
   )
