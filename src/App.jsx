@@ -50,7 +50,7 @@ function App() {
 
           <Route path="/adminDashboard" element={<AdminLayout/>}>
               <Route index element={<AdminHome/>}/>
-              <Route path="AdminHome" element={<Home/>}/>
+              
           </Route>
       </Routes>
     </main>
