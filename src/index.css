@@ -3969,3 +3969,27 @@
                     .toShip-orders-container .toShip-main-container .infos-container .order-list-container .order-list p{
                         margin: 0;
                     }
+
+                    .finish-page-container {
+                        text-align: center;
+                        padding: 40px;
+                        height: 50vh;
+                        align-items: center;
+                      }
+                      
+                      .cart-image {
+                        width: 150px;
+                        
+                      }
+
+                      .button {
+                        display: inline-block;
+                        padding: 10px 20px;
+                        background-color: #435E39;
+                        color: #fff;
+                        text-decoration: none;
+                        border: none;
+                        border-radius: 5px;
+                        font-size: 16px;
+                        cursor: pointer;
+                      }
