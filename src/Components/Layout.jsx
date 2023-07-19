@@ -1,10 +1,11 @@
 import axios from "axios"
-import { Outlet,Link, useLocation } from "react-router-dom"
+import { Outlet,Link, useLocation, useNavigate } from "react-router-dom"
 import { HiShoppingCart,HiMail } from "react-icons/hi"
 import { AiOutlineUser,AiOutlineStar,AiTwotonePhone } from "react-icons/ai"
 import { HiMenuAlt3,HiOutlineTicket } from "react-icons/hi"
+import { BiCoinStack } from "react-icons/bi"
 import { BsArrowLeftShort,BsFacebook, BsInstagram,BsTwitter,BsFillCreditCard2BackFill } from "react-icons/bs"
-import {FaKey,FaUserEdit, FaFacebookMessenger,FaWallet,FaRegUserCircle, FaUserAlt, FaChevronRight, FaChevronDown} from "react-icons/fa"
+import {FaKey,FaUserEdit, FaFacebookMessenger,FaRegUserCircle, FaUserAlt, FaChevronRight, FaChevronDown} from "react-icons/fa"
 import { MdOutlineDeleteOutline, MdLocationPin } from "react-icons/md"
 import { VscPackage } from 'react-icons/vsc'
 import { TbTruckDelivery } from 'react-icons/tb'
@@ -23,12 +24,14 @@ const URL = env.VITE_REACT_SERVER_URL
 
 const Layout = () => {
     const location = useLocation()
+    const navigate = useNavigate();
     const { authorizedId,authorizedUser } = FetchUsers()
 
     const [isDropDown, setIsDropDown] = useState(false);
     const [userSettingsOn, setUserSettingsOn] = useState(false)
     const [isUserLoading,setIsUserLoading] = useState(true)
     const [isProfileLoading, setIsProfileLoading] = useState(false)
+    const [mop, setMop] = useState('cod');
     const dropDown=()=>{
         isDropDown ? setIsDropDown(false):setIsDropDown(true)
     }
@@ -577,6 +580,45 @@ const Layout = () => {
             }
     }
 
+    //sign out
+    const signOut =()=>{
+        sessionStorage.removeItem('userId') 
+        window.location.reload();
+    }
+
+    const placeOrder = async()=>{
+        let orders = authorizedUser.cart.filter((product) => product.checked === true)
+
+        const totalPriceElement = document.getElementById('totalPrice').childNodes[1];
+        const totalPriceText = totalPriceElement.textContent;
+        const totalPriceNumber = parseInt(totalPriceText);
+
+        const oldOrders = authorizedUser.orders
+        const randomID = Math.ceil(Math.random()*1000000)
+        try {
+            const userOrders = [...oldOrders,{
+                orderId:randomID,
+                userId:authorizedUser._id,
+                name:  authorizedUser.firstName + ' ' + authorizedUser.lastName,
+                address:authorizedUser.address,
+                contact:authorizedUser.number,
+                productOrders:orders,
+                deliveryStatus: "toShip",
+                paymentStatus:  "pending",
+                totalPrice:totalPriceNumber,
+                modeOfPayment:mop
+            }]
+                const newOrder = {
+                    orders:userOrders
+                }
+
+            await axios.put(`${URL}/user/${authorizedId}`, newOrder)
+            navigate('/success')
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         window.addEventListener('resize', ()=>{
             if (window.innerWidth >= 993) {
@@ -607,7 +649,7 @@ const Layout = () => {
                           <img src={logo} className="img-fluid"/>
                         </Link>
 
-                        <div className="link-container d-none d-lg-flex">
+                        <div className="link-container d-none d-xl-flex">
                             <Link to='/shop' type="button" className={`${location.pathname === '/shop' ? 'link-active':''} link about`}>
                                 Shop 
                             </Link>
@@ -619,10 +661,18 @@ const Layout = () => {
                           <Link to='/contact' className={`${location.pathname === '/contact' ? 'link-active':''} link about`}>
                               Contact Us
                           </Link>
+
+                          {authorizedUser.memberShip === 'Admin' || authorizedUser.memberShip === 'ADMIN' ?
+                            <Link to='/adminDashboard' className="link about">
+                              Dashboard
+                            </Link>
+                          :
+                            ''
+                          }
                         </div>
 
                         {authorizedId != null  ? (                        
-                            <div className="user-container d-none d-lg-flex">
+                            <div className="user-container d-none d-xl-flex">
                                 <button className="cart" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">
                                     <HiShoppingCart/>
                                         {authorizedUser.cart != undefined ? authorizedUser.cart.length <=0 ?'':(
@@ -638,14 +688,14 @@ const Layout = () => {
                                 </button>
                             </div>
                         ):(
-                            <div className="user-container d-none d-lg-flex">
+                            <div className="user-container d-none d-xl-flex">
                                 <Link to='/forms' className="register-btn">
                                     <h1><AiOutlineUser/></h1>
                                 </Link>
                             </div>
                         )}
 
-                        <div className="menu-container d-flex d-lg-none">
+                        <div className="menu-container d-flex d-xl-none">
                             <button type="button" onClick={dropDown}>
                                 <HiMenuAlt3/>
                             </button>
@@ -668,6 +718,14 @@ const Layout = () => {
                               Contact Us
                               <span className="hoverLine"></span>
                           </Link>
+
+                          {authorizedUser.memberShip === 'Admin' || authorizedUser.memberShip === 'ADMIN' ?
+                            <Link to='/adminDashboard' className="link about">
+                              Dashboard
+                            </Link>
+                          :
+                            ''
+                          }
 
                         {authorizedId != null ? (
                             <div className="dropdown-user-container">
@@ -799,7 +857,7 @@ const Layout = () => {
                             </div>
                         </div>
                         <div className='checkOut-container'>
-                            <button type='button' onClick={checkOut}>Check Out</button>
+                            <button type='button' onClick={checkOut}>Place Order</button>
                             <p className="checkout-error-message">
                                 {errorMessage}
                             </p>
@@ -808,7 +866,7 @@ const Layout = () => {
                 </div>
 
                 {/* checkOut */}
-                <div className={`${isCheckOut ? 'check-out-container':'hide-checkOut'}`}>
+                <div id="checkoutContainer" className={`${isCheckOut ? 'check-out-container':'hide-checkOut'}`}>
                     <div className="checkout-header">
                         <h3>Check Out</h3>
                         <div className='logo-container'>
@@ -865,14 +923,21 @@ const Layout = () => {
                                 :''
                             )):''}
                     </div>
+                    <div className="payment-options">
+                        <p>Payment Option</p>
+                        <select onClick={(e)=>{setMop(e.target.value)}}>
+                            <option value="cod">Cash on Delivery</option>
+                        </select>
+                    </div>
                     <div className="place-order-container">
                         <div className="total-payments-container">
                             <p>Total payment</p>
+                            <p className="shipping-fee">Shipping fee: &#8369;60</p>
                             {voucher ? <p className="voucher-percent">{`-${voucher.salePercentage}%`}</p>:''}
-                            <p className="total-price">&#8369;{voucher ? Math.floor(totalPrice - (totalPrice * (voucher.salePercentage / 100))).toLocaleString():totalPrice}</p>
+                            <p className="total-price" id="totalPrice">&#8369;{voucher ? Math.floor(totalPrice - (totalPrice * (voucher.salePercentage / 100)) + 60).toLocaleString():totalPrice + 60}</p>
                         </div>
                         <div className="placeorder-btn-container">
-                            <button className={voucher ? 'place-order-w-voucher':'place-order'}>Place Order</button>
+                            <button onClick={placeOrder} className={voucher ? 'place-order-w-voucher':'place-order'} data-bs-dismiss="offcanvas" aria-label="Close">Place Order</button>
                         </div>
                     </div>
                 </div>
@@ -899,7 +964,7 @@ const Layout = () => {
                             <div className='col-md user-info-container'>
                                 <h4 className='user-name'>{`${authorizedUser.firstName} ${authorizedUser.lastName}`}</h4>
                                 <h6 className='user-address'>{authorizedUser.address}</h6>
-                                <p className='user-membership'>{authorizedUser ? (`${authorizedUser.memberShip === undefined ? (''):(authorizedUser.memberShip)}`):('')}</p>
+                                <p className='user-membership'>{authorizedUser ? (`${authorizedUser.memberShip === undefined ? ('Member'):(authorizedUser.memberShip)}`):('')}</p>
                             </div>
                         </div>
                     <div className='account-overall-container'>
@@ -909,19 +974,19 @@ const Layout = () => {
                             <div className='account-details-container mb-4'>
                                 <div className='account-details'>
                                     <div className='balance-container'>
-                                        <FaWallet className='wallet-icon'/>
-                                        <p className='balance'>Balance</p>
-                                        <p className='balance-number'>&#8369;{numeral(authorizedUser.balance).format('0,0')}</p>
-                                    </div>
-                                    <div className='payLater-container'>
-                                        <BsFillCreditCard2BackFill className='card-icon'/>
-                                        <p className='paylater'>PayLater</p>
-                                        <p className='paylater-number'>&#8369;{numeral(authorizedUser.payLater).format('0,0')}</p>
+                                        <BiCoinStack className='wallet-icon'/>
+                                        <p className='balance'>Coins</p>
+                                        <p className='balance-number'>{numeral(authorizedUser.coins).format('0,0')}</p>
                                     </div>
                                     <div className='vouchers-container'>
                                         <HiOutlineTicket className='vouchers-icon'/>
                                         <p className='vouchers'>Vouchers</p>
                                         <p className='vouchers-number'>{authorizedUser.vouchers ? (`${authorizedUser.vouchers.length > 100 ? (`${authorizedUser.vouchers.length}+`):(authorizedUser.vouchers.length)}`):(0)}</p>
+                                    </div>
+                                    <div className='payLater-container'>
+                                        <BsFillCreditCard2BackFill className='card-icon'/>
+                                        <p className='paylater'>History</p>
+                                        <p className='paylater-number'>{numeral(authorizedUser.payLater).format('0,0')}</p>
                                     </div>
                                 </div>
                             </div>
@@ -932,21 +997,21 @@ const Layout = () => {
                                     <div className='toShip-container'>
                                         <span className='icons-container'>
                                             <VscPackage className='package-icon'/>
-                                            <span className='overlay-cotainer'>{authorizedUser.toShip ? (authorizedUser.toShip.length):(0)}</span>
+                                            <span className='overlay-cotainer'>{authorizedUser.orders ? authorizedUser.orders.filter((item)=>item.deliveryStatus === "toShip").length:(0)}</span>
                                         </span>
                                         <p>To Ship</p>
                                     </div>
                                     <div className='toReceive-container'>
                                         <span className='icons-container'>
                                             <TbTruckDelivery className='toReceive-icon'/>
-                                            <span className='overlay-cotainer'>{authorizedUser.toReceive ? (authorizedUser.toReceive.length):(0)}</span>
+                                            <span className='overlay-cotainer'>{authorizedUser.orders ? authorizedUser.orders.filter((item)=>item.deliveryStatus === "toReceive" || item.deliveryStatus === "delivered").length:(0)}</span>
                                         </span>
                                         <p>To Receive</p>
                                     </div>
                                     <div className='toReviews-container'>
                                         <span className='icons-container'>
                                             <AiOutlineStar className='toReview-icon'/>
-                                                <span className='overlay-cotainer'>{authorizedUser.toReview ? (authorizedUser.toReview.length):(0)}</span>
+                                                <span className='overlay-cotainer'>{authorizedUser.orders ? authorizedUser.orders.filter((item)=>item.deliveryStatus === "toReview").length:(0)}</span>
                                         </span>
                                         <p>To Review</p>
                                     </div>
@@ -1008,7 +1073,7 @@ const Layout = () => {
                         </div>
                     </div>
                             <div className="userName-lagout-container">
-                                <button className='logout' onClick={()=>{sessionStorage.removeItem('userId'); location.reload()}}>Sign out</button>
+                                <button className='logout' onClick={signOut}>Sign out</button>
                             </div>
                     </div>
                 </>

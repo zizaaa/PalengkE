@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 
 export const FetchUsers =() =>{  
     const [authorizedUser, setauthorizedUser] = useState({});
+    const [users, setUsers] = useState([]);
     const [authorizedId, setAuthorizedId] = useState(null);
 
     const env = import.meta.env;
@@ -18,6 +19,16 @@ export const FetchUsers =() =>{
             }
         }
         fetchData();
+
+        const fetchAccounts=async()=>{
+            try {
+                const { data } = await axios.get(`${URL}/users`);
+                setUsers(data)
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        fetchAccounts();
     });
 
     useEffect(() => {
@@ -27,5 +38,6 @@ export const FetchUsers =() =>{
     return {
         authorizedUser,
         authorizedId,
+        users
     }
 }

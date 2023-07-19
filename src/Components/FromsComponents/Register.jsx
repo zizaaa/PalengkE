@@ -92,7 +92,6 @@ const Register = () => {
     try {
       const { data } = await axios.get(`${URL}/users`);
       data.map((user) => {
-        console.log(user)
         if (user.userName === userName) {
           sessionStorage.setItem('userId', user._id);
           navigate('/');

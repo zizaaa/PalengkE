@@ -1,7 +1,12 @@
+import { Outlet } from "react-router-dom"
 
 const Products = () => {
   return (
-    <div>Products</div>
+    <section className="px-5 admin-product-section">
+      <div className="product-container">
+          <Outlet/>
+      </div>
+    </section>
   )
 }
 

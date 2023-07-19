@@ -1,48 +1,64 @@
-import { Link, Outlet } from "react-router-dom"
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom"
 import  logo  from '../assets/logo.png';
 import profile from '/src/assets/profileDark.png'
 import { HiShoppingCart } from "react-icons/hi"
 import { PiUsersThreeLight } from "react-icons/pi"
 import { MdOutlineChecklist,MdOutlineSpaceDashboard } from "react-icons/md"
 import { TbNotification } from "react-icons/tb"
-import { FaHandsHelping } from "react-icons/fa"
 import { FaGears } from "react-icons/fa6"
+import { FetchUsers } from "../FetchUsers";
 
 const AdminLayout = () => {
+  const location = useLocation()
+  const { authorizedUser } = FetchUsers();
+  // const navigate = useNavigate();
+  // console.log(authorizedUser.memberShip)
+  // if(authorizedUser.memberShip === undefined){
+  //   navigate('/')
+  // }
 
   return (
     <section className="Layout">
         <div className="side-nav">
-          <div className="img-container">
+          <Link to="/" className="img-container">
               <img src={logo} className="img-fluid"/>
+          </Link>
+          <div className="admin-user-container">
+            <div className="profile-container">
+                <img src={profile}/>
+            </div>
+            <div className="admin-info">
+                <p className="seller-name">{authorizedUser.firstName}</p>
+                <p className="seller-email">{authorizedUser.email}</p>
+            </div>
           </div>
           <div className="navigation-links">
               <div className="main-navigation">
-                  <Link to="/adminDashboard">
+                  <Link to="/adminDashboard" className={`${location.pathname === '/adminDashboard' ? 'dash-link-active':''}`}>
                     <span className="links-icon">
                         <MdOutlineSpaceDashboard/>
                     </span>
                     Dashboard
                   </Link>
-                  <Link to="/adminDashboard/products">
+                  <Link to="/adminDashboard/products" className={`${location.pathname === '/adminDashboard/products' || location.pathname === '/adminDashboard/products/addproduct' || location.pathname === '/adminDashboard/products/editproduct' ? 'dash-link-active':''}`}>
                     <span className="links-icon">
                         <HiShoppingCart/>
                     </span>
                     Products
                   </Link>
-                  <Link to="/adminDashboard/users">
+                  <Link to="/adminDashboard/users" className={`${location.pathname === '/adminDashboard/users' ? 'dash-link-active':''}`}>
                     <span className="links-icon">
                         <PiUsersThreeLight/>
                     </span>
                     Users
                   </Link>
-                  <Link to="/adminDashboard/orders">
+                  <Link to="/adminDashboard/orders" className={`${location.pathname === '/adminDashboard/orders' || location.pathname === '/adminDashboard/orders/toreceive' || location.pathname === '/adminDashboard/orders/delivered' ? 'dash-link-active':''}`}>
                     <span className="links-icon">
                         <MdOutlineChecklist/>
                     </span>
                     Order Status
                   </Link>
-                  <Link to="/adminDashboard/notifications">
+                  <Link to="/adminDashboard/notifications" className={`${location.pathname === '/adminDashboard/notifications' ? 'dash-link-active':''}`}>
                     <span className="links-icon">
                         <TbNotification/>
                     </span>
@@ -50,13 +66,7 @@ const AdminLayout = () => {
                   </Link>
               </div>
                 <div className="utilities">
-                  <Link to="/adminDashboard/help">
-                      <span className="links-icon">
-                        <FaHandsHelping/>
-                      </span>
-                      Help Center
-                  </Link>
-                  <Link to="/adminDashboard/notifications">
+                  <Link to="/adminDashboard/settings" className={`${location.pathname === '/adminDashboard/settings' ? 'dash-link-active':''}`}>
                       <span className="links-icon">
                         <FaGears/>
                       </span>
@@ -65,21 +75,8 @@ const AdminLayout = () => {
               </div>
           </div>
         </div>
-        <div className="nav-and-outlet">
-            <nav className="dashboard-nav">
-                <div className="admin-user-container">
-                    <div className="admin-info">
-                      <p className="seller-name">Seller Name</p>
-                      <p className="seller-email">seller@gmail.com</p>
-                    </div>
-                    <div className="profile-container">
-                        <img src={profile} className="img-fluid"/>
-                    </div>
-                </div>
-            </nav>
-            <div className="outlet">
+        <div className="outlet">
               <Outlet/>
-            </div>
         </div>
     </section>
   )

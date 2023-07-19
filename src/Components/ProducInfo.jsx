@@ -14,10 +14,12 @@ import logoWhite from '../assets/logo_white.png'
 import profile from '../assets/profileDark.png'
 import Skeleton from '../Components/skeletonLoading/ProductInfoSkeleton'
 import CartSkeleton from "./skeletonLoading/CartSkeleton";
+import Swal from 'sweetalert2'
 const env = import.meta.env;
 const URL = env.VITE_REACT_SERVER_URL
 
 const ProducInfo = () => {
+    const [mop, setMop] = useState('cod');
   const {isProductLoading} = FetchProduct()
   const { authorizedUser,authorizedId } = FetchUsers()
   const data = ('session',JSON.parse(sessionStorage.getItem('data')))
@@ -477,6 +479,109 @@ totalPriceFunc();
     }
   },[authorizedUser])
 
+      //edit address
+      const editAddress =()=>{
+        console.log('click')
+        setIsCheckOut(false)
+        setVoucher('')
+        Swal.fire({
+            title:'Change Delivery Information',
+            html:
+            '<input type="text" id="swal-input4" class="swal2-input" placeholder="Full Name">' +
+            '<input type="number" id="swal-input5" class="swal2-input" placeholder="Contact number">' +
+            '<input type="text" id="swal-input6" class="swal2-input" placeholder="Delivery Address">',
+            showCancelButton: true,
+            allowOutsideClick:false,
+            confirmButtonColor: "#435e39",
+            showLoaderOnConfirm: true,
+            preConfirm:async()=>{
+                const fullName = document.getElementById('swal-input4').value
+                const contactnumber = document.getElementById('swal-input5').value
+                const address = document.getElementById('swal-input6').value
+                
+                if(fullName && contactnumber && address){
+                    console.log('validated')
+                    try {
+                        const editDeliveryInfo = {
+                            deliveryInfo:{
+                                fullName:fullName,
+                                number:contactnumber,
+                                address:address
+                            }
+                        }
+                        await axios.put(`${URL}/user/${authorizedId}`,editDeliveryInfo)
+                            Swal.fire({
+                                icon:"success",
+                                title:'Successful',
+                                text:"Delivery Information changed",
+                                confirmButtonColor: "#435e39",
+                            })
+                    } catch (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                            confirmButtonColor: "#435e39",
+                        })
+                    }
+                }else if(!fullName){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please Enter your Full name!',
+                        confirmButtonColor: "#435e39",
+                    })
+                }else if(!contactnumber){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please Enter your Contact number!',
+                        confirmButtonColor: "#435e39",
+                    })
+                }else if(!address){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please Enter your complete address!',
+                        confirmButtonColor: "#435e39",
+                    })
+                }
+            }
+        })
+    }
+
+    const placeOrder = async()=>{
+        let orders = authorizedUser.cart.filter((product) => product.checked === true)
+
+        const totalPriceElement = document.getElementById('totalPrice').childNodes[1];
+        const totalPriceText = totalPriceElement.textContent;
+        const totalPriceNumber = parseInt(totalPriceText);
+
+        const oldOrders = authorizedUser.orders
+        const randomID = Math.ceil(Math.random()*1000000)
+        try {
+            const userOrders = [...oldOrders,{
+                orderId:randomID,
+                userId:authorizedUser._id,
+                name:  authorizedUser.firstName + ' ' + authorizedUser.lastName,
+                address:authorizedUser.address,
+                contact:authorizedUser.number,
+                productOrders:orders,
+                deliveryStatus: "toShip",
+                paymentStatus:  "pending",
+                totalPrice:totalPriceNumber,
+                modeOfPayment:mop
+            }]
+                const newOrder = {
+                    orders:userOrders
+                }
+
+            await axios.put(`${URL}/user/${authorizedId}`, newOrder)
+            navigate('/success')
+        } catch (error) {
+            console.log(error)
+        }
+    }
   return (
 <>
   <section>
@@ -563,7 +668,7 @@ totalPriceFunc();
                     <div className='sold-ratings-container'>
                         <span className="stars-container">
                             <p className='star-counter m-0'>
-                              {starCounter}
+                            {starCounter != 'NaN.0' ? starCounter:'0'}
                             </p>
                             {[...Array(maxRating)].map((_, starIndex) => (
                                 <p
@@ -673,10 +778,11 @@ totalPriceFunc();
     </section>
 
             {/* cart sidenav */}
-            <div className="offcanvas offcanvas-end custom-sidenav-cart" data-bs-backdrop="false" tabIndex="-1" id="cartSideNav" aria-labelledby="offcanvasScrollingLabel">
+            <div className="offcanvas offcanvas-end custom-sidenav-cart" data-bs-backdrop="true" tabIndex="-1" id="cartSideNav" aria-labelledby="offcanvasScrollingLabel">
             <div className={`offcanvas-header custom-sidenav-cart-header ${isCheckOut ? 'hide-cart':''}`}>
                 <div className='header-container' id="offcanvasRightLabel">
                     {/* <HiShoppingCart/> */}
+                    
                         <div className='logo-container'>
                             <img src={logoWhite} className='img-fluid'/>
                         </div>
@@ -701,8 +807,8 @@ totalPriceFunc();
                 { isUserLoading ? (<CartSkeleton/>)
                     
                     :authorizedUser.cart ? (
-                        authorizedUser.cart.map((cart,index)=>(
-                        <div className='cart-product-main-container' key={index}>
+                        authorizedUser.cart.map((cart)=> (
+                        <div className={`${cart.checked}-cart-checked cart-product-main-container`} key={cart.id}>
                             <input id={cart.id} checked={cart.checked} type='checkbox' onChange={(e)=>{checkedProducts(e)}} className='checkBox'/>
                             <div className='cart-product'>
                                 <div className='cart-img-container'>
@@ -773,7 +879,7 @@ totalPriceFunc();
                             </div>
                         </div>
                         <div className='checkOut-container'>
-                            <button type='button' onClick={checkOut}>Check Out</button>
+                            <button type='button' onClick={checkOut}>Place Order</button>
                             <p className="checkout-error-message">
                                 {errorMessage}
                             </p>
@@ -782,13 +888,13 @@ totalPriceFunc();
                 </div>
 
                 {/* checkOut */}
-                <div className={`${isCheckOut ? 'check-out-container':'hide-checkOut'}`}>
+                <div id="checkoutContainer" className={`${isCheckOut ? 'check-out-container':'hide-checkOut'}`}>
                     <div className="checkout-header">
                         <h3>Check Out</h3>
                         <div className='logo-container'>
                             <img src={logoWhite} className='img-fluid'/>
                         </div>
-                        <button type="button" onClick={()=>{setIsCheckOut(false)}} className="checkout-back-btn">
+                        <button type="button" onClick={()=>{setIsCheckOut(false),setVoucher('')}} className="checkout-back-btn">
                             <BsArrowLeftShort className='checkout-back-icon'/>
                         </button>
                     </div>
@@ -799,21 +905,25 @@ totalPriceFunc();
                                 <p>Delivery Address</p>
                             </div>
                             <div className="edit-location-container">
-                                <button type='button'><FaUserEdit/></button>
+                                <button type='button' onClick={editAddress} data-bs-dismiss="offcanvas" aria-label="Close"><FaUserEdit/></button>
                             </div>
                         </div>
                         <div className="user-location-container">
                             <div className="user-location-info">
                                 <span className="user-name-phone">
                                     <p className="user-name">
-                                        {`${authorizedUser.firstName}  ${authorizedUser.lastName}`}
+                                        {authorizedUser.deliveryInfo === undefined  ? `${authorizedUser.firstName}  ${authorizedUser.lastName}`:authorizedUser.deliveryInfo.fullName}
                                     </p>
-                                    <span className="divider">|</span>
+                                    <span className="divider">
+                                        {authorizedUser.deliveryInfo === undefined  ? '|':'|'}
+                                    </span>
                                     <p className="user-phone">
-                                    {authorizedUser.number}
+                                    {authorizedUser.deliveryInfo === undefined  ? authorizedUser.number:authorizedUser.deliveryInfo.number}
                                     </p>
                                 </span>
-                                <p className="user-add">{authorizedUser.address}</p>
+                                <p className="user-add">
+                                {authorizedUser.deliveryInfo === undefined ? authorizedUser.address:authorizedUser.deliveryInfo.address}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -835,14 +945,21 @@ totalPriceFunc();
                                 :''
                             )):''}
                     </div>
+                    <div className="payment-options">
+                        <p>Payment Option</p>
+                        <select onClick={(e)=>{setMop(e.target.value)}}>
+                            <option value="cod">Cash on Delivery</option>
+                        </select>
+                    </div>
                     <div className="place-order-container">
                         <div className="total-payments-container">
                             <p>Total payment</p>
+                            <p className="shipping-fee">Shipping fee: &#8369;60</p>
                             {voucher ? <p className="voucher-percent">{`-${voucher.salePercentage}%`}</p>:''}
-                            <p>&#8369;{voucher ? Math.floor(totalPrice - (totalPrice * (voucher.salePercentage / 100))).toLocaleString():totalPrice}</p>
+                            <p className="total-price" id="totalPrice">&#8369;{voucher ? Math.floor(totalPrice - (totalPrice * (voucher.salePercentage / 100)) + 60).toLocaleString():totalPrice + 60}</p>
                         </div>
                         <div className="placeorder-btn-container">
-                            <button className={voucher ? 'place-order-w-voucher':'place-order'}>Place Order</button>
+                            <button onClick={placeOrder} className={voucher ? 'place-order-w-voucher':'place-order'} data-bs-dismiss="offcanvas" aria-label="Close">Place Order</button>
                         </div>
                     </div>
                 </div>

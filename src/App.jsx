@@ -23,8 +23,15 @@ import AdminProducts from "./admin/Products"
 import AdminUsers from "./admin/Users"
 import AdminOrderStatus from "./admin/OrderStatus"
 import AdminNotifications from "./admin/Notifications"
-import AdminHelpCenter from "./admin/HelpCenter"
 import AdminSettings from "./admin/Settings"
+import PurchaseSuccess from "./Pages/purchaseSuccess"
+import AdminProduct from "./admin/AdminProduct"
+import AddProductForm from "./Components/AddProductForm"
+import EditProductForm from "./Components/EditProductForm"
+import UsersList from "./admin/UsersList"
+import ToShip from "./admin/Components/ToShip"
+import ToReceive from "./admin/Components/ToReceive"
+import Delivered from "./admin/Components/Delivered"
 
 function App() {
 
@@ -45,6 +52,7 @@ function App() {
             </Route>
             <Route path="/contact" element={<ContactUs/>}/>
             <Route path="/policies" element={<WebsitePolicies/>}/>
+            <Route path="/success" element={<PurchaseSuccess/>}/>
           </Route>
           <Route path="/forms" element={<Forms/>}>
               <Route index element={<Register/>}/>
@@ -56,17 +64,25 @@ function App() {
           <Route path="/adminDashboard" element={<AdminLayout/>}>
               <Route index element={<AdminHome/>}/>
 
-              <Route path="/adminDashboard/products" element={<AdminProducts/>}/>
+              <Route path="/adminDashboard/products" element={<AdminProducts/>}>
+                  <Route index element={<AdminProduct/>}/>
+                  <Route path="/adminDashboard/products/addproduct" element={<AddProductForm/>}/>
+                  <Route path="/adminDashboard/products/editproduct/:id" element={<EditProductForm/>}/>
+              </Route>
 
-              <Route path="/adminDashboard/users" element={<AdminUsers/>}/>
+              <Route path="/adminDashboard/users" element={<AdminUsers/>}>
+                  <Route index element={<UsersList/>}/>
+              </Route>
 
-              <Route path="/adminDashboard/orders" element={<AdminOrderStatus/>}/>
+              <Route path="/adminDashboard/orders" element={<AdminOrderStatus/>}>
+                <Route index element={<ToShip/>}/>
+                <Route path="/adminDashboard/orders/toreceive" element={<ToReceive/>}/>
+                <Route path="/adminDashboard/orders/delivered" element={<Delivered/>}/>
+              </Route>
 
               <Route path="/adminDashboard/notifications" element={<AdminNotifications/>}/>
 
-              <Route path="/adminDashboard/help" element={<AdminHelpCenter/>}/>
-
-              <Route path="/adminDashboard/notifications" element={<AdminSettings/>}/>
+              <Route path="/adminDashboard/settings" element={<AdminSettings/>}/>
           </Route>
           
           <Route path="*" element={<NotFound/>}/>

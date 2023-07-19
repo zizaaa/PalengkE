@@ -1,7 +1,10 @@
+import { Outlet } from "react-router-dom"
 
 const Users = () => {
   return (
-    <div>Users</div>
+    <div className="user-sections-holder px-5">
+        <Outlet/>
+    </div>
   )
 }
 
