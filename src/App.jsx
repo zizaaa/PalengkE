@@ -32,6 +32,14 @@ import UsersList from "./admin/UsersList"
 import ToShip from "./admin/Components/ToShip"
 import ToReceive from "./admin/Components/ToReceive"
 import Delivered from "./admin/Components/Delivered"
+import Messages from "./admin/Components/Messages"
+import DisplayMessage from "./admin/Components/DisplayMessage"
+import AccountDetails from "./Pages/AccountDetails"
+import ClientToShip from "./Components/PurchaseHistory/ToShip"
+import ClientToReceive from "./Components/PurchaseHistory/ToReceive"
+import ClientCompleted from "./Components/PurchaseHistory/Completed"
+import ClientToRate from "./Components/PurchaseHistory/ToRate"
+import ClientCancelled from "./Components/PurchaseHistory/Cancelled"
 
 function App() {
 
@@ -52,6 +60,13 @@ function App() {
             </Route>
             <Route path="/contact" element={<ContactUs/>}/>
             <Route path="/policies" element={<WebsitePolicies/>}/>
+            <Route path="/accountDetailsAndHistory" element={<AccountDetails/>}>
+              <Route index element={<ClientToShip/>}/>
+              <Route path="/accountDetailsAndHistory/torecieve" element={<ClientToReceive/>}/>
+              <Route path="/accountDetailsAndHistory/torate" element={<ClientToRate/>}/>
+              <Route path="/accountDetailsAndHistory/completed" element={<ClientCompleted/>}/>
+              <Route path="/accountDetailsAndHistory/cancelled" element={<ClientCancelled/>}/>
+            </Route>
             <Route path="/success" element={<PurchaseSuccess/>}/>
           </Route>
           <Route path="/forms" element={<Forms/>}>
@@ -80,7 +95,10 @@ function App() {
                 <Route path="/adminDashboard/orders/delivered" element={<Delivered/>}/>
               </Route>
 
-              <Route path="/adminDashboard/notifications" element={<AdminNotifications/>}/>
+              <Route path="/adminDashboard/notifications" element={<AdminNotifications/>}>
+                  <Route index element={<Messages/>}/>
+                  <Route path='/adminDashboard/notifications/message/:id' element={<DisplayMessage/>}/>
+              </Route>
 
               <Route path="/adminDashboard/settings" element={<AdminSettings/>}/>
           </Route>

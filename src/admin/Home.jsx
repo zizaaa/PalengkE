@@ -223,7 +223,10 @@ const Home = () => {
                       <div className="finished">
                           <p className="finished-count">
                           {users !== undefined ? 
-                            users.map((user) => user.purchaseHistory.length).reduce((sum, length) => sum + length, 0)
+                            users
+                              .map((user) => user.orders.filter((order) => order.deliveryStatus === "completed"))
+                              .map((filteredOrders) => filteredOrders.length)
+                              .reduce((sum, length) => sum + length, 0)
                             : 0
                           }
                           </p>
@@ -237,31 +240,30 @@ const Home = () => {
                   </div>
                   <div className="order-status mt-4">
                     <p className="title">Order Status</p>
-                      <div className="order-table-container">
-                          <table>
-                              <tr>
-                                <th>Order Id</th>
-                                <th>Status</th>
-                                <th>Payment Method</th>
-                              </tr>
-                              {users != undefined ? 
-                                users.map((user)=>(
-                                  user.orders.map((order)=>(
-                                    <>
-                                      <tr key={order.orderId}>
-                                        <td>{order.orderId}</td>
-                                        <td>{order.deliveryStatus}</td>
-                                        <td>{order.modeOfPayment}</td>
-                                      </tr>
-                                    </>
-                                  ))
+                    <div className="order-table-container">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Order Id</th>
+                            <th>Status</th>
+                            <th>Payment Method</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {users != undefined
+                            ? users.map((user) =>
+                                user.orders.map((order) => (
+                                  <tr key={order.orderId}>
+                                    <td>{order.orderId}</td>
+                                    <td>{order.deliveryStatus}</td>
+                                    <td>{order.modeOfPayment}</td>
+                                  </tr>
                                 ))
-                                
-                              :
-                                ''
-                              }
-                          </table>
-                      </div>
+                              )
+                            : null}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
               </div>
               <div className="users-login">
@@ -276,24 +278,26 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="users-table">
-                      <div className="users-table-container">
-                          <table>
-                                <tr>
-                                  <th>Username</th>
-                                  <th>User Role</th>
-                                </tr>
-                              {users != undefined ? 
-                                users.map((user)=>(
-                                    <tr key={user._id}>
-                                      <td>{user.userName}</td>
-                                      <td>{user.memberShip === undefined ? "user":user.memberShip}</td>
-                                    </tr>
-                                ))
-                              :
-                                ''
-                              }
-                          </table>
-                      </div>
+                  <div className="users-table-container">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Username</th>
+                          <th>User Role</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {users != undefined
+                          ? users.map((user,index) => (
+                              <tr key={index}>
+                                <td>{user.userName}</td>
+                                <td>{user.memberShip === undefined ? "user" : user.memberShip}</td>
+                              </tr>
+                            ))
+                          : null}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
           </div>

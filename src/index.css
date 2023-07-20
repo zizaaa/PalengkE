@@ -988,6 +988,7 @@
                     align-items: center;
                     padding: 10px;
                     flex: 1;
+                    text-decoration:none;
                 }
                 .profile-custom-container .accountDetails-container .account-details-container .account-details .balance-container .wallet-icon{
                     font-size: 2.5rem;
@@ -1006,6 +1007,7 @@
                     align-items: center;
                     padding: 10px;
                     flex: 1;
+                    text-decoration:none;
                 }
                 .profile-custom-container .accountDetails-container .account-details-container .account-details .payLater-container .card-icon{
                     font-size: 2.5rem;
@@ -1024,6 +1026,7 @@
                     align-items: center;
                     padding: 10px;
                     flex: 1;
+                    text-decoration:none;
                 }
                 .profile-custom-container .accountDetails-container .account-details-container .account-details .vouchers-container .vouchers-icon{
                     font-size: 2.5rem;
@@ -1275,6 +1278,7 @@
                     flex: 1;
                     padding: 10px;
                     color: var(--text-color);
+                    text-decoration:none;
                 }
                 .purchase-details-container .purchase-details .toShip-container .package-icon{
                     font-size: 2.5rem;
@@ -1291,6 +1295,7 @@
                     flex: 1;
                     padding: 10px;
                     color: var(--text-color);
+                    text-decoration:none;
                 }
                 .purchase-details-container .purchase-details .toReceive-container .toReceive-icon{
                     font-size: 2.5rem;
@@ -1307,6 +1312,7 @@
                     flex: 1;
                     padding: 10px;
                     color: var(--text-color);
+                    text-decoration:none;
                 }
                 .purchase-details-container .purchase-details .toReviews-container .toReview-icon{
                     font-size: 2.5rem;
@@ -2821,7 +2827,7 @@
                     }
 /*per product reviews */
             .product-reviews .product-reviews-title{
-                color: white;
+                color: black;
             }
             .product-reviews .review-cards-container{
                 display: flex;
@@ -2883,7 +2889,7 @@
                     }
             .product-reviews .review-cards-container .review-cards .reviews-content .message{
                 width: 100%;
-                margin-top: 20px;
+                /* margin-top: 20px; */
             }
 
 /* website policy */
@@ -3970,6 +3976,7 @@
                         margin: 0;
                     }
 
+
                     .finish-page-container {
                         text-align: center;
                         padding: 40px;
@@ -3993,3 +4000,873 @@
                         font-size: 16px;
                         cursor: pointer;
                       }
+
+
+    .messages-component{
+        max-height: 10rem;
+        min-height: 10rem;
+        overflow: auto;
+        margin-bottom: 10px;
+        border-bottom: 1px solid var(--color-fade);
+    }
+        .messages-component .message-boxes{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--color-fade);
+            text-decoration: none;
+            color: black;
+            padding-right: 10px;
+            width: 100%;
+            border: none;
+        }
+            .messages-component .message-boxes-unread{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 10px;
+                border-bottom: 1px solid var(--color-fade);
+                text-decoration: none;
+                color: black;
+                background-color: var(--color-fade);
+                filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
+                padding-right: 10px;
+                width: 100%;
+                border: none;
+            }
+        .messages-component .message-boxes .message-left-content{
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+            .messages-component .message-boxes .message-left-content .img-container{
+                height: 5rem;
+                width: 5rem;
+            }
+                .messages-component .message-boxes .message-left-content .img-container img{
+                    height: 5rem;
+                    width: 5rem;
+                }
+        .messages-component .message-boxes .message-left-content .message-info{
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
+        .messages-component .message-boxes .message-left-content .message-info p{
+            margin: 0;
+        }
+            .messages-component .message-boxes .message-left-content .message{
+                flex: 1;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+
+    .display-message-component{
+        max-height: 10rem;
+        min-height: 10rem;
+        max-width: 100%;
+        min-width: 100%;
+        overflow: hidden;
+        border-bottom: 1px solid var(--color-fade);
+        margin-bottom: 10px;
+    }
+        .display-message-component .display-message-wrapper .header{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+            .display-message-component .display-message-wrapper .header .header-info p{
+                margin: 0;
+            }
+            .display-message-component .display-message-wrapper .header .header-button{
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+                .display-message-component .display-message-wrapper .header .header-button button{
+                    border: none;
+                    background-color: transparent;
+                }
+                    .display-message-component .display-message-wrapper .header .header-button .header-delete-button{
+                        background-color: var(--orange);
+                        color: white;
+                        padding: 5px 10px;
+                    }
+
+        .display-message-component .display-message-wrapper .user-message-content{
+            background-color: var(--color-fade);
+            min-height: 5rem;
+            max-height: 5rem;
+            max-width: 100%;
+            word-break: break-all;
+            padding:10px;
+            border-radius: 10px;
+            overflow: auto;
+        }
+
+    .notification-content-sections .activities-sections-container{
+        border-bottom: 1px solid var(--color-fade);
+        margin-bottom: 10px;
+    }
+        .notification-content-sections .activities-sections-container .activities-sections-content-wrapper{
+            max-width: 100%;
+            min-width: 100%;
+            max-height: 7rem;
+            min-height: 7rem;
+            overflow: auto;
+            border-bottom: 1px solid var(--color-fade);
+        }
+            .notification-content-sections .activities-sections-container .activities-sections-content-wrapper .activities-sections-box{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background-color: rgb(240,240,240);
+                margin-bottom: 5px;
+                padding: 10px;
+            }
+                .notification-content-sections .activities-sections-container .activities-sections-content-wrapper .activities-sections-box .act-message p{
+                    margin: 0;
+                }
+                .notification-content-sections .activities-sections-container .activities-sections-content-wrapper .activities-sections-box .act-button button{
+                    border: none;
+                    color: white;
+                    padding: 5px 10px;
+                    background-color: var(--orange);
+                }
+
+
+    .events-sections-content .events-sections-wrapper{
+        max-width: 100%;
+        min-width: 100%;
+        max-height: 7rem;
+        min-height: 7rem;
+        overflow: auto;
+    }
+        .events-sections-content .events-sections-wrapper .events-sections-box{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: rgb(240,240,240);
+            padding: 0 5px;
+            margin-bottom: 10px;
+        }
+            .events-sections-content .events-sections-wrapper .events-sections-box .event-message p{
+                margin: 0;
+            }
+            .events-sections-content .events-sections-wrapper .events-sections-box .event-button button{
+                border: none;
+                color: white;
+                padding: 5px 10px;
+                background-color: var(--orange);
+            }
+
+
+    .settings-sections .settings-sections-content .admin-profile{
+        display: flex;
+        align-items: center;
+    }
+        .settings-sections .settings-sections-content .admin-profile .admin-profile-container{
+            height: 8rem;
+            width:8rem;
+        }
+            .settings-sections .settings-sections-content .admin-profile .admin-profile-container img{
+                height: 8rem;
+                width:8rem;
+            }
+        .settings-sections .settings-sections-content .admin-profile .admin-info-container p{
+            margin: 0;
+        }
+        .settings-sections .settings-sections-content .admin-profile .admin-info-container .adminName{
+            font-size: 1.5rem;
+        }
+
+
+        .settings-sections .settings-sections-content .admin-profile-info{
+            display: flex;
+            align-items: center;
+            border-top: 1px solid var(--color-fade);
+            padding: 20px 0;
+        }
+            .settings-sections .settings-sections-content .admin-profile-info .admin-profile-info-left p span{
+                font-weight: bold;
+            }
+
+            .settings-sections .settings-sections-content .admin-profile-info .admin-profile-info-right{
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .settings-sections .settings-sections-content .admin-profile-info .admin-profile-info-right form{
+                display: flex;
+                flex-direction: column;
+                width: 70%;
+                gap: 10px;
+            }
+                .settings-sections .settings-sections-content .admin-profile-info .admin-profile-info-right form input{
+                    padding: 10px;
+                    border: none;
+                    outline: none;
+                    border-bottom: 1px solid var(--color-fade);
+                }
+                    .settings-sections .settings-sections-content .admin-profile-info .admin-profile-info-right form button{
+                        padding: 10px 0;
+                        background-color: var(--orange);
+                        color: white;
+                        filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.2));
+                        border: none;
+                    }
+
+    .settings-sections .settings-sections-content .coming-soon{
+        border-top: 1px solid var(--color-fade);
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+        .settings-sections .settings-sections-content .coming-soon h3{
+            color: rgb(165, 165, 165);
+        }
+
+
+    .account-details-sections .user-profile-container .account-details{
+        display: flex;
+        /* align-items: center; */
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+        .account-details-sections .user-profile-container .account-details .user-account-info{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+            width: 20rem;
+            background-color: rgb(240,240,240);
+        }
+        @media(max-width:763px){
+            .account-details-sections .user-profile-container .account-details .user-account-info{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                text-align: center;
+                align-items: center;
+                width: 100%;
+                background-color: rgb(240,240,240);
+            }
+        }
+            .account-details-sections .user-profile-container .account-details .user-account-info .img-container{
+                width: 8rem;
+                height:8rem;
+            }
+            .account-details-sections .user-profile-container .account-details .user-account-info .img-container img{
+                width: 8rem;
+                height:8rem;
+            }
+
+        .account-details-sections .user-profile-container .account-details .user-account-info .infos .user-name{
+            font-size: 1.5rem;
+            font-size: bold;
+        }
+        .account-details-sections .user-profile-container .account-details .user-account-info .infos .memberShip{
+            color: var(--text-color);
+        }
+            .account-details-sections .user-profile-container .account-details .user-account-info .infos p{
+                margin: 0;
+            }
+
+        .account-details-sections .user-profile-container .account-details .vouchers-and-coins-container{
+            flex: 1;
+        }
+        .account-details-sections .user-profile-container .account-details .vouchers-and-coins-container .coins-container{
+            display: flex;
+            align-items: center;
+            background-color: rgb(240,240,240);
+            padding: 20px;
+            margin-bottom: 5px;
+            border-radius: 10px;
+        }
+        @media(max-width:513px){
+            .account-details-sections .user-profile-container .account-details .vouchers-and-coins-container .coins-container{
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                background-color: rgb(240,240,240);
+                padding: 20px;
+                margin-bottom: 5px;
+                border-radius: 10px;
+            }
+        }
+            .account-details-sections .user-profile-container .account-details .vouchers-and-coins-container .coins-container .icon-container{
+                display: flex;
+                align-items: center;
+                padding: 10px;
+                width: 10rem;
+            }
+                .account-details-sections .user-profile-container .account-details .vouchers-and-coins-container .coins-container .icon-container .icon-main-container{
+                    display: flex;
+                    align-items: center;
+                    flex-direction: column;
+                    padding: 10px;
+                    width: 10rem;
+                }
+                .account-details-sections .user-profile-container .account-details .vouchers-and-coins-container .coins-container .icon-container .coins-count{
+                    font-size: 2rem;
+                    padding: 0 10px;
+                    color: var(--orange);
+                    border-left: 1px solid var(--color-fade);
+                }
+
+                .account-details-sections .user-profile-container .account-details .vouchers-and-coins-container .coins-container .icon-container .icon-main-container .icon{
+                    font-size: 2rem;
+                    color: var(--text-color);
+                }
+                .account-details-sections .user-profile-container .account-details .vouchers-and-coins-container .coins-container .icon-container p{
+                    margin: 0;
+                    
+                }
+            .account-details-sections .user-profile-container .account-details .vouchers-and-coins-container .coins-container .coins-list{
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                width: 100%;
+                align-items: center;
+            }
+                .account-details-sections .user-profile-container .account-details .vouchers-and-coins-container .coins-container .coins-list p{
+                    margin: 0;
+                }
+
+        .account-details-sections .user-profile-container .account-details .vouchers-and-coins-container .vouchers-container{
+            background-color: rgb(240,240,240);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 20px;
+        }
+
+        @media(max-width:513px){
+            .account-details-sections .user-profile-container .account-details .vouchers-and-coins-container .vouchers-container{
+                background-color: rgb(240,240,240);
+                border-radius: 10px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                padding: 20px;
+            }
+        }
+
+            .account-details-sections .user-profile-container .account-details .vouchers-and-coins-container .vouchers-container .icon-container{
+                display: flex;
+                align-items: center;
+                padding: 10px;
+                width: 10rem;
+            }
+                .account-details-sections .user-profile-container .account-details .vouchers-and-coins-container .vouchers-container .icon-container .voucher-count{
+                    margin: 0;
+                    font-size: 2rem;
+                    padding: 0 10px;
+                    color: var(--orange);
+                    border-left: 1px solid var(--color-fade);
+                }
+                .account-details-sections .user-profile-container .account-details .vouchers-and-coins-container .vouchers-container .icon-container .icon-main-container{
+                    display: flex;
+                    align-items: center;
+                    flex-direction: column;
+                    padding: 10px;
+                    width: 10rem;
+                }
+                .account-details-sections .user-profile-container .account-details .vouchers-and-coins-container .vouchers-container .icon-container .icon-main-container .icon{
+                    font-size: 2rem;
+                    color: var(--text-color);
+                }
+                    .account-details-sections .user-profile-container .account-details .vouchers-and-coins-container .vouchers-container .icon-container .icon-main-container p{
+                        margin: 0;
+                    }
+            .account-details-sections .user-profile-container .account-details .vouchers-and-coins-container .vouchers-container .vouchers-list-container{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+            }
+                .account-details-sections .user-profile-container .account-details .vouchers-and-coins-container .vouchers-container .vouchers-list-container .lisf-of-vouchers{
+                    height: 5rem;
+                    overflow: auto;
+                    flex: 1;
+                }
+                    .account-details-sections .user-profile-container .account-details .vouchers-and-coins-container .vouchers-container .vouchers-list-container .lisf-of-vouchers table{
+                        width: 100%;
+                    }
+
+    .purchase-history .purchase-history-head .links-container{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--color-fade);
+        border-top: 1px solid var(--color-fade);
+    }
+        .purchase-history .purchase-history-head .links-container a{
+            text-decoration: none;
+            color: black;
+        }
+            .purchase-history .purchase-history-head .links-container .link-active{
+                text-decoration: none;
+                color: var(--orange);
+            }
+
+    
+    .client-to-ship-section{
+        min-height: 20rem;
+        max-height: 20rem;
+        overflow: auto;
+        margin-top: 10px;
+        width: 100%;
+    }
+
+        .client-to-ship-section .client-to-ship-box{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2px;
+            height: 10rem;
+            overflow: hidden;
+            margin-bottom: 10px;
+            padding: 0 10px;
+            flex-wrap: wrap;
+            background-color: rgb(240,240,240);
+        }
+
+        @media(max-width:771px){
+            .client-to-ship-section .client-to-ship-box{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 2px;
+                height: auto;
+                padding: 20px 10px;
+                overflow: hidden;
+                margin-bottom: 10px;
+                flex-wrap: wrap;
+            }
+
+            .client-to-ship-section .client-to-ship-box .left-side{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+            }
+            .client-to-ship-section .client-to-ship-box .center-side{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 100%;
+            }
+
+            .client-to-ship-section .client-to-ship-box .right-side{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex: 1;
+                height: 100%;
+                width: 100%;
+                padding:10px;
+                margin-top: 20px;
+            }
+        }
+
+        @media(max-width:299px){
+            .client-to-ship-section .client-to-ship-box .left-side{
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                justify-content: space-between;
+                width: 100%;
+            }
+            .client-to-ship-section .client-to-ship-box .center-side{
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                justify-content: center;
+                width: 100%;
+                height: 100%;
+            }
+
+            .client-to-ship-section .client-to-ship-box .left-side .price-and-id{ 
+                width: 10rem;
+                flex-wrap: wrap;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+            }
+        }
+
+            .client-to-ship-section .client-to-ship-box .left-side{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex: 1;
+            }
+                .client-to-ship-section .client-to-ship-box .left-side .price-and-id{ 
+                    width: 10rem;
+                    flex-wrap: wrap;
+                    display: flex;
+                    flex-direction: column;
+                    height: 100%;
+                }
+                    .client-to-ship-section .client-to-ship-box .left-side .price-and-id p{ 
+                        margin: 0;
+                    }
+                .client-to-ship-section .client-to-ship-box .left-side .order-list{
+                    height: 10rem;
+                    overflow: auto;
+                    width: 10rem;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                }
+                    .client-to-ship-section .client-to-ship-box .left-side .order-list .order-list-box{
+                        display: flex;
+                        align-items: center;
+                        gap: 3px;
+                    }
+                        .client-to-ship-section .client-to-ship-box .left-side .order-list .order-list-box p{
+                            margin: 0;
+                        }
+
+        .client-to-ship-section .client-to-ship-box .center-side{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            height: 100%;
+            background-color: rgb(220, 220, 220);
+            border-radius: 10px;
+        }
+
+            .client-to-ship-section .client-to-ship-box .center-side p{
+                margin: 0;
+            }
+            .client-to-ship-section .client-to-ship-box .center-side .icon{
+                font-size: 2rem;
+                color:var(--text-color);
+            }
+
+        .client-to-ship-section .client-to-ship-box .right-side{
+                    display: flex;
+                    align-items: center;
+                    justify-content: end;
+                    height: 100%;
+                    padding: 0 10px;
+                    flex: 1;
+        }
+            .client-to-ship-section .client-to-ship-box .right-side .spinner{
+                border: none;
+                background-color: var(--orange);
+                color: white;
+                padding: 10px 10px;
+                filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.2));
+                width: 43%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+                .client-to-ship-section .client-to-ship-box .right-side .spinner .spinner-custom{
+                    border: none;
+                    color: white;
+                    padding: 5px 10px;
+                    filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.2));
+                    width: 100%;
+                }
+                    .client-to-ship-section .client-to-ship-box .right-side .spinner .spinner-border{
+                        width: 15px;
+                        height: 15px;
+                        border: 2px solid white;
+                    }
+                        .client-to-ship-section .client-to-ship-box .right-side .spinner .spinner-border button{
+                            background-color: transparent;
+                            width: 100%;
+                        }
+
+            .client-to-ship-section .client-to-ship-box .right-side-cancelled{
+                        display: flex;
+                        align-items: center;
+                        justify-content: end;
+                        height: 100%;
+                        padding: 0 10px;
+                        flex: 1;
+            }
+            /*  */
+            .client-to-ship-section .client-to-ship-box .right-side-cancelled .spinner{
+                border: none;
+                background-color: var(--orange);
+                color: white;
+                padding: 10px 10px;
+                filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.2));
+                width: 6rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .client-to-ship-section .client-to-ship-box .right-side-cancelled .spinner .spinner-custom{
+                    border: none;
+                    color: white;
+                    padding: 5px 10px;
+                    filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.2));
+                    width: 100%;
+                }
+                .client-to-ship-section .client-to-ship-box .right-side-cancelled .spinner .spinner-border{
+                        width: 15px;
+                        height: 15px;
+                        border: 2px solid white;
+                    }
+                    .client-to-ship-section .client-to-ship-box .right-side-cancelled .spinner .spinner-border button{
+                            background-color: transparent;
+                            width: 100%;
+                    }
+            /*  */
+            .client-to-ship-section .client-to-ship-box .right-side-toreceive{
+                        display: flex;
+                        align-items: center;
+                        justify-content: end;
+                        height: 100%;
+                        flex: 1;
+                        padding: 0 10px;
+            }
+            /*  */
+            .client-to-ship-section .client-to-ship-box .right-side-toreceive .spinner{
+                    border: none;
+                    background-color: var(--orange);
+                    color: white;
+                    padding: 10px 10px;
+                    filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.2));
+                    width: 8rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .client-to-ship-section .client-to-ship-box .right-side-toreceive .spinner .spinner-custom{
+                        border: none;
+                        color: white;
+                        padding: 5px 10px;
+                        filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.2));
+                        width: 100%;
+                    }
+                    .client-to-ship-section .client-to-ship-box .right-side-toreceive .spinner .spinner-border{
+                            width: 15px;
+                            height: 15px;
+                            border: 2px solid white;
+                        }
+                        .client-to-ship-section .client-to-ship-box .right-side-toreceive .spinner .spinner-border button{
+                                background-color: transparent;
+                                width: 100%;
+                            }
+            /*  */
+            .client-to-ship-section .client-to-ship-box .right-side button{
+                border: none;
+                background-color: var(--orange);
+                color: white;
+                padding: 5px 10px;
+                filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.2));
+            }
+                .client-to-ship-section .client-to-ship-box .right-side-cancelled button{
+                    border: none;
+                    background-color: var(--orange);
+                    color: white;
+                    padding: 5px 10px;
+                    filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.2));
+                }
+                .client-to-ship-section .client-to-ship-box .right-side-toreceive button{
+                    border: none;
+                    background-color: var(--orange);
+                    color: white;
+                    padding: 5px 10px;
+                    filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.2));
+                }
+
+.client-to-rate-sections{
+    min-height: 20rem;
+    max-height: 20rem;
+    overflow: auto;
+    margin-top: 10px;
+    width: 100%;
+}
+    .client-to-rate-sections .client-product-boxes{
+        display: flex;
+        background-color: rgb(240,240,240);
+        margin-bottom: 10px;
+        gap: 10px;
+    }
+
+    @media(max-width:997px){
+        .client-to-rate-sections .client-product-boxes{
+            display: flex;
+            flex-direction: column;
+            background-color: rgb(240,240,240);
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+        .client-to-rate-sections .client-product-boxes .left-side{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .client-to-rate-sections .client-product-boxes .right-side{
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            margin-top: 10px;
+        }
+    }
+
+    @media(max-width:401px){
+        .client-to-rate-sections .client-product-boxes .left-side{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+            /* .client-to-rate-sections .client-product-boxes .left-side .img-container{
+                width: 100%;
+                background-color: lightcoral;
+            } */
+    }
+
+        .client-to-rate-sections .client-product-boxes .left-side{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+            .client-to-rate-sections .client-product-boxes .left-side .img-container{
+                height: 100%;
+                width:10rem;
+            }
+            .client-to-rate-sections .client-product-boxes .left-side .img-container img{
+                height: 100%;
+                width:100%;
+            }
+        .client-to-rate-sections .client-product-boxes .left-side .product-ids-price p{
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+    /* star ratings */
+    .rate {
+        float: left;
+        height: 46px;
+        padding: 0 10px;
+    }
+    .rate:not(:checked) > input {
+        position:absolute;
+        /* top:-9999px; */
+        display: none;
+    }
+    .rate:not(:checked) > label {
+        float:right;
+        width:1em;
+        overflow:hidden;
+        white-space:nowrap;
+        cursor:pointer;
+        font-size:30px;
+        color:#ccc;
+    }
+    .rate:not(:checked) > label:before {
+        content: '★ ';
+    }
+    .rate > input:checked ~ label {
+        color: var(--orange);    
+    }
+    .rate:not(:checked) > label:hover,
+    .rate:not(:checked) > label:hover ~ label {
+        color: var(--orange);  
+    }
+    .rate > input:checked + label:hover,
+    .rate > input:checked + label:hover ~ label,
+    .rate > input:checked ~ label:hover,
+    .rate > input:checked ~ label:hover ~ label,
+    .rate > label:hover ~ input:checked ~ label {
+        color: var(--orange);
+    }
+
+    .client-to-rate-sections .client-product-boxes .right-side{
+        display: flex;
+        flex: 1;
+    }
+        .client-to-rate-sections .client-product-boxes .right-side .comment-container{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+            .client-to-rate-sections .client-product-boxes .right-side .comment-container textarea{
+                min-width: 100%;
+                max-width: 100%;
+                border: none;
+                border-radius: 10px;
+                padding: 10px;
+                outline: none;
+            }
+
+            .client-to-rate-sections .client-product-boxes .right-side .rating-button-container{
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                justify-content: center;
+            }
+                .client-to-rate-sections .client-product-boxes .right-side .rating-button-container button{
+                    border: none;
+                    padding: 5px 10px;
+                    color: white;
+                    background-color: var(--text-color);
+                }
+                /*  */
+                .client-to-rate-sections .client-product-boxes .right-side .rating-button-container .button .spinner{
+                    border: none;
+                    background-color: var(--text-color);
+                    color: white;
+                    padding: 10px 10px;
+                    filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.2));
+                    width: 8rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .client-to-rate-sections .client-product-boxes .right-side .rating-button-container .button .spinner .spinner-custom{
+                        border: none;
+                        color: white;
+                        padding: 5px 10px;
+                        filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.2));
+                        width: 100%;
+                    }
+                    .client-to-rate-sections .client-product-boxes .right-side .rating-button-container .button .spinner .spinner-border{
+                            width: 15px;
+                            height: 15px;
+                            border: 2px solid white;
+                        }
+                        .client-to-rate-sections .client-product-boxes .right-side .rating-button-container .button .spinner .spinner-border button{
+                                background-color: transparent;
+                                width: 100%;
+                        }
+                /*  */
+
+.client-complete-sections{
+    min-height: 20rem;
+    max-height: 20rem;
+    overflow: auto;
+    margin-top: 10px;
+    width: 100%;
+}
+
