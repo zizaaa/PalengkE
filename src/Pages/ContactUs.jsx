@@ -21,7 +21,8 @@ const ContactUs = () => {
           fullName:fullName,
           email:email,
           number:number,
-          message:message
+          message:message,
+          read:false
         }
         await axios.post(`${URL}/messages`,model)
           Swal.fire({

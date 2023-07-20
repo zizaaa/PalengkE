@@ -31,13 +31,17 @@ const AddProductForm = () => {
             stock:stocks,
             description:description
         }
-        console.log(newProduct)
+        
             try {
                 const env = import.meta.env;
                 const uri = env.VITE_REACT_SERVER_URL
 
                     await axios.post(`${uri}/products`, newProduct)
                     navigate('/adminDashboard/products/')
+
+                    await axios.post(`${uri}/event`,{
+                        event:'Product: ' + productName + ' ' + 'recently added in the shop listings.' 
+                    })
             } catch (error) {
                 console.log(error)
             }

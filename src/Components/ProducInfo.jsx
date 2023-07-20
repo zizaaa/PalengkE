@@ -551,7 +551,19 @@ totalPriceFunc();
     }
 
     const placeOrder = async()=>{
-        let orders = authorizedUser.cart.filter((product) => product.checked === true)
+        let orders = authorizedUser.cart.map((product) => {
+            if(product.checked === true){
+                const order = {
+                    ...product,
+                    rated:false
+                    // productSold: product.productSold != undefined ? product.productSold + product.item:product.item
+                }
+                return order
+            }
+        })
+        
+        //filter the result of orders so the rated can attach in our product object and remove the undefined array
+        const filteredOrder = orders.filter((order)=> order != undefined)
 
         const totalPriceElement = document.getElementById('totalPrice').childNodes[1];
         const totalPriceText = totalPriceElement.textContent;
@@ -566,7 +578,7 @@ totalPriceFunc();
                 name:  authorizedUser.firstName + ' ' + authorizedUser.lastName,
                 address:authorizedUser.address,
                 contact:authorizedUser.number,
-                productOrders:orders,
+                productOrders:filteredOrder,
                 deliveryStatus: "toShip",
                 paymentStatus:  "pending",
                 totalPrice:totalPriceNumber,
@@ -578,6 +590,11 @@ totalPriceFunc();
 
             await axios.put(`${URL}/user/${authorizedId}`, newOrder)
             navigate('/success')
+
+            //record activity
+            await axios.post(`${URL}/activities`,{
+                activities:authorizedUser.firstName + ' ' + 'just checked out items worth of' + ' ' + totalPriceNumber + ' ' + 'pesos.'
+            })
         } catch (error) {
             console.log(error)
         }
@@ -763,7 +780,7 @@ totalPriceFunc();
                           <p className="date">{review.date}</p>
                         </div>
                         <div className="message">
-                          <p className="review-title">{review.title}</p>
+                          {/* <p className="review-title">{review.title}</p> */}
                           <p>{review.message}</p>
                         </div>
                       </div>
@@ -956,7 +973,7 @@ totalPriceFunc();
                             <p>Total payment</p>
                             <p className="shipping-fee">Shipping fee: &#8369;60</p>
                             {voucher ? <p className="voucher-percent">{`-${voucher.salePercentage}%`}</p>:''}
-                            <p className="total-price" id="totalPrice">&#8369;{voucher ? Math.floor(totalPrice - (totalPrice * (voucher.salePercentage / 100)) + 60).toLocaleString():totalPrice + 60}</p>
+                            <p className="total-price" id="totalPrice">&#8369;{voucher ? Math.floor(totalPrice + 60 - (totalPrice + 60) * (voucher.salePercentage / 100)).toLocaleString():totalPrice + 60}</p>
                         </div>
                         <div className="placeorder-btn-container">
                             <button onClick={placeOrder} className={voucher ? 'place-order-w-voucher':'place-order'} data-bs-dismiss="offcanvas" aria-label="Close">Place Order</button>

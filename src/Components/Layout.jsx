@@ -587,7 +587,19 @@ const Layout = () => {
     }
 
     const placeOrder = async()=>{
-        let orders = authorizedUser.cart.filter((product) => product.checked === true)
+        let orders = authorizedUser.cart.map((product) => {
+            if(product.checked === true){
+                const order = {
+                    ...product,
+                    rated:false
+                    // productSold: product.productSold != undefined ? product.productSold + product.item:product.item
+                }
+                return order
+            }
+        })
+        
+        //filter the result of orders so the rated can attach in our product object and remove the undefined array
+        const filteredOrder = orders.filter((order)=> order != undefined)
 
         const totalPriceElement = document.getElementById('totalPrice').childNodes[1];
         const totalPriceText = totalPriceElement.textContent;
@@ -602,7 +614,7 @@ const Layout = () => {
                 name:  authorizedUser.firstName + ' ' + authorizedUser.lastName,
                 address:authorizedUser.address,
                 contact:authorizedUser.number,
-                productOrders:orders,
+                productOrders:filteredOrder,
                 deliveryStatus: "toShip",
                 paymentStatus:  "pending",
                 totalPrice:totalPriceNumber,
@@ -614,6 +626,11 @@ const Layout = () => {
 
             await axios.put(`${URL}/user/${authorizedId}`, newOrder)
             navigate('/success')
+
+            //record activity
+            await axios.post(`${URL}/activities`,{
+                activities:authorizedUser.firstName + ' ' + 'just checked out items worth of' + ' ' + totalPriceNumber + ' ' + 'pesos.'
+            })
         } catch (error) {
             console.log(error)
         }
@@ -934,10 +951,10 @@ const Layout = () => {
                             <p>Total payment</p>
                             <p className="shipping-fee">Shipping fee: &#8369;60</p>
                             {voucher ? <p className="voucher-percent">{`-${voucher.salePercentage}%`}</p>:''}
-                            <p className="total-price" id="totalPrice">&#8369;{voucher ? Math.floor(totalPrice - (totalPrice * (voucher.salePercentage / 100)) + 60).toLocaleString():totalPrice + 60}</p>
+                            <p className="total-price" id="totalPrice">&#8369;{voucher ? Math.floor(totalPrice + 60 - (totalPrice + 60) * (voucher.salePercentage / 100)).toLocaleString():totalPrice + 60}</p>
                         </div>
                         <div className="placeorder-btn-container">
-                            <button onClick={placeOrder} className={voucher ? 'place-order-w-voucher':'place-order'} data-bs-dismiss="offcanvas" aria-label="Close">Place Order</button>
+                            <button onClick={placeOrder} className={voucher ? 'place-order-w-voucher':'place-order'} data-bs-dismiss="offcanvas" aria-label="Close">Check out</button>
                         </div>
                     </div>
                 </div>
@@ -973,48 +990,54 @@ const Layout = () => {
                                 <h5 className='account-details-title'>Account Details</h5>
                             <div className='account-details-container mb-4'>
                                 <div className='account-details'>
-                                    <div className='balance-container'>
+                                    <Link to="/accountDetailsAndHistory" className='balance-container'>
                                         <BiCoinStack className='wallet-icon'/>
                                         <p className='balance'>Coins</p>
                                         <p className='balance-number'>{numeral(authorizedUser.coins).format('0,0')}</p>
-                                    </div>
-                                    <div className='vouchers-container'>
+                                    </Link>
+                                    <Link to="/accountDetailsAndHistory" className='vouchers-container'>
                                         <HiOutlineTicket className='vouchers-icon'/>
                                         <p className='vouchers'>Vouchers</p>
                                         <p className='vouchers-number'>{authorizedUser.vouchers ? (`${authorizedUser.vouchers.length > 100 ? (`${authorizedUser.vouchers.length}+`):(authorizedUser.vouchers.length)}`):(0)}</p>
-                                    </div>
-                                    <div className='payLater-container'>
+                                    </Link>
+                                    <Link to="/accountDetailsAndHistory/completed" className='payLater-container'>
                                         <BsFillCreditCard2BackFill className='card-icon'/>
                                         <p className='paylater'>History</p>
-                                        <p className='paylater-number'>{numeral(authorizedUser.payLater).format('0,0')}</p>
-                                    </div>
+                                        {/* <p className='paylater-number'>{numeral(authorizedUser.payLater).format('0,0')}</p> */}
+                                    </Link>
                                 </div>
                             </div>
                             {/* purchase */}
                             <h5 className='purchase-details-title'>My Purchases</h5>
                             <div className='purchase-details-container'>
                                 <div className='purchase-details'>
-                                    <div className='toShip-container'>
+                                    <Link to="/accountDetailsAndHistory" className='toShip-container'>
                                         <span className='icons-container'>
                                             <VscPackage className='package-icon'/>
                                             <span className='overlay-cotainer'>{authorizedUser.orders ? authorizedUser.orders.filter((item)=>item.deliveryStatus === "toShip").length:(0)}</span>
                                         </span>
                                         <p>To Ship</p>
-                                    </div>
-                                    <div className='toReceive-container'>
+                                    </Link>
+                                    <Link to="/accountDetailsAndHistory/torecieve" className='toReceive-container'>
                                         <span className='icons-container'>
                                             <TbTruckDelivery className='toReceive-icon'/>
                                             <span className='overlay-cotainer'>{authorizedUser.orders ? authorizedUser.orders.filter((item)=>item.deliveryStatus === "toReceive" || item.deliveryStatus === "delivered").length:(0)}</span>
                                         </span>
                                         <p>To Receive</p>
-                                    </div>
-                                    <div className='toReviews-container'>
+                                    </Link>
+                                    <Link to="/accountDetailsAndHistory/torate" className='toReviews-container'>
                                         <span className='icons-container'>
                                             <AiOutlineStar className='toReview-icon'/>
-                                                <span className='overlay-cotainer'>{authorizedUser.orders ? authorizedUser.orders.filter((item)=>item.deliveryStatus === "toReview").length:(0)}</span>
+                                            <span className="overlay-cotainer">
+                                                {authorizedUser.orders !== undefined
+                                                ? authorizedUser.orders
+                                                    .filter((order) => order.deliveryStatus === "completed")
+                                                    .reduce((count, order) => count + order.productOrders.filter((product) => product.rated === false).length, 0)
+                                                : 0}
+                                            </span>
                                         </span>
                                         <p>To Review</p>
-                                    </div>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
