@@ -3977,6 +3977,31 @@
                     }
 
 
+                    .finish-page-container {
+                        text-align: center;
+                        padding: 40px;
+                        height: 50vh;
+                        align-items: center;
+                      }
+                      
+                      .cart-image {
+                        width: 150px;
+                        
+                      }
+
+                      .button {
+                        display: inline-block;
+                        padding: 10px 20px;
+                        background-color: #435E39;
+                        color: #fff;
+                        text-decoration: none;
+                        border: none;
+                        border-radius: 5px;
+                        font-size: 16px;
+                        cursor: pointer;
+                      }
+
+
     .messages-component{
         max-height: 10rem;
         min-height: 10rem;
@@ -4844,3 +4869,4 @@
     margin-top: 10px;
     width: 100%;
 }
+
