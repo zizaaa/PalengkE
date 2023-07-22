@@ -2,6 +2,7 @@ import { useState } from "react"
 import { FetchUsers } from "../../FetchUsers"
 import axios from "axios"
 import Swal from 'sweetalert2';
+import NoOrders from "../NoOrders";
 
 const Cancelled = () => {
     const { authorizedUser } = FetchUsers()
@@ -92,7 +93,7 @@ const Cancelled = () => {
                         </div>
                     ))
                 :
-                    'No Orders'
+                    <NoOrders/>
             }
         </div>
     )

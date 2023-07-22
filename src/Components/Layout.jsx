@@ -587,6 +587,11 @@ const Layout = () => {
     }
 
     const placeOrder = async()=>{
+        //close check out side nav
+        setIsCheckOut(false);
+        // unselect all selected products
+        unSelectAll();
+
         let orders = authorizedUser.cart.map((product) => {
             if(product.checked === true){
                 const order = {
@@ -620,17 +625,28 @@ const Layout = () => {
                 totalPrice:totalPriceNumber,
                 modeOfPayment:mop
             }]
+
+                    //remove used voucher
+                const updatedVouchers = authorizedUser.vouchers.filter((vouch)=>{
+                    if(vouch.name === voucher.name){
+                        return
+                    }
+                    return vouch
+                })
+
                 const newOrder = {
-                    orders:userOrders
+                    coins:totalPriceNumber > 2000 ? authorizedUser.coins !=undefined ? authorizedUser.coins+1:1 : authorizedUser.coins !=undefined ? authorizedUser.coins:0,
+                    orders:userOrders,
+                    vouchers:updatedVouchers
                 }
 
             await axios.put(`${URL}/user/${authorizedId}`, newOrder)
             navigate('/success')
 
             //record activity
-            await axios.post(`${URL}/activities`,{
-                activities:authorizedUser.firstName + ' ' + 'just checked out items worth of' + ' ' + totalPriceNumber + ' ' + 'pesos.'
-            })
+                await axios.post(`${URL}/activities`,{
+                    activities:authorizedUser.firstName + ' ' + 'just checked out items worth of' + ' ' + totalPriceNumber + ' ' + 'pesos.'
+                })
         } catch (error) {
             console.log(error)
         }
@@ -947,11 +963,15 @@ const Layout = () => {
                         </select>
                     </div>
                     <div className="place-order-container">
+                    <p>Total payment</p>
                         <div className="total-payments-container">
-                            <p>Total payment</p>
-                            <p className="shipping-fee">Shipping fee: &#8369;60</p>
-                            {voucher ? <p className="voucher-percent">{`-${voucher.salePercentage}%`}</p>:''}
-                            <p className="total-price" id="totalPrice">&#8369;{voucher ? Math.floor(totalPrice + 60 - (totalPrice + 60) * (voucher.salePercentage / 100)).toLocaleString():totalPrice + 60}</p>
+                            
+                            <div className="info">
+                                <p className="shipping-fee">Shipping fee: &#8369;60</p>
+                                <p className="shipping-fee">Amount: &#8369;{totalPrice}</p>
+                                {voucher ? <p className="voucher-percent">Voucher: {`-${voucher.salePercentage}%`}</p>:''}
+                                <p className="total-price" id="totalPrice">Total: &#8369;{voucher ? totalPrice + 60 - (totalPrice + 60) * (voucher.salePercentage / 100).toLocaleString():totalPrice + 60}</p>
+                            </div>
                         </div>
                         <div className="placeorder-btn-container">
                             <button onClick={placeOrder} className={voucher ? 'place-order-w-voucher':'place-order'} data-bs-dismiss="offcanvas" aria-label="Close">Check out</button>
@@ -990,42 +1010,42 @@ const Layout = () => {
                                 <h5 className='account-details-title'>Account Details</h5>
                             <div className='account-details-container mb-4'>
                                 <div className='account-details'>
-                                    <Link to="/accountDetailsAndHistory" className='balance-container'>
+                                    <button onClick={()=>{navigate('/accountDetailsAndHistory')}} className='balance-container' data-bs-dismiss="offcanvas" aria-label="Close">
                                         <BiCoinStack className='wallet-icon'/>
                                         <p className='balance'>Coins</p>
                                         <p className='balance-number'>{numeral(authorizedUser.coins).format('0,0')}</p>
-                                    </Link>
-                                    <Link to="/accountDetailsAndHistory" className='vouchers-container'>
+                                    </button>
+                                    <button onClick={()=>{navigate("/accountDetailsAndHistory")}} className='vouchers-container' data-bs-dismiss="offcanvas" aria-label="Close">
                                         <HiOutlineTicket className='vouchers-icon'/>
                                         <p className='vouchers'>Vouchers</p>
                                         <p className='vouchers-number'>{authorizedUser.vouchers ? (`${authorizedUser.vouchers.length > 100 ? (`${authorizedUser.vouchers.length}+`):(authorizedUser.vouchers.length)}`):(0)}</p>
-                                    </Link>
-                                    <Link to="/accountDetailsAndHistory/completed" className='payLater-container'>
+                                    </button>
+                                    <button onClick={()=>{navigate("/accountDetailsAndHistory/completed")}} className='payLater-container' data-bs-dismiss="offcanvas" aria-label="Close">
                                         <BsFillCreditCard2BackFill className='card-icon'/>
                                         <p className='paylater'>History</p>
                                         {/* <p className='paylater-number'>{numeral(authorizedUser.payLater).format('0,0')}</p> */}
-                                    </Link>
+                                    </button>
                                 </div>
                             </div>
                             {/* purchase */}
                             <h5 className='purchase-details-title'>My Purchases</h5>
                             <div className='purchase-details-container'>
                                 <div className='purchase-details'>
-                                    <Link to="/accountDetailsAndHistory" className='toShip-container'>
+                                    <button onClick={()=>{navigate("/accountDetailsAndHistory")}} className='toShip-container' data-bs-dismiss="offcanvas" aria-label="Close">
                                         <span className='icons-container'>
                                             <VscPackage className='package-icon'/>
                                             <span className='overlay-cotainer'>{authorizedUser.orders ? authorizedUser.orders.filter((item)=>item.deliveryStatus === "toShip").length:(0)}</span>
                                         </span>
                                         <p>To Ship</p>
-                                    </Link>
-                                    <Link to="/accountDetailsAndHistory/torecieve" className='toReceive-container'>
+                                    </button>
+                                    <button onClick={()=>{navigate("/accountDetailsAndHistory/torecieve")}} className='toReceive-container' data-bs-dismiss="offcanvas" aria-label="Close">
                                         <span className='icons-container'>
                                             <TbTruckDelivery className='toReceive-icon'/>
                                             <span className='overlay-cotainer'>{authorizedUser.orders ? authorizedUser.orders.filter((item)=>item.deliveryStatus === "toReceive" || item.deliveryStatus === "delivered").length:(0)}</span>
                                         </span>
                                         <p>To Receive</p>
-                                    </Link>
-                                    <Link to="/accountDetailsAndHistory/torate" className='toReviews-container'>
+                                    </button>
+                                    <button onClick={()=>{navigate("/accountDetailsAndHistory/torate")}} className='toReviews-container' data-bs-dismiss="offcanvas" aria-label="Close">
                                         <span className='icons-container'>
                                             <AiOutlineStar className='toReview-icon'/>
                                             <span className="overlay-cotainer">
@@ -1037,7 +1057,7 @@ const Layout = () => {
                                             </span>
                                         </span>
                                         <p>To Review</p>
-                                    </Link>
+                                    </button>
                                 </div>
                             </div>
                         </div>

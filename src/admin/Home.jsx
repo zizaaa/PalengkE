@@ -9,16 +9,60 @@ import { useState } from "react"
 import { FetchProduct } from "../FetchProduct"
 
 const Home = () => {
+  const env = import.meta.env;
+  const URL = env.VITE_REACT_SERVER_URL
   const { authorizedUser,users } = FetchUsers()
   const { data } = FetchProduct()
+  const [adminData, setAdminData] = useState([])
+  const [message, setMessages] = useState([])
+  const [bestSeller, setBestSeller] = useState({})
+  
+  useEffect(()=>{
+    const fetchMessages = async()=>{
+      try {
+        const { data } = await axios.get(`${URL}/messages`)
+          setMessages(data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchMessages()
+  },[])
+
+  useEffect(()=>{
+      const fetchAdmin = async()=>{
+          try {
+              const { data } = await axios.get(`${URL}/admins`)
+              setAdminData(data)
+            } catch (error) {
+            console.log(error)
+          }
+      }
+
+      fetchAdmin()
+
+      if(data != ''){
+        const bestSellerProd = data.reduce((bestSeller, currentProduct) => {
+          if (currentProduct.productSold > bestSeller.productSold) {
+            return currentProduct;
+          } else {
+            return bestSeller;
+          }
+        });
+        
+        setBestSeller(bestSellerProd);
+        
+        // console.log(bestSeller); 
+        // console.log(bestSeller.img)
+      }
+  })
   
   return(
-    <div className='admin-home px-5'>
+    <div className='admin-home px-md-5'>
         <div className='admin-home-head'>
             <h1>Welcome back, <span>{authorizedUser.firstName}</span></h1>
             <p>Track your performance, indentify trends, and make informed decisions with our product and sales management dashboard.</p>
         </div>
-        
         <div className='admin-home-content'>
             <div className='income-products-users'>
                 <div className='total-income'>
@@ -26,14 +70,19 @@ const Home = () => {
                         <span className="icon">
                           <TbCurrencyPeso/>
                         </span>
-                        <p className="income-title">Income</p>
+                        <p className="income-title">Gross Income</p>
                     </div>
                     <div className='total-income-body'>
                         <span className="icon">
                           <TbCurrencyPeso/>
                         </span>
                         <p className="income">
-                          0
+                          {
+                              adminData != '' ?
+                              adminData[0].grossIncome != undefined ? adminData[0].grossIncome : '0'
+                              :
+                                '0'
+                          }
                         </p>
                     </div>
                     <div className="income-record mt-1">
@@ -41,7 +90,36 @@ const Home = () => {
                             <span className="me-1">
                               0
                             </span>
-                            users registered last month
+                            last month
+                          </p>
+                    </div>
+                </div>
+                <div className='total-income'>
+                    <div className='total-income-head'>
+                        <span className="icon">
+                          <TbCurrencyPeso/>
+                        </span>
+                        <p className="income-title">Net Income</p>
+                    </div>
+                    <div className='total-income-body'>
+                        <span className="icon">
+                          <TbCurrencyPeso/>
+                        </span>
+                        <p className="income">
+                            {
+                              adminData != ''  ?
+                                adminData[0].netIncome != undefined ? adminData[0].netIncome :'0'
+                              :
+                                '0'
+                            }
+                        </p>
+                    </div>
+                    <div className="income-record mt-1">
+                          <p className="user-record-text">
+                            <span className="me-1">
+                              0
+                            </span>
+                            last month
                           </p>
                     </div>
                 </div>
@@ -63,7 +141,7 @@ const Home = () => {
                             <span className="me-1">
                               0
                             </span>
-                            users registered last month
+                            last month
                           </p>
                     </div>
                 </div>
@@ -85,7 +163,7 @@ const Home = () => {
                             <span className="me-1">
                               0
                             </span>
-                            users registered last month
+                            last month
                           </p>
                     </div>
                 </div>
@@ -103,7 +181,11 @@ const Home = () => {
             </div>
               <div className="notif-box-container">
                 <div className="unread-container">
-                    <p className="unread-count">0</p>
+                    <p className="unread-count">
+                      {
+                        message.filter((msg) => msg.read === false).length
+                      }
+                    </p>
                     <div className="icon-title">
                       <span className="icon">
                         <MdMarkChatUnread/>
@@ -112,7 +194,15 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="payments-container">
-                    <p className="payment-count">0</p>
+                    <p className="payment-count">
+                      {users !== undefined ? 
+                            users
+                              .map((user) => user.orders.filter((order) => order.deliveryStatus === "completed"))
+                              .map((filteredOrders) => filteredOrders.length)
+                              .reduce((sum, length) => sum + length, 0)
+                            : 0
+                      }
+                    </p>
                     <div className="icon-title">
                       <span className="icon">
                         <MdChecklist/>
@@ -124,7 +214,7 @@ const Home = () => {
                     <p className="transit-count">
                     {users !== undefined ? 
                       users
-                        .map((user) => user.orders.filter((order) => order.deliveryStatus === "toShip"))
+                        .map((user) => user.orders.filter((order) => order.deliveryStatus === "toReceive"))
                         .map((filteredOrders) => filteredOrders.length)
                         .reduce((sum, length) => sum + length, 0)
                         : 0
@@ -139,7 +229,11 @@ const Home = () => {
                 </div>
               </div>
               <p className="noti-to-view">
-                <span className="me-1">0</span>
+                <span className="me-1">
+                  {
+                    message.filter((msg) => msg.read === false).length
+                  }
+                </span>
                 notification to view
               </p>
           </div>
@@ -155,22 +249,32 @@ const Home = () => {
             </div>
             <div className="bestSelling-view">
                 <div className="bestSelling-box">
-                    <div className="img-container">
-                        <img src="https://th.bing.com/th/id/R.4a1f67f4dcd98547cd0bec3898590b5d?rik=%2fRBun8uGs5Lluw&riu=http%3a%2f%2fnutrawiki.org%2fwp-content%2fuploads%2f2016%2f04%2fvegetable-cellulose.jpg&ehk=Oe1oUTeL7rb7eHCkBvG36zYeN5QEJ6Vq7eUFiTs8ueg%3d&risl=&pid=ImgRaw&r=0" className="img-fluid"/>
-                    </div>
-                    <div className="info-container">
-                        <p className="product-name">Product Name</p>
-                        <span className="solds">
-                          <p className="count">500</p>
-                          <p className="text">pcs sold</p>
-                        </span>
-                        <p className="record">
-                          <span>1%</span>
-                          higher vs  
-                          <span className="mx-1">1111</span>
-                          last month
-                        </p>
-                    </div>
+                    {
+                      bestSeller != undefined ? 
+                      <>
+                      <div className="img-container">
+                        <img
+                          src={`${bestSeller && bestSeller.img && bestSeller.img[0] && bestSeller.img[0].imgOne ? bestSeller.img[0].imgOne : ''}`}
+                          className="img-fluid"
+                          alt="Best Seller"
+                        />
+                        </div>
+                        <div className="info-container">
+                            <p className="product-name">{bestSeller!=undefined ? bestSeller.name:''}</p>
+                            <span className="solds">
+                              <p className="count">{bestSeller!=undefined ? bestSeller.productSold:''}</p>
+                              <p className="text">pcs sold</p>
+                            </span>
+                            <p className="record">
+                              <span>1%</span>
+                              higher vs  
+                              <span className="mx-1">1111</span>
+                              last month
+                            </p>
+                        </div>
+                      </>
+                      :''
+                    }
                 </div>
             </div>
           </div>
@@ -238,7 +342,7 @@ const Home = () => {
                           </div>
                       </div>
                   </div>
-                  <div className="order-status mt-4">
+                  <div className="order-status mt-1">
                     <p className="title">Order Status</p>
                     <div className="order-table-container">
                       <table>
@@ -282,22 +386,24 @@ const Home = () => {
                     <table>
                       <thead>
                         <tr>
-                          <th>Username</th>
-                          <th>User Role</th>
+                          <th className="username-th">Username</th>
+                          <th className="role-th">User Role</th>
                         </tr>
                       </thead>
                       <tbody>
                         {users != undefined
                           ? users.map((user,index) => (
                               <tr key={index}>
-                                <td>{user.userName}</td>
-                                <td>{user.memberShip === undefined ? "user" : user.memberShip}</td>
+                                <td className="username">{user.userName}</td>
+                                <td className="role">{user.memberShip === undefined ? "user" : user.memberShip}</td>
                               </tr>
                             ))
                           : null}
                       </tbody>
                     </table>
+                    {/*  */}
                   </div>
+                  {/*  */}
                 </div>
               </div>
           </div>

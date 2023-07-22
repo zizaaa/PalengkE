@@ -1,5 +1,7 @@
 import axios from "axios"
 import { FetchUsers } from "../../FetchUsers"
+import { Link } from "react-router-dom"
+import Swal from 'sweetalert2';
 
 const ToShip = () => {
     const { users } = FetchUsers()
@@ -23,15 +25,29 @@ const ToShip = () => {
 
                 await axios.put(`${URL}/user/${userId}`,{
                     orders:selectedOrder
+                }).then(()=>{
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        confirmButtonColor:'rgb(67,94,57)'
+                    });
                 })
-                console.log('success')
         } catch (error) {
-            console.log(error)
+            Swal.fire({
+                icon: 'error',
+                title: `${error}`,
+                confirmButtonColor:'rgb(67,94,57)'
+            });
         }
     }
 
   return (
     <div className="toShip-orders-container">
+        <div className="d-sm-none d-flex navlinks">
+            <Link to="/adminDashboard/orders">To Ship</Link>
+            <Link to="/adminDashboard/orders/toreceive">To Receive</Link>
+            <Link to="/adminDashboard/orders/delivered">History</Link>
+        </div>
         {users.map((user) =>
             user.orders
             .filter((order) => order.deliveryStatus === 'toShip')

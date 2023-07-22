@@ -18,14 +18,14 @@ const AccountDetails = () => {
                     </div>
                     <div className='infos'>
                         {
-                            authorizedUser != undefined  ? 
+                            authorizedUser.firstName  != undefined  ? 
                             <>
                                 <p className='user-name'>{authorizedUser.firstName + ' ' + authorizedUser.lastName}</p>
                                 <p>{authorizedUser.address}</p>
                                 <p className='memberShip'>{authorizedUser.memberShip}</p>
                             </>
                             :
-                                'loading'
+                                'loading...'
                         }
                     </div>
                 </div>

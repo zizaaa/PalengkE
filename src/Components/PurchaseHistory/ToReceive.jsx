@@ -3,6 +3,7 @@ import { FetchUsers } from "../../FetchUsers"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import Swal from 'sweetalert2';
+import NoOrders from "../NoOrders";
 
 const ToReceive = () => {
     const { authorizedUser } = FetchUsers()
@@ -171,7 +172,7 @@ const ToReceive = () => {
                         </div>
                     ))
                 :
-                    'No Orders'
+                    <NoOrders/>
             }
         </div>
     )

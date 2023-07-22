@@ -551,6 +551,11 @@ totalPriceFunc();
     }
 
     const placeOrder = async()=>{
+        //close check out side nav
+        setIsCheckOut(false);
+        // unselect all selected products
+        unSelectAll();
+
         let orders = authorizedUser.cart.map((product) => {
             if(product.checked === true){
                 const order = {
@@ -584,8 +589,19 @@ totalPriceFunc();
                 totalPrice:totalPriceNumber,
                 modeOfPayment:mop
             }]
+
+                    //remove used voucher
+                const updatedVouchers = authorizedUser.vouchers.filter((vouch)=>{
+                    if(vouch.name === voucher.name){
+                        return
+                    }
+                    return vouch
+                })
+
                 const newOrder = {
-                    orders:userOrders
+                    coins:totalPriceNumber > 2000 ? authorizedUser.coins !=undefined ? authorizedUser.coins+1:1 : authorizedUser.coins !=undefined ? authorizedUser.coins:0,
+                    orders:userOrders,
+                    vouchers:updatedVouchers
                 }
 
             await axios.put(`${URL}/user/${authorizedId}`, newOrder)
@@ -750,7 +766,15 @@ totalPriceFunc();
                           Add to cart</button>
                             </div>
                         </div>
-                          <button type='button' id={product._id} onClick={(e)=>{buyNow(e)}} data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">Buy Now</button>
+                        <div className={isLoading || isUserLoading ? 'custom-spinner-loading':'custom-spinner'} id={product._id}>
+                            <div className={`${isLoading && toLoading === product._id || isUserLoading ? 'spinner-border':''}`} role="status">
+                            <button className={`${isLoading && toLoading === product._id || isUserLoading ? 'visually-hidden':''}`}  type='button' id={product._id} onClick={(e)=>{buyNow(e)}} data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">
+                                <span><HiShoppingCart/></span>
+                                Buy Now
+                            </button>
+                            </div>
+                        </div>
+                          {/* <button type='button' id={product._id} onClick={(e)=>{buyNow(e)}} data-bs-toggle="offcanvas" data-bs-target="#cartSideNav" aria-controls="offcanvasRight">Buy Now</button> */}
                       </div>
                 </div>
             </div>
@@ -971,9 +995,12 @@ totalPriceFunc();
                     <div className="place-order-container">
                         <div className="total-payments-container">
                             <p>Total payment</p>
-                            <p className="shipping-fee">Shipping fee: &#8369;60</p>
-                            {voucher ? <p className="voucher-percent">{`-${voucher.salePercentage}%`}</p>:''}
-                            <p className="total-price" id="totalPrice">&#8369;{voucher ? Math.floor(totalPrice + 60 - (totalPrice + 60) * (voucher.salePercentage / 100)).toLocaleString():totalPrice + 60}</p>
+                            <div className="info">
+                                <p className="shipping-fee">Shipping fee: &#8369;60</p>
+                                <p className="shipping-fee">Amount: &#8369;{totalPrice}</p>
+                                {voucher ? <p className="voucher-percent">Voucher: {`-${voucher.salePercentage}%`}</p>:''}
+                                <p className="total-price" id="totalPrice">Total: &#8369;{voucher ? totalPrice + 60 - (totalPrice + 60) * (voucher.salePercentage / 100).toLocaleString():totalPrice + 60}</p>
+                            </div>
                         </div>
                         <div className="placeorder-btn-container">
                             <button onClick={placeOrder} className={voucher ? 'place-order-w-voucher':'place-order'} data-bs-dismiss="offcanvas" aria-label="Close">Place Order</button>

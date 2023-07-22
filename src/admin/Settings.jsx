@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { FetchUsers } from '../FetchUsers'
 import profile from '/src/assets/profileDark.png'
 import axios from 'axios'
+import Swal from 'sweetalert2';
 const Settings = () => {
   const [oldPass, setOldPass] = useState('')
   const [changePass, setChangePass] = useState('')
@@ -22,20 +23,32 @@ const Settings = () => {
                 setOldPass('')
                 setChangePass('')
                 setNewchangePass('')
-                alert('success')
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Success',
+                  confirmButtonColor:'rgb(67,94,57)'
+              });
             } catch (error) {
               console.log(error)
             }
         }else{
-          alert('password not match')
+          Swal.fire({
+              icon: 'error',
+              title: 'password not match',
+              confirmButtonColor:'rgb(67,94,57)'
+          });
         }
       }else{
-        alert('Incorrect old password')
+        Swal.fire({
+            icon: 'error',
+            title: 'Incorrect password',
+            confirmButtonColor:'rgb(67,94,57)'
+        });
       }
   }
 
   return (
-    <div className="settings-sections px-5">
+    <div className="settings-sections px-md-5">
         <div className="settings-sections-head">
           <h1>Settings</h1>
           <p>Modify your personal preferences here.</p>

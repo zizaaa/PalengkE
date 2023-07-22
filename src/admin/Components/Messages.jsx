@@ -49,11 +49,11 @@ const Messages = () => {
                     <p>{item.email}</p>
                     <p>{item.number}</p>
                   </div>
-                  <div className="message">
+                  {/* <div className="message">
                     <p>
                         "{(item.message).length <= 30 ? item.message :`${(item.message).slice(0,30)}...`}"
                     </p>
-                  </div>
+                  </div> */}
               </div>
           </button>
         ))

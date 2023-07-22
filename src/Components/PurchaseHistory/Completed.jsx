@@ -1,4 +1,5 @@
 import { FetchUsers } from "../../FetchUsers";
+import NoOrders from "../NoOrders";
 
 const Completed = () => {
     const { authorizedUser } = FetchUsers()
@@ -25,7 +26,7 @@ const Completed = () => {
                     ))
                 ))
             :
-                'No orders'
+                <NoOrders/>
         }
     </div>
   )

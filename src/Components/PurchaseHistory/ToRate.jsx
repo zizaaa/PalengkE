@@ -3,6 +3,7 @@ import { FetchUsers } from "../../FetchUsers";
 import { FetchProduct } from "../../FetchProduct";
 import axios from "axios";
 import Swal from 'sweetalert2';
+import NoOrders from "../NoOrders";
 
 const ToRate = () => {
     const { authorizedUser } = FetchUsers()
@@ -121,7 +122,7 @@ const ToRate = () => {
             authorizedUser.orders != undefined ? 
                 authorizedUser.orders.filter((order)=> order.deliveryStatus === 'completed')
                 .map((order)=>(
-                    order.productOrders.map((product,index)=>(
+                    order.productOrders.map((product)=>(
                         product.rated === false ? 
                             <div className="client-product-boxes" key={product.id}>
                                 <div className="left-side">
@@ -168,7 +169,7 @@ const ToRate = () => {
                     ))
                 ))
             :
-                'No orders'
+                <NoOrders/>
         }
     </div>
   )
