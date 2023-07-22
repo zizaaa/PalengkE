@@ -40,8 +40,28 @@ import ClientToReceive from "./Components/PurchaseHistory/ToReceive"
 import ClientCompleted from "./Components/PurchaseHistory/Completed"
 import ClientToRate from "./Components/PurchaseHistory/ToRate"
 import ClientCancelled from "./Components/PurchaseHistory/Cancelled"
+import jwtDecode from 'jwt-decode';
 
 function App() {
+  // Your logic to determine if the user is validated (e.g., based on the token)
+  const isValidToken = () => {
+    const token = localStorage.getItem('access'); // Replace with how you store your token
+    if (!token) {
+      return false; // No token found, not validated
+    }
+
+    try {
+      const decodedToken = jwtDecode(token);
+      const currentTime = Date.now() / 1000; // Convert milliseconds to seconds
+
+      // Check if the token's expiration time is in the future
+      return decodedToken.exp > currentTime;
+    } catch (error) {
+      return false; // Error decoding token or expired, not validated
+    }
+  };
+
+  const validated = isValidToken(); 
 
   return (
     <main>
@@ -73,35 +93,40 @@ function App() {
               <Route index element={<Register/>}/>
               <Route path="login" element={<Login/>}/>
           </Route>
-          <Route path=":id" element={
-              <ProducInfo />}/>
+          <Route path="/productInfo/:id" element={<ProducInfo />}/>
 
-          <Route path="/adminDashboard" element={<AdminLayout/>}>
-              <Route index element={<AdminHome/>}/>
+            {
+              validated ? 
+              (
+                <Route path="/adminDashboard" element={<AdminLayout/>}>
+                    <Route index element={<AdminHome/>}/>
 
-              <Route path="/adminDashboard/products" element={<AdminProducts/>}>
-                  <Route index element={<AdminProduct/>}/>
-                  <Route path="/adminDashboard/products/addproduct" element={<AddProductForm/>}/>
-                  <Route path="/adminDashboard/products/editproduct/:id" element={<EditProductForm/>}/>
-              </Route>
+                    <Route path="/adminDashboard/products" element={<AdminProducts/>}>
+                        <Route index element={<AdminProduct/>}/>
+                        <Route path="/adminDashboard/products/addproduct" element={<AddProductForm/>}/>
+                        <Route path="/adminDashboard/products/editproduct/:id" element={<EditProductForm/>}/>
+                    </Route>
 
-              <Route path="/adminDashboard/users" element={<AdminUsers/>}>
-                  <Route index element={<UsersList/>}/>
-              </Route>
+                    <Route path="/adminDashboard/users" element={<AdminUsers/>}>
+                        <Route index element={<UsersList/>}/>
+                    </Route>
 
-              <Route path="/adminDashboard/orders" element={<AdminOrderStatus/>}>
-                <Route index element={<ToShip/>}/>
-                <Route path="/adminDashboard/orders/toreceive" element={<ToReceive/>}/>
-                <Route path="/adminDashboard/orders/delivered" element={<Delivered/>}/>
-              </Route>
+                    <Route path="/adminDashboard/orders" element={<AdminOrderStatus/>}>
+                      <Route index element={<ToShip/>}/>
+                      <Route path="/adminDashboard/orders/toreceive" element={<ToReceive/>}/>
+                      <Route path="/adminDashboard/orders/delivered" element={<Delivered/>}/>
+                    </Route>
 
-              <Route path="/adminDashboard/notifications" element={<AdminNotifications/>}>
-                  <Route index element={<Messages/>}/>
-                  <Route path='/adminDashboard/notifications/message/:id' element={<DisplayMessage/>}/>
-              </Route>
+                    <Route path="/adminDashboard/notifications" element={<AdminNotifications/>}>
+                        <Route index element={<Messages/>}/>
+                        <Route path='/adminDashboard/notifications/message/:id' element={<DisplayMessage/>}/>
+                    </Route>
 
-              <Route path="/adminDashboard/settings" element={<AdminSettings/>}/>
-          </Route>
+                    <Route path="/adminDashboard/settings" element={<AdminSettings/>}/>
+                </Route>
+              ):
+              ''
+            }
           
           <Route path="*" element={<NotFound/>}/>
       </Routes>
