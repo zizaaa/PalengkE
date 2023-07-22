@@ -200,7 +200,7 @@ const BestSellingProduct = () => {
                             <p>{`${item.salePercentage}% off`}</p>
                         </span>
                     ):null}
-                    <Link to={`/${item._id}`} className="quick-view-btn">Quick view</Link>
+                    <Link to={`/productInfo/${item._id}`} className="quick-view-btn">Quick view</Link>
                     </div>
                     <div className='product-info-container'>
                         <h5 className='product-name'>{item.name}</h5>

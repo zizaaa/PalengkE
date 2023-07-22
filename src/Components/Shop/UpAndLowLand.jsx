@@ -203,7 +203,7 @@ const UpAndLowLand = () => {
                         <p>{`${product.salePercentage}% off`}</p>
                     </span>
                   ):null}
-                  <Link to={`/${product._id}`}  className="quick-view-btn">Quick view</Link>
+                  <Link to={`/productInfo/${product._id}`}  className="quick-view-btn">Quick view</Link>
                 </div>
                 <div className='shop-product-info-container'>
                   <h5 className='shop-product-name'>{product.name}</h5>

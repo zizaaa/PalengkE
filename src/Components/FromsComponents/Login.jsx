@@ -9,52 +9,41 @@ const URL = env.VITE_REACT_SERVER_URL;
 
 const Login = () => {
   const navigate = useNavigate();
-  const [users, setUsers] = useState([]);
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [isHidePass,setIsHidePass] = useState(true)
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  // useEffect(() => {
+  //   fetchUsers();
+  // }, []);
 
-  const fetchUsers = async () => {
-    try {
-      const { data } = await axios.get(`${URL}/users`);
-      setUsers(data);
-    } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: error.message,
-      });
-    }
-  };
-
-  const login = (e) => {
+  const login = async (e) => {
     e.preventDefault();
-    const userFound = users.find((user) => user.userName === userName);
-    if (userFound) {
-      if (userFound.password === password) {
-        console.log('Login successful');
-        sessionStorage.setItem('userId', userFound._id);
-        navigate('/');
-        // location.reload();
-      } else {
+    try {
+      const response = await axios.post(`${URL}/api/users`, { userName:userName, password:password })
+        sessionStorage.setItem('userId', response.data.user._id);
+        response.data.accessToken ? localStorage.setItem('access', response.data.accessToken):''
         Swal.fire({
+          icon: 'success',
+          title: 'Loged in successfuly',
+          confirmButtonColor: "#435e39",
+        }).then((result)=>{
+          if(result.isConfirmed){
+            navigate('/');
+            location.reload();
+          }
+        })
+        // navigate('/');
+        // location.reload();
+      // Handle successful login (e.g., store tokens in local storage, redirect, etc.)
+      // console.log(response.data.accessToken)
+    } catch (error) {
+          Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: `Incorrect password`,
+          text: `${error.response.data.message}`,
           confirmButtonColor: "#435e39",
         });
-      }
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: `Invalid username`,
-        confirmButtonColor: "#435e39",
-      });
     }
   };
 

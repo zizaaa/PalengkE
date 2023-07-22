@@ -4,7 +4,6 @@ import profile from '/src/assets/profileDark.png'
 import axios from 'axios'
 import Swal from 'sweetalert2';
 const Settings = () => {
-  const [oldPass, setOldPass] = useState('')
   const [changePass, setChangePass] = useState('')
   const [newchangePass, setNewchangePass] = useState('')
   const { authorizedUser } = FetchUsers()
@@ -13,14 +12,14 @@ const Settings = () => {
   const changePassword = async(e)=>{
     e.preventDefault()
 
-      if(oldPass === authorizedUser.password){
         if(changePass === newchangePass){
             try {
               const env = import.meta.env;
               const URL = env.VITE_REACT_SERVER_URL
       
-              await axios.put(`${URL}/user/${authorizedUser._id}`)
-                setOldPass('')
+              await axios.put(`${URL}/user/${authorizedUser._id}`,{
+                password:newchangePass
+              })
                 setChangePass('')
                 setNewchangePass('')
                 Swal.fire({
@@ -38,13 +37,6 @@ const Settings = () => {
               confirmButtonColor:'rgb(67,94,57)'
           });
         }
-      }else{
-        Swal.fire({
-            icon: 'error',
-            title: 'Incorrect password',
-            confirmButtonColor:'rgb(67,94,57)'
-        });
-      }
   }
 
   return (
@@ -76,7 +68,6 @@ const Settings = () => {
                 <div className="admin-profile-info-right">
                     <form>
                         <h3 className='mb-3'>Change password</h3>
-                        <input type='password' value={oldPass} onChange={(e)=>{setOldPass(e.target.value)}} placeholder='Old Password' required/>
                         <input type='password' value={changePass} onChange={(e)=>{setChangePass(e.target.value)}} placeholder='New Password' required/>
                         <input type='password' value={newchangePass} onChange={(e)=>{setNewchangePass(e.target.value)}} placeholder='Confirm New Passwod' required/>
                         <button onClick={(e)=>{changePassword(e)}} type='submit'>Change</button>

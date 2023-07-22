@@ -485,7 +485,7 @@ const Layout = () => {
         Swal.fire({
             title:'Change Password',
             html:
-            '<input id="swal-input1" class="swal2-input" placeholder="Old Password">' +
+            
             '<input id="swal-input2" class="swal2-input" placeholder="New Password">' +
             '<input id="swal-input3" class="swal2-input" placeholder="Confirm New Password">',
             showCancelButton: true,
@@ -493,10 +493,9 @@ const Layout = () => {
             confirmButtonColor: "#435e39",
             showLoaderOnConfirm: true,
             preConfirm:async()=>{
-                const oldPass = document.getElementById('swal-input1').value
                 const newPass = document.getElementById('swal-input2').value
                 const confirmNewPass = document.getElementById('swal-input3').value
-                if(oldPass && newPass === confirmNewPass && oldPass === authorizedUser.password){
+                if(newPass === confirmNewPass){
                     try{
                             const changePass = {
                                 password:confirmNewPass
@@ -517,13 +516,6 @@ const Layout = () => {
                         confirmButtonColor: "#435e39",
                         })
                     }
-                }else if(!oldPass){
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Please Enter your old password!',
-                        confirmButtonColor: "#435e39",
-                        })
                 }else if(!newPass){
                     Swal.fire({
                         icon: 'error',
@@ -538,13 +530,6 @@ const Layout = () => {
                         text: 'Please Confirm your new password!',
                         confirmButtonColor: "#435e39",
                         })
-                }else if(oldPass !== authorizedUser.password){
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Wrong password!',
-                        confirmButtonColor: "#435e39",
-                    })
                 }else if(newPass !== confirmNewPass){
                     Swal.fire({
                         icon: 'error',
@@ -583,6 +568,7 @@ const Layout = () => {
     //sign out
     const signOut =()=>{
         sessionStorage.removeItem('userId') 
+        localStorage.removeItem('access')
         window.location.reload();
     }
 
