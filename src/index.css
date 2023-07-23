@@ -3873,6 +3873,7 @@
             .admin-home .home-bottom-content .order-overview .order-status .order-table-container{
                 width: 100%;
                 max-height: 14rem;
+                min-height: 14rem;
                 overflow: auto;
             }
             /* @media(max-width:389px){
@@ -3984,7 +3985,15 @@
                         display: flex;
                         flex-direction: column;
                         gap:10px;
-                        padding-bottom: 50px;
+                        padding-bottom: 60px;
+                    }
+                }
+                @media(min-width:1075px){
+                    .adminProduct{
+                        display: flex;
+                        flex-direction: column;
+                        gap:10px;
+                        padding-bottom: 80px;
                     }
                 }
                 @media(max-width:609px){

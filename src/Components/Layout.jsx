@@ -598,6 +598,7 @@ const Layout = () => {
 
         const oldOrders = authorizedUser.orders
         const randomID = Math.ceil(Math.random()*1000000)
+        
         try {
             const userOrders = [...oldOrders,{
                 orderId:randomID,
@@ -621,18 +622,21 @@ const Layout = () => {
                 })
 
                 const newOrder = {
-                    coins:totalPriceNumber > 2000 ? authorizedUser.coins !=undefined ? authorizedUser.coins+1:1 : authorizedUser.coins !=undefined ? authorizedUser.coins:0,
+                    // coins:totalPriceNumber > 2000 ? authorizedUser.coins !=undefined ? authorizedUser.coins+1:1 : authorizedUser.coins !=undefined ? authorizedUser.coins:0,
                     orders:userOrders,
                     vouchers:updatedVouchers
                 }
 
+                // console.log(newOrder)
+
             await axios.put(`${URL}/user/${authorizedId}`, newOrder)
-            navigate('/success')
 
             //record activity
                 await axios.post(`${URL}/activities`,{
                     activities:authorizedUser.firstName + ' ' + 'just checked out items worth of' + ' ' + totalPriceNumber + ' ' + 'pesos.'
                 })
+
+            navigate('/success')
         } catch (error) {
             console.log(error)
         }

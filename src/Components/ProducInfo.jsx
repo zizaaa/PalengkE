@@ -599,18 +599,19 @@ totalPriceFunc();
                 })
 
                 const newOrder = {
-                    coins:totalPriceNumber > 2000 ? authorizedUser.coins !=undefined ? authorizedUser.coins+1:1 : authorizedUser.coins !=undefined ? authorizedUser.coins:0,
+                    // coins:totalPriceNumber > 2000 ? authorizedUser.coins !=undefined ? authorizedUser.coins+1:1 : authorizedUser.coins !=undefined ? authorizedUser.coins:0,
                     orders:userOrders,
                     vouchers:updatedVouchers
                 }
 
-            await axios.put(`${URL}/user/${authorizedId}`, newOrder)
-            navigate('/success')
-
+                // console.log(newOrder)
+            await axios.put(`${URL}/user/${authorizedUser._id}`, newOrder)
             //record activity
             await axios.post(`${URL}/activities`,{
                 activities:authorizedUser.firstName + ' ' + 'just checked out items worth of' + ' ' + totalPriceNumber + ' ' + 'pesos.'
             })
+
+            navigate('/success')
         } catch (error) {
             console.log(error)
         }
