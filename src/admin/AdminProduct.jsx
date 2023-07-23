@@ -9,33 +9,35 @@ import { useState } from "react";
 const AdminProduct = () => {
     const { data } = FetchProduct();
 
-    const itemsPerPage = 6;
-    // State to track the current page
+    const itemsPerPage = 5;
     const [currentPage, setCurrentPage] = useState(1);
     
-        if (data === undefined) {
-            // Data is not yet available, you can show a loading message or a default state here.
-            return <div>Loading...</div>;
+    if (data === undefined) {
+        // Data is not yet available, you can show a loading message or a default state here.
+        return <div>Loading...</div>;
+    }
+    
+    // Logic to calculate the total number of pages
+    const totalPages = Math.ceil(data.length / itemsPerPage);
+    
+    // Logic to slice the array based on the current page
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    
+    // Reverse the data array
+    const reversedData = [...data].reverse();
+    
+    const goToNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage((prevPage) => prevPage + 1);
         }
+    };
     
-        // Logic to calculate the total number of pages
-        const totalPages = Math.ceil(data.length / itemsPerPage);
-    
-        // Logic to slice the array based on the current page
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-    
-        const goToNextPage = () => {
-            if (currentPage < totalPages) {
-                setCurrentPage((prevPage) => prevPage + 1);
-            }
-        };
-    
-        const goToPreviousPage = () => {
-            if (currentPage > 1) {
-                setCurrentPage((prevPage) => prevPage - 1);
-            }
-        };
+    const goToPreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage((prevPage) => prevPage - 1);
+        }
+    };
 
     const deleteProduct =async(id)=>{
         try {
@@ -75,7 +77,7 @@ return (
             </div>
         </div>
         {
-            data.slice(startIndex, endIndex).map((product)=>(
+            reversedData.slice(startIndex, endIndex).map((product)=>(
             <div key={product._id} className="product-boxes">
                 <div className="main-product-box-container">
                     <div className="product-img-container">

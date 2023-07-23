@@ -39,7 +39,7 @@ const UsersList = () => {
                             <p>username: {user.userName}</p>
                             <p>name: {user.firstName + '' + user.lastName}</p>
                             <p>Phone: {user.number}</p>
-                            <p>Password: {user.password}</p>
+                            {/* <p>Password: {user.password}</p> */}
                             <p>Address: {user.address}</p>
                             <p>Role: {user.memberShip != undefined ? user.memberShip:"Member"}</p>
                         </div>

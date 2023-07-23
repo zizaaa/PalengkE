@@ -33,8 +33,38 @@ const ToReceive = () => {
         })
 
         try {
+            
+                toReceive.filter((item)=>{
+                    if(item.orderId === id){
+                        item.productOrders.map((product)=>{
+                            try {
+                                
+                                const updateProductSold =async(products)=>{
+                                    const model = {
+                                        ...products,
+                                        price:products.price / products.item,
+                                        productSold:products.productSold != undefined ? products.item+products.productSold:products.item
+                                    }
+
+                                    console.log(model)
+                                    await axios.put(`${URL}/product/${products.id}`,model)
+                                }
+
+                                updateProductSold(product)
+                            } catch (error) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: error.message,
+                                    confirmButtonColor:'rgb(67,94,57)'
+                                });
+                            }
+                        })
+                    }
+                })
                 await axios.put(`${URL}/user/${authorizedUser._id}`,{
-                    orders:toReceive
+                    orders:toReceive,
+                    coins:income > 2000 ? authorizedUser.coins !=undefined ? authorizedUser.coins+1:1 : authorizedUser.coins !=undefined ? authorizedUser.coins:0,
                 }).then(()=>{
                     Swal.fire({
                         icon: 'success',
@@ -62,34 +92,6 @@ const ToReceive = () => {
                             netIncome:netIncome
                         })
                     }
-
-                toReceive.filter((item)=>{
-                    if(item.orderId === id){
-                        item.productOrders.map((product)=>{
-                            try {
-                                
-                                const updateProductSold =async(products)=>{
-                                    // await axios.put()
-                                    const model = {
-                                        ...products,
-                                        productSold:products.productSold != undefined ? products.item+products.productSold:products.item
-                                    }
-
-                                    await axios.put(`${URL}/product/${products.id}`,model)
-                                }
-
-                                updateProductSold(product)
-                            } catch (error) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error',
-                                    text: error.message,
-                                    confirmButtonColor:'rgb(67,94,57)'
-                                });
-                            }
-                        })
-                    }
-                })
                 setLoading(false)
         } catch (error) {
             Swal.fire({
