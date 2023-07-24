@@ -103,7 +103,7 @@ const Notifications = () => {
                     activities.map((act,index)=>(
                       <div key={index} className="activities-sections-box">
                         <div className="act-message">
-                            <p>{act.activities}</p>
+                            <p>{act.message}</p>
                         </div>
                         <div className="act-button">
                             <button onClick={()=>{deleteAct(act._id)}}>Delete</button>

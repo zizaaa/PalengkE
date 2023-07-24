@@ -608,8 +608,12 @@ totalPriceFunc();
             await axios.put(`${URL}/user/${authorizedUser._id}`, newOrder)
             //record activity
             await axios.post(`${URL}/activities`,{
-                activities:authorizedUser.firstName + ' ' + 'just checked out items worth of' + ' ' + totalPriceNumber + ' ' + 'pesos.'
-            })
+                name:authorizedUser.firstName,
+                price:totalPriceNumber,
+                vouch:authorizedUser.vouchers,
+                message:authorizedUser.firstName + ' ' + 'just checked out items worth of' + ' ' + totalPriceNumber + ' ' + 'pesos.',
+                id:authorizedUser._id
+            })      
 
             navigate('/success')
         } catch (error) {

@@ -23,7 +23,7 @@ import AdminProducts from "./admin/Products"
 import AdminUsers from "./admin/Users"
 import AdminOrderStatus from "./admin/OrderStatus"
 import AdminNotifications from "./admin/Notifications"
-import AdminSettings from "./admin/Settings"
+// import AdminSettings from "./admin/Settings"
 import PurchaseSuccess from "./Pages/PurchaseSuccess"
 import AdminProduct from "./admin/AdminProduct"
 import AddProductForm from "./Components/AddProductForm"
@@ -41,6 +41,7 @@ import ClientCompleted from "./Components/PurchaseHistory/Completed"
 import ClientToRate from "./Components/PurchaseHistory/ToRate"
 import ClientCancelled from "./Components/PurchaseHistory/Cancelled"
 import jwtDecode from 'jwt-decode';
+import GiveAway from "./admin/Components/GiveAway"
 
 function App() {
   // Your logic to determine if the user is validated (e.g., based on the token)
@@ -122,7 +123,9 @@ function App() {
                         <Route path='/adminDashboard/notifications/message/:id' element={<DisplayMessage/>}/>
                     </Route>
 
-                    <Route path="/adminDashboard/settings" element={<AdminSettings/>}/>
+                    <Route path="/adminDashboard/giveAway" element={<GiveAway/>}/>
+                    
+                    {/* <Route path="/adminDashboard/settings" element={<AdminSettings/>}/> */}
                 </Route>
               ):
               ''

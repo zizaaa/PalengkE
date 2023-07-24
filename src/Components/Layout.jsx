@@ -32,6 +32,7 @@ const Layout = () => {
     const [isUserLoading,setIsUserLoading] = useState(true)
     const [isProfileLoading, setIsProfileLoading] = useState(false)
     const [mop, setMop] = useState('cod');
+    const [coins, setCoins] = useState(0);
     const dropDown=()=>{
         isDropDown ? setIsDropDown(false):setIsDropDown(true)
     }
@@ -162,6 +163,8 @@ const Layout = () => {
 
         if(selectedCount <= 0){
             setErrorMessage('Please select product to check out!')
+        }else if(coins > authorizedUser.coins){
+            setErrorMessage('You don\'t have enough coins!')
         }else{
             setErrorMessage('')
             setIsCheckOut(true)
@@ -595,7 +598,6 @@ const Layout = () => {
         const totalPriceElement = document.getElementById('totalPrice').childNodes[1];
         const totalPriceText = totalPriceElement.textContent;
         const totalPriceNumber = parseInt(totalPriceText);
-
         const oldOrders = authorizedUser.orders
         const randomID = Math.ceil(Math.random()*1000000)
         
@@ -633,7 +635,11 @@ const Layout = () => {
 
             //record activity
                 await axios.post(`${URL}/activities`,{
-                    activities:authorizedUser.firstName + ' ' + 'just checked out items worth of' + ' ' + totalPriceNumber + ' ' + 'pesos.'
+                    name:authorizedUser.firstName,
+                    price:totalPriceNumber,
+                    vouch:authorizedUser.vouchers,
+                    message:authorizedUser.firstName + ' ' + 'just checked out items worth of' + ' ' + totalPriceNumber + ' ' + 'pesos.',
+                    id:authorizedUser._id
                 })
 
             navigate('/success')
@@ -878,6 +884,15 @@ const Layout = () => {
                                     </div>
                                 </div>
                             </div>
+                            <div className="coins-container">
+                                <div className="coins-title">
+                                    <BiCoinStack className='coins-icon'/>
+                                    <h5>Coins:</h5>
+                                </div>
+                                <div className="input-coins-container">
+                                    <input type="number" value={coins} onChange={(e)=>{setCoins(e.target.value)}} placeholder="input coins"/>
+                                </div>
+                            </div>
                         </div>
                         <div className='checkOut-container'>
                             <button type='button' onClick={checkOut}>Place Order</button>
@@ -955,12 +970,12 @@ const Layout = () => {
                     <div className="place-order-container">
                     <p>Total payment</p>
                         <div className="total-payments-container">
-                            
                             <div className="info">
                                 <p className="shipping-fee">Shipping fee: &#8369;60</p>
                                 <p className="shipping-fee">Amount: &#8369;{totalPrice}</p>
+                                <p className="shipping-fee">Coins:  {coins}</p>
                                 {voucher ? <p className="voucher-percent">Voucher: {`-${voucher.salePercentage}%`}</p>:''}
-                                <p className="total-price" id="totalPrice">Total: &#8369;{voucher ? totalPrice + 60 - (totalPrice + 60) * (voucher.salePercentage / 100).toLocaleString():totalPrice + 60}</p>
+                                <p className="total-price" id="totalPrice">Total: &#8369;{voucher ? totalPrice + 60 - coins  - (totalPrice + 60) * (voucher.salePercentage / 100).toLocaleString():totalPrice + 60 - coins}</p>
                             </div>
                         </div>
                         <div className="placeorder-btn-container">

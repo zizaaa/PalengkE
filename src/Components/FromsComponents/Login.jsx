@@ -25,7 +25,7 @@ const Login = () => {
         response.data.accessToken ? localStorage.setItem('access', response.data.accessToken):''
         Swal.fire({
           icon: 'success',
-          title: 'Loged in successfuly',
+          title: 'Login succesful',
           confirmButtonColor: "#435e39",
         }).then((result)=>{
           if(result.isConfirmed){
