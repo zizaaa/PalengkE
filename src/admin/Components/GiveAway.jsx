@@ -3,7 +3,7 @@ import { useState,useEffect } from "react"
 import { AiFillGift } from "react-icons/ai";
 
 const GiveAway = () => {
-  const luckyUser = JSON.parse(localStorage.getItem('lucky'));
+  const luckyUser = JSON.parse(localStorage.getItem('lucky'))
   const [adminVoucher, setAdminVoucher] = useState([]);
 
   let vouchList = []
@@ -117,6 +117,7 @@ const GiveAway = () => {
         <div className="give-away-content-container">
             <div className="users-container">
                 {
+                  luckyUser != undefined ?
                   luckyUser.map((user,index)=>(
                     <div className="accepted-users" key={index}>
                       <div className="left-side">
@@ -129,7 +130,7 @@ const GiveAway = () => {
                         </span>
                       </div>
                     </div>
-                  ))
+                  )):''
                 }
             </div>
             <div className="vouchers-list-container">
