@@ -619,7 +619,7 @@
             }
                 .custom-sidenav-cart .check-out-container .place-order-container .total-payments-container{
                     padding: 5px;
-                    max-height: 5rem;
+                    max-height: 4rem;
                     overflow: auto;
                 }
                 .custom-sidenav-cart .check-out-container .place-order-container .total-payments-container p{
@@ -809,6 +809,32 @@
             .voucher-container .voucher input::placeholder{
                 color: white;
             }
+
+        .voucher-container .coins-container{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }    
+            .voucher-container .coins-container .coins-title{
+                display: flex;
+                align-items: center;
+                margin-top: 10px;
+            }    
+                .voucher-container .coins-container .coins-title .coins-icon{
+                    font-size: 2rem;
+                }    
+                    .voucher-container .coins-container .coins-title h5{
+                        margin: 0;
+                    }    
+            .voucher-container .coins-container .input-coins-container input{
+                width: 130px;
+                background-color: transparent;
+                padding: 5px 3px;
+                border: 1px solid white;
+                color: white;
+                outline: none;
+                
+            }    
 
             .checkOut-container{
                 width: 100%;
@@ -5502,3 +5528,73 @@
     justify-content: center;
     padding: 20px 0;
 }
+
+.give-away-section{
+    overflow: auto;
+    height: 100vh;
+}
+    .give-away-section .lucky-winner-container{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        background-color: var(--text-color);
+        padding: 20px 5px;
+    }
+        .give-away-section .lucky-winner-container .lucky-user-container{
+            color: white;
+            padding: 0 10px;
+        }
+            .give-away-section .lucky-winner-container .lucky-user-container p{
+                margin: 0;
+            }
+        .give-away-section .lucky-winner-container button{
+            background-color: var(--orange);
+            color: white;
+            border: none;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
+            padding: 5px 10px;
+        }
+    .give-away-section .give-away-content-container{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        gap: 10px;
+    }
+    .give-away-section .give-away-content-container .users-container{
+        max-height: 20rem;
+        min-height: 20rem;
+        flex: 1;
+        overflow: auto;
+    }
+            .give-away-section .give-away-content-container .users-container .accepted-users .left-side p{
+                margin: 0;
+                font-size: 1.1rem;
+            }
+            .give-away-section .give-away-content-container .users-container .accepted-users .right-side .icon{
+                font-size: 1.4rem;
+                color: var(--text-color);
+            }
+        .give-away-section .give-away-content-container .users-container .accepted-users{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: rgb(240,240,240);
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    
+    .give-away-section .give-away-content-container .vouchers-list-container{
+        max-height: 20rem;
+        min-height: 20rem;
+        flex: 1;
+        overflow: auto;
+    }
+        .give-away-section .give-away-content-container .vouchers-list-container .voucher-info{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: rgb(240,240,240);
+            padding: 10px;
+            margin-bottom: 10px;
+        }

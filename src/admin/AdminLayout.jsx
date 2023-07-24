@@ -6,6 +6,7 @@ import { PiUsersThreeLight } from "react-icons/pi"
 import { MdOutlineChecklist,MdOutlineSpaceDashboard } from "react-icons/md"
 import { TbNotification } from "react-icons/tb"
 import { FaGears } from "react-icons/fa6"
+import { AiFillGift } from "react-icons/ai"
 import { FetchUsers } from "../FetchUsers";
 import { GiHamburgerMenu } from "react-icons/gi"
 
@@ -13,10 +14,6 @@ const AdminLayout = () => {
   const location = useLocation()
   const { authorizedUser } = FetchUsers();
   const navigate = useNavigate();
-  // console.log(authorizedUser.memberShip)
-  // if(authorizedUser.memberShip === undefined){
-  //   navigate('/')
-  // }
 
   return (
     <section className="Layout">
@@ -29,8 +26,15 @@ const AdminLayout = () => {
                 <img src={profile}/>
             </div>
             <div className="admin-info">
-                <p className="seller-name">{authorizedUser.firstName}</p>
-                <p className="seller-email">{authorizedUser.email}</p>
+                {
+                  authorizedUser.firstName != undefined ? 
+                    <>
+                      <p className="seller-name">{authorizedUser.firstName}</p>
+                      <p className="seller-email">{authorizedUser.email}</p>
+                    </>
+                  :
+                  'Loading...'
+                }
             </div>
           </div>
           <div className="navigation-links">
@@ -67,11 +71,17 @@ const AdminLayout = () => {
                   </Link>
               </div>
                 <div className="utilities">
-                  <Link to="/adminDashboard/settings" className={`${location.pathname === '/adminDashboard/settings' ? 'dash-link-active':''}`}>
+                  {/* <Link to="/adminDashboard/settings" className={`${location.pathname === '/adminDashboard/settings' ? 'dash-link-active':''}`}>
                       <span className="links-icon">
                         <FaGears/>
                       </span>
                       Settings
+                  </Link> */}
+                  <Link to="/adminDashboard/giveAway" className={`${location.pathname === '/adminDashboard/giveAway' ? 'dash-link-active':''}`}>
+                    <span className="links-icon">
+                        <AiFillGift/>
+                    </span>
+                    Rewards
                   </Link>
               </div>
           </div>

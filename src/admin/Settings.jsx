@@ -51,19 +51,26 @@ const Settings = () => {
                   <img src={profile}/>
                 </div>
                 <div className="admin-info-container">
-                  <p className='adminName'>{authorizedUser.firstName + ' ' + authorizedUser.lastName}</p>
-                  <p>{authorizedUser.userName}</p>
-                  <p>{authorizedUser.email}</p>
+                  {
+                    authorizedUser.firstName != undefined ? 
+                      <>
+                        <p className='adminName'>{authorizedUser.firstName + ' ' + authorizedUser.lastName}</p>
+                        <p>{authorizedUser.userName}</p>
+                        <p>{authorizedUser.email}</p>
+                      </>
+                    :
+                      'Loading...'
+                  }
                 </div>
             </div>
             <div className='admin-profile-info mt-3'>
                 <div className="admin-profile-info-left">
                   <h3 className='profile-information mb-3'>Profile Information</h3>
-                  <p><span>Full Name: </span> {authorizedUser.firstName + ' ' + authorizedUser.lastName}</p>
-                  <p><span>Username: </span> {authorizedUser.userName}</p>
-                  <p><span>Email address: </span> {authorizedUser.email}</p>
-                  <p><span>Phone: </span> {authorizedUser.number}</p>
-                  <p><span>Address: </span> {authorizedUser.address}</p>
+                  <p><span>Full Name: </span> {authorizedUser.firstName != undefined ? authorizedUser.firstName + ' ' + authorizedUser.lastName:'Loading...'}</p>
+                  <p><span>Username: </span> {authorizedUser.userName != undefined ? authorizedUser.userName:'Loading...'}</p>
+                  <p><span>Email address: </span> {authorizedUser.email != undefined ? authorizedUser.email:'Loading...'}</p>
+                  <p><span>Phone: </span> {authorizedUser.number != undefined ? authorizedUser.number:'Loading...'}</p>
+                  <p><span>Address: </span> {authorizedUser.address != undefined ? authorizedUser.address:'Loading...'}</p>
                 </div>
                 <div className="admin-profile-info-right">
                     <form>

@@ -250,7 +250,7 @@ const Home = () => {
             <div className="bestSelling-view">
                 <div className="bestSelling-box">
                     {
-                      bestSeller != undefined ? 
+                      bestSeller.name != undefined ? 
                       <>
                       <div className="img-container">
                         <img
@@ -273,7 +273,7 @@ const Home = () => {
                             </p>
                         </div>
                       </>
-                      :''
+                      :'Loading...'
                     }
                 </div>
             </div>
