@@ -23,7 +23,6 @@ import AdminProducts from "./admin/Products"
 import AdminUsers from "./admin/Users"
 import AdminOrderStatus from "./admin/OrderStatus"
 import AdminNotifications from "./admin/Notifications"
-// import AdminSettings from "./admin/Settings"
 import PurchaseSuccess from "./Pages/PurchaseSuccess"
 import AdminProduct from "./admin/AdminProduct"
 import AddProductForm from "./Components/AddProductForm"
@@ -46,7 +45,7 @@ import GiveAway from "./admin/Components/GiveAway"
 function App() {
   // Your logic to determine if the user is validated (e.g., based on the token)
   const isValidToken = () => {
-    const token = localStorage.getItem('access'); // Replace with how you store your token
+    const token = localStorage.getItem('access');
     if (!token) {
       return false; // No token found, not validated
     }
@@ -125,7 +124,6 @@ function App() {
 
                     <Route path="/adminDashboard/giveAway" element={<GiveAway/>}/>
                     
-                    {/* <Route path="/adminDashboard/settings" element={<AdminSettings/>}/> */}
                 </Route>
               ):
               ''
