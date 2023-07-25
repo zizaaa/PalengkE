@@ -111,7 +111,7 @@
             }
 /* skeleton for cart */
     .skeleton-cart-container{
-        height: 100%;
+        height: 90%;
         overflow: auto;
     }
     .skeleton-cart-container .skeleton-cart-cards{
