@@ -99,7 +99,7 @@ const AddProductForm = () => {
                         <input type="text" onChange={(e)=>{setimgOne(e.target.value)}} placeholder="Img link one"/>
                         <input type="text" onChange={(e)=>{setimgTwo(e.target.value)}} placeholder="Img link two"/>
                         <input type="text" onChange={(e)=>{setimgThree(e.target.value)}} placeholder="Img link three"/>
-                        <textarea onChange={(e)=>{setDescription(e.target.value)}} placeholder="Product Desicription"></textarea>
+                        <textarea onChange={(e)=>{setDescription(e.target.value)}} placeholder="Product Description"></textarea>
                     </div>
                 </div>
                 <button type="submit" onClick={(e)=>{addProduct(e)}}>Add product</button>
