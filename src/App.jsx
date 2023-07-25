@@ -43,7 +43,7 @@ import jwtDecode from 'jwt-decode';
 import GiveAway from "./admin/Components/GiveAway"
 
 function App() {
-  // Your logic to determine if the user is validated (e.g., based on the token)
+  // Your logic to determine if the user is validated
   const isValidToken = () => {
     const token = localStorage.getItem('access');
     if (!token) {
